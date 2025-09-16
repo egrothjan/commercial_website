@@ -27,7 +27,7 @@ export default function Home() {
     ["ant_1.webp", "The Antarctica Series", "antarctica"],
     ["mariupol_1.webp", "Mariupol", "mariupol"],
     ["bronx_1.webp", "Bronx Fire", "bronx-fire"],
-    ["mm_5.jpg", "Mexico City Metro Collapse", "mm"],
+    ["mm_5.jpg", "Play Magazine", "mm"],
   ];
 
   const hoverLabels: Record<string, string> = {
