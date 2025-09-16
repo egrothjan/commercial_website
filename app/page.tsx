@@ -46,7 +46,7 @@ export default function Home() {
     ["2024", [{ title: "Beneath the Rubble: Mariupol", key: "mariupol", href: "/work/mariupol" }]],
     ["2023", [{ title: "Class Action Lawsuit vs. NYPD: 2020 George Floyd Protests", key: "george-floyd", href: "/work/george-floyd-protests-2020" }]],
     ["2022", [{ title: "The Bronx Fire: A Series of Events that Left 17 Dead", key: "bronx-fire", href: "/work/bronx-fire" }]],
-    ["2021", [{ title: "Mexico City Metro Collapse", key: "mm", href: "/work/mexico-city-metro" }]],
+    ["2021", [{ title: "Play Magazine", key: "mm", href: "/work/play-mag" }]],
     ["2018", [{ title: "The Antarctica Series", key: "antarctica", href: "/work/antarctica-series" }]],
   ];
 
