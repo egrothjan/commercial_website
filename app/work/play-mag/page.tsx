@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function MexicoCityMetro() {
+export default function PlayMag() {
   const [playVideo, setPlayVideo] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ export default function MexicoCityMetro() {
       <div className="w-full px-4 mt-5 mb-8 flex justify-center">
         <div className="w-[1160px] max-w-full">
           <h1 className="text-6xl font-light leading-[1.01] sm:leading-tight">
-            Mexico City Metro Collapse
+            Play Mag
           </h1>
         </div>
       </div>
@@ -24,7 +24,7 @@ export default function MexicoCityMetro() {
             <div onClick={() => setPlayVideo(true)} className="relative w-full h-full">
               <Image
                 src="/mm_1.jpg"
-                alt="Play Mexico City Metro Collapse Project"
+                alt="Play Play Mag Project"
                 fill
                 className="object-cover rounded"
               />
@@ -40,7 +40,7 @@ export default function MexicoCityMetro() {
             <iframe
               className="w-full h-full rounded"
               src="https://www.youtube.com/embed/Dob_Y3f6teo?autoplay=1"
-              title="Mexico City Metro Collapse"
+              title="Play Mag"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -49,24 +49,24 @@ export default function MexicoCityMetro() {
         </div>
       </div>
 
-{/* Header paragraph + metadata */}
-<div className="w-full flex justify-center px-4 mt-8">
-  <div className="w-[1150px] max-w-full flex flex-col sm:flex-row justify-between items-start gap-3 text-center sm:text-left">
-    <div className="w-full sm:w-auto max-w-[600px] text-2xl leading-snug">
-      <p>Reconstructing one of Mexico’s worst transit disasters.</p>
-    </div>
+      {/* Header paragraph + metadata */}
+      <div className="w-full flex justify-center px-4 mt-8">
+        <div className="w-[1150px] max-w-full flex flex-col sm:flex-row justify-between items-start gap-3 text-center sm:text-left">
+          <div className="w-full sm:w-auto max-w-[600px] text-2xl leading-snug">
+            <p>Reconstructing one of Mexico’s worst transit disasters.</p>
+          </div>
 
-    <div className="w-full sm:w-auto text-sm text-gray-600 mt-2 sm:mt-1">
-      <p>Collaborator: The New York Times</p>
-      <p>Role: Graphics/Multimedia Editor</p>
-    </div>
-  </div>
-</div>
+          <div className="w-full sm:w-auto text-sm text-gray-600 mt-2 sm:mt-1">
+            <p>Collaborator: The New York Times</p>
+            <p>Role: Graphics/Multimedia Editor</p>
+          </div>
+        </div>
+      </div>
 
-{/* Mobile-only blue divider */}
-<div className="sm:hidden w-full px-5 mt-8 mb-6">
-  <div className="w-full h-[1px] bg-blue-400"></div>
-</div>
+      {/* Mobile-only blue divider */}
+      <div className="sm:hidden w-full px-5 mt-8 mb-6">
+        <div className="w-full h-[1px] bg-blue-400"></div>
+      </div>
 
       {/* Project content */}
       <main className="flex flex-col items-start gap-5 px-5 sm:px-25 pt-3 pb-15 max-w-3xl mx-auto text-left sm:text-justify">
@@ -90,7 +90,7 @@ export default function MexicoCityMetro() {
           <div className="block sm:hidden -mx-5">
             <Image
               src="/mm_2.gif"
-              alt="Metro collapse structural damage photo"
+              alt="Structural damage photo"
               width={600}
               height={338}
               className="w-full rounded border border-blue-400"
@@ -101,14 +101,14 @@ export default function MexicoCityMetro() {
           <div className="hidden sm:flex flex-col items-center">
             <Image
               src="/mm_2.gif"
-              alt="Metro collapse structural damage photo"
+              alt="Structural damage photo"
               width={600}
               height={338}
               className="rounded border border-blue-400"
               loading="lazy"
             />
           </div>
-          <p className="text-sm text-gray-500 mt-2 self-start px-0 sm:px-0">
+          <p className="text-sm text-gray-500 mt-2 self-start">
             Structural damage visualization from the collapse site.
           </p>
         </div>
@@ -167,7 +167,7 @@ export default function MexicoCityMetro() {
               loading="lazy"
             />
           </div>
-          <p className="text-sm text-gray-500 mt-2 self-start px-0 sm:px-0">
+          <p className="text-sm text-gray-500 mt-2 self-start">
             Visual breakdown of the failed beam-stud interface.
           </p>
         </div>
