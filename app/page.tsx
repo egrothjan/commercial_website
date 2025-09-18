@@ -1429,7 +1429,7 @@ useEffect(() => {
                 </h3>
                 <ul className="space-y-[0.2rem] text-[10px]">
                   <li>
-                    Prada Foundation, <em>Diagrams</em>
+                    Prada Foundation, Venice Biennali, <em>Diagrams</em>
                     <br />2025
                   </li>
                   <li>
@@ -1517,17 +1517,12 @@ useEffect(() => {
     <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
       Select Clients
     </h3>
-    <ul className="space-y-[0.2rem] text-[10px]">
-      <li>The New York Times</li>
-      <li>Bloomberg News</li>
-      <li>Vox</li>
-      <li>MTV</li>
-      <li>Meta</li>
-      <li>Human Rights Watch</li>
-      <li>National Lawyers Guild</li>
-    </ul>
+    <p className="text-[10px]">
+      The New York Times, Bloomberg News, Vox, MTV, Meta, Human Rights Watch, National Lawyers Guild
+    </p>
   </div>
 </div>
+
 
 
           </aside>
