@@ -402,25 +402,34 @@ useEffect(() => {
 
             
 
-            {/* Bio block */}
-            <div className="px-3 mt-3 mb-4">
-              <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
-                Evan Grothjan is an art director, designer, and animator specializing in
-                spatial storytelling. Combining emerging technologies with an eye towards
-                cinema, he transforms complex ideas into engaging stories for audiences
-                and brands.
-                <br /><br />
-                Former editor at{" "}
-                <a
-                  href="https://www.nytimes.com/by/evan-grothjan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-red-500 hover:text-red-600"
-                >
-                  The New York Times
-                </a>.
-              </p>
-            </div>
+{/* Bio block */}
+<div className="px-3 mt-3 mb-4">
+  <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
+    Evan Grothjan is an art director, designer, and animator specializing in
+    spatial storytelling. Combining emerging technologies with an eye towards
+    cinema, he transforms complex ideas into engaging stories for audiences
+    and brands.
+    <br /><br />
+    Former editor at{" "}
+    <a
+      href="https://www.nytimes.com/by/evan-grothjan"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-red-500 hover:text-red-600"
+    >
+      The New York Times
+    </a>.
+    <br /><br />
+    Contact:{" "}
+    <a
+      href="mailto:evangrothjan@gmail.com"
+      className="text-red-500 hover:text-red-600"
+    >
+      evangrothjan@gmail.com
+    </a>
+  </p>
+</div>
+
 
             <div className="h-px bg-red-500 dark:bg-red-400" />
 
