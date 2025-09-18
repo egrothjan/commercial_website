@@ -11,8 +11,8 @@ const ibmPlex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Evan Grothjan Portfolio",
-  description: "Visual investigator and filmmaker portfolio",
+  title: "Grothjan Studio",
+  description: "Art Direction, Animation, & Design",
   icons: {
     icon: "/favicon-2.ico",
   },
