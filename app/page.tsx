@@ -1332,7 +1332,7 @@ useEffect(() => {
     </h3>
     <ul className="space-y-[0.2rem] text-[10px]">
       <li>
-        Prada Foundation, <em>Diagrams</em>
+        Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em>
         <br />2025
       </li>
       <li>
