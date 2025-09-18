@@ -1505,6 +1505,31 @@ useEffect(() => {
                 </ul>
               </div>
             </div>
+
+            <div className="h-px bg-red-500 dark:bg-red-400 my-4 w-full" />
+
+{/* Select Clients */}
+<div className="w-full mt-4 mb-4">
+  <div
+    className="text-left block"
+    style={{ width: "min(85%, 28rem)", marginInline: "auto" }}
+  >
+    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+      Select Clients
+    </h3>
+    <ul className="space-y-[0.2rem] text-[10px]">
+      <li>The New York Times</li>
+      <li>Bloomberg News</li>
+      <li>Vox</li>
+      <li>MTV</li>
+      <li>Meta</li>
+      <li>Human Rights Watch</li>
+      <li>National Lawyers Guild</li>
+    </ul>
+  </div>
+</div>
+
+
           </aside>
         </div>
       </div>
