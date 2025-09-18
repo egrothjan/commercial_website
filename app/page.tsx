@@ -1209,7 +1209,7 @@ useEffect(() => {
   /* ---- Winter Olympics video ---- */
   <div className="w-full flex justify-center">
     <video
-      src="/winterOlympics_1.webm"
+      src="/winterOlympics_2.webm"
       autoPlay
       muted
       loop
