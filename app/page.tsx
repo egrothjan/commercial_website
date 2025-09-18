@@ -14,6 +14,7 @@ export default function Home() {
     { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#",},
     { title: "Vogue: Taylor Hill", key: "taylor-hill-vogue", href: "#",},
     { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
+    { title: "Four of the Best Olympians, as You’ve Never Seen Them", key: "winter-olympics", href: "#" },
     { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
     { title: "2020 Tokyo Olympics", key: "olympics-ar", href: "#" },
     { title: "Eddie Martinez X Solinco", key: "solinco", href: "#" },
@@ -74,6 +75,11 @@ This video analysis is a visual reconstruction of one of the most clandestine pr
 Role: 3D Designer
 
 There are three Usain Bolts on this track: one from Beijing in 2008, one from London in 2012 and one from Rio de Janeiro in 2016. The London .`,
+
+"winter-olympics": `Client: The New York Times
+Role: Art Director, Animator
+
+Four Olympic champions captured in a new way — a unique look at the athletes redefining their sports.`,
 
   "olympics-ar": `Client: The New York Times
 Role: Art Director, 3D Designer
@@ -434,11 +440,12 @@ useEffect(() => {
               Culture
             </span>
           )}
-          {key === "usain-bolt" && (
-            <span className="text-neutral-600 dark:text-neutral-400 uppercase text-xs my-2">
-              Sports
-            </span>
-          )}
+          {key === "winter-olympics" && (
+  <span className="text-neutral-600 dark:text-neutral-400 uppercase text-xs my-2">
+    Sports
+  </span>
+)}
+
           {key === "bronx-fire" && (
             <span className="text-neutral-600 dark:text-neutral-400 uppercase text-xs my-2">
               Science & Politics
@@ -1197,6 +1204,20 @@ useEffect(() => {
                 className="object-contain w-[75%] h-auto"
               />
             </div>
+
+            ) : p.key === "winter-olympics" ? (
+  /* ---- Winter Olympics video ---- */
+  <div className="w-full flex justify-center">
+    <video
+      src="/winterOlympics_1.webm"
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="object-contain w-[100%] h-auto"
+    />
+  </div>
+
 
             ) : p.key === "zhiyun-xs" ? (
   /* ---- Zhiyun XS video ---- */
