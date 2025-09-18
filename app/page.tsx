@@ -14,12 +14,12 @@ export default function Home() {
     { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#",},
     { title: "Vogue: Taylor Hill", key: "taylor-hill-vogue", href: "#",},
     { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
-    { title: "Reconstructing the Bronx Fire", key: "bronx-fire", href: "#",},
-    { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#",},
-    { title: "The Death Flights", key: "death-flights", href: "#",},
     { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
     { title: "2020 Tokyo Olympics", key: "olympics-ar", href: "#" },
     { title: "Eddie Martinez X Solinco", key: "solinco", href: "#" },
+    { title: "Reconstructing the Bronx Fire", key: "bronx-fire", href: "#",},
+    { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#",},
+    { title: "The Death Flights", key: "death-flights", href: "#",},
     { title: "CV", key: "cv", href: "#" },
 
   ];
