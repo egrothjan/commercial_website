@@ -418,7 +418,9 @@ useEffect(() => {
       className="text-red-500 hover:text-red-600"
     >
       The New York Times
-    </a>. Contact:{" "}
+    </a>.
+    <br />
+    Contact:{" "}
     <a
       href="mailto:evangrothjan@gmail.com"
       target="_blank"
