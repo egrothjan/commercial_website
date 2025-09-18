@@ -1,0 +1,862 @@
+<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 9.1-c002 79.a1cd12f, 2024/11/11-19:08:46        " rdfhash="120A1D3C08F9F72653B2CC406E8B7C15" merged="0">
+ <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about=""
+    xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
+    xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#"
+    xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#"
+    xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+    xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/"
+    xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:stDim="http://ns.adobe.com/xap/1.0/sType/Dimensions#"
+    xmlns:creatorAtom="http://ns.adobe.com/creatorAtom/1.0/"
+    xmlns:bext="http://ns.adobe.com/bwf/bext/1.0/"
+   xmpMM:InstanceID="xmp.iid:8aedb024-60ec-49b4-a098-6f77d27261b0"
+   xmpMM:DocumentID="98d1b98e-417c-5eb7-f744-b56000000051"
+   xmpMM:OriginalDocumentID="xmp.did:22399bc4-c05d-4b72-9aa9-edf743f04b2b"
+   xmp:MetadataDate="2025-09-18T09:33:00-04:00"
+   xmp:ModifyDate="2025-09-18T09:33:00-04:00"
+   xmp:CreatorTool="Adobe Premiere Pro 2025.0 (Macintosh)"
+   xmp:CreateDate="2025-09-18T09:32:09-04:00"
+   xmpDM:videoFrameRate="23.976024"
+   xmpDM:videoFieldOrder="Progressive"
+   xmpDM:videoPixelAspectRatio="1/1"
+   xmpDM:audioSampleRate="48000"
+   xmpDM:audioSampleType="Compressed"
+   xmpDM:audioChannelType="Stereo"
+   xmpDM:startTimeScale="24000"
+   xmpDM:startTimeSampleSize="1001"
+   dc:format="WebM">
+   <xmpMM:History>
+    <rdf:Seq>
+     <rdf:li
+      stEvt:action="saved"
+      stEvt:instanceID="34cb3248-5270-880f-a192-05280000007e"
+      stEvt:when="2025-09-18T09:33:00-04:00"
+      stEvt:softwareAgent="Adobe Premiere Pro 2025.0 (Macintosh)"
+      stEvt:changed="/"/>
+     <rdf:li
+      stEvt:action="created"
+      stEvt:instanceID="xmp.iid:b0b7311c-4318-40d7-b30f-d8bd8e2b8172"
+      stEvt:when="2025-09-18T09:32:39-04:00"
+      stEvt:softwareAgent="Adobe Premiere Pro 2025.0 (Macintosh)"/>
+     <rdf:li
+      stEvt:action="saved"
+      stEvt:instanceID="xmp.iid:09e1ed73-3efa-4a51-b0d9-768a56bd7a28"
+      stEvt:when="2025-09-18T09:33:00-04:00"
+      stEvt:softwareAgent="Adobe Premiere Pro 2025.0 (Macintosh)"
+      stEvt:changed="/"/>
+     <rdf:li
+      stEvt:action="saved"
+      stEvt:instanceID="xmp.iid:8aedb024-60ec-49b4-a098-6f77d27261b0"
+      stEvt:when="2025-09-18T09:33:00-04:00"
+      stEvt:softwareAgent="Adobe Premiere Pro 2025.0 (Macintosh)"
+      stEvt:changed="/metadata"/>
+    </rdf:Seq>
+   </xmpMM:History>
+   <xmpMM:Ingredients>
+    <rdf:Bag>
+     <rdf:li
+      stRef:instanceID="03b85eb4-41e2-e1f4-4113-3c900000007c"
+      stRef:documentID="57975aab-ad4f-77f5-5f71-9e030000004f"
+      stRef:fromPart="time:30575059200000f254016000000d3065126400000f254016000000"
+      stRef:toPart="time:0d3065126400000f254016000000"
+      stRef:filePath="deathFlights_1.mp4"
+      stRef:maskMarkers="None"/>
+     <rdf:li
+      stRef:instanceID="03b85eb4-41e2-e1f4-4113-3c900000007c"
+      stRef:documentID="57975aab-ad4f-77f5-5f71-9e030000004f"
+      stRef:fromPart="time:30575059200000f254016000000d3065126400000f254016000000"
+      stRef:toPart="time:0d3065126400000f254016000000"
+      stRef:filePath="deathFlights_1.mp4"
+      stRef:maskMarkers="None"/>
+    </rdf:Bag>
+   </xmpMM:Ingredients>
+   <xmpMM:Pantry>
+    <rdf:Bag>
+     <rdf:li>
+      <rdf:Description
+       xmp:CreateDate="2025-02-09T17:26:48Z"
+       xmp:ModifyDate="2025-09-18T09:32:24-04:00"
+       xmp:MetadataDate="2025-09-18T09:32:24-04:00"
+       xmp:CreatorTool="Adobe After Effects 2024 (Windows)"
+       xmpDM:videoFrameRate="30.000000"
+       xmpDM:videoFieldOrder="Progressive"
+       xmpDM:videoPixelAspectRatio="1/1"
+       xmpDM:audioSampleRate="48000"
+       xmpDM:audioSampleType="16Int"
+       xmpDM:audioChannelType="Stereo"
+       xmpDM:startTimeScale="30"
+       xmpDM:startTimeSampleSize="1"
+       tiff:Orientation="1"
+       xmpMM:InstanceID="03b85eb4-41e2-e1f4-4113-3c900000007c"
+       xmpMM:DocumentID="57975aab-ad4f-77f5-5f71-9e030000004f"
+       xmpMM:OriginalDocumentID="xmp.did:0c44d31e-d234-a84f-81b9-cbab243b3825"
+       dc:format="H.264">
+      <xmpDM:videoFrameSize
+       stDim:w="1920"
+       stDim:h="1080"
+       stDim:unit="pixel"/>
+      <xmpDM:startTimecode
+       xmpDM:timeFormat="30Timecode"
+       xmpDM:timeValue="00:02:00:11"/>
+      <xmpDM:altTimecode
+       xmpDM:timeValue="00:02:00:11"
+       xmpDM:timeFormat="30Timecode"/>
+      <xmpDM:duration
+       xmpDM:value="1088640"
+       xmpDM:scale="1/90000"/>
+      <xmpMM:History>
+       <rdf:Seq>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="da4babd5-61bd-8f59-8f88-27e3000000aa"
+         stEvt:when="2025-02-09T12:26:48-05:00"
+         stEvt:softwareAgent="Adobe Adobe Media Encoder 2024.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="created"
+         stEvt:instanceID="xmp.iid:e888bbb5-761d-cb46-9399-13bf6b3b2655"
+         stEvt:when="2025-02-04T16:05:28-05:00"
+         stEvt:softwareAgent="Adobe After Effects 2024 (Windows)"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:c6effd57-80fb-4744-b57b-f992f7905912"
+         stEvt:when="2025-02-04T16:12:29-05:00"
+         stEvt:softwareAgent="Adobe After Effects 2024 (Windows)"
+         stEvt:changed="/content"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:0e75a51b-2c77-0144-8dc9-b32d69658e0b"
+         stEvt:when="2025-02-09T12:26:32-05:00"
+         stEvt:softwareAgent="Adobe After Effects 2024 (Windows)"
+         stEvt:changed="/content"/>
+        <rdf:li
+         stEvt:action="derived"
+         stEvt:parameters="saved to new location"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:56fb86c4-d19c-e54e-b30f-83aadeffeff4"
+         stEvt:when="2025-02-09T12:26:32-05:00"
+         stEvt:softwareAgent="Adobe After Effects 2024 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:ad7a892f-bb29-3c4f-8c0a-a7f6054acc4e"
+         stEvt:when="2025-02-09T12:26:48-05:00"
+         stEvt:softwareAgent="Adobe Adobe Media Encoder 2024.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:9772a609-09e5-f14a-8d45-5c675cb95b46"
+         stEvt:when="2025-02-09T12:26:48-05:00"
+         stEvt:softwareAgent="Adobe Adobe Media Encoder 2024.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="modified"
+         stEvt:parameters="unknown modifications"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="03b85eb4-41e2-e1f4-4113-3c900000007c"
+         stEvt:when="2025-09-18T09:32:24-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2025.0 (Macintosh)"
+         stEvt:changed="/"/>
+       </rdf:Seq>
+      </xmpMM:History>
+      <xmpMM:DerivedFrom
+       stRef:instanceID="xmp.iid:094ee5f0-1874-514b-a7fc-a32b493acc24"
+       stRef:documentID="xmp.did:094ee5f0-1874-514b-a7fc-a32b493acc24"
+       stRef:originalDocumentID="xmp.did:e888bbb5-761d-cb46-9399-13bf6b3b2655"/>
+      <xmpMM:Ingredients>
+       <rdf:Bag>
+        <rdf:li
+         stRef:instanceID="xmp.iid:f24c8132-25af-d54c-a410-7564aab46ede"
+         stRef:fromPart="time:0d28428288f30720"
+         stRef:toPart="time:0d28428288f30720"
+         stRef:maskMarkers="None"/>
+       </rdf:Bag>
+      </xmpMM:Ingredients>
+      </rdf:Description>
+     </rdf:li>
+     <rdf:li>
+      <rdf:Description
+       xmp:CreateDate="2024-09-18T17:51:20Z"
+       xmp:ModifyDate="2025-02-09T12:26:40-05:00"
+       xmp:MetadataDate="2025-02-09T12:26:40-05:00"
+       xmp:CreatorTool="Adobe Premiere Pro 2023.0 (Windows)"
+       xmpDM:videoFrameRate="30.000000"
+       xmpDM:videoFieldOrder="Progressive"
+       xmpDM:videoPixelAspectRatio="1/1"
+       xmpDM:audioSampleRate="48000"
+       xmpDM:audioSampleType="16Int"
+       xmpDM:audioChannelType="Stereo"
+       xmpDM:startTimeScale="30"
+       xmpDM:startTimeSampleSize="1"
+       tiff:Orientation="1"
+       xmpMM:InstanceID="4946c957-37c6-a7a6-5568-2098000000aa"
+       xmpMM:DocumentID="c27e3590-039a-92b4-32f2-74c90000007d"
+       xmpMM:OriginalDocumentID="xmp.did:3dcfcc62-a61e-5344-93d7-9c1a0699513a"
+       dc:format="H.264">
+      <xmpDM:projectRef
+       xmpDM:type="movie"/>
+      <xmpDM:videoFrameSize
+       stDim:w="1920"
+       stDim:h="1080"
+       stDim:unit="pixel"/>
+      <xmpDM:startTimecode
+       xmpDM:timeFormat="30Timecode"
+       xmpDM:timeValue="00:00:00:00"/>
+      <xmpDM:altTimecode
+       xmpDM:timeValue="00:00:00:00"
+       xmpDM:timeFormat="30Timecode"/>
+      <xmpDM:duration
+       xmpDM:value="83289600"
+       xmpDM:scale="1/90000"/>
+      <xmpMM:History>
+       <rdf:Seq>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="6482e630-7086-00ed-8c8e-4d1f000000aa"
+         stEvt:when="2024-09-18T13:52:19-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="created"
+         stEvt:instanceID="xmp.iid:d8e64cf4-1c45-2c46-9ebd-e041de6709e4"
+         stEvt:when="2024-09-18T13:49:09-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:79a38d02-2094-464a-befc-078e72095663"
+         stEvt:when="2024-09-18T13:52:19-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:e79e4267-518a-8a4d-aaa1-06fc6e1d2aaa"
+         stEvt:when="2024-09-18T13:52:19-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="modified"
+         stEvt:parameters="unknown modifications"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="4946c957-37c6-a7a6-5568-2098000000aa"
+         stEvt:when="2025-02-09T12:26:40-05:00"
+         stEvt:softwareAgent="Adobe After Effects 2024 (Windows)"
+         stEvt:changed="/"/>
+       </rdf:Seq>
+      </xmpMM:History>
+      <xmpMM:DerivedFrom
+       stRef:instanceID="xmp.iid:d8e64cf4-1c45-2c46-9ebd-e041de6709e4"
+       stRef:documentID="xmp.did:d8e64cf4-1c45-2c46-9ebd-e041de6709e4"
+       stRef:originalDocumentID="xmp.did:d8e64cf4-1c45-2c46-9ebd-e041de6709e4"/>
+      <xmpMM:Ingredients>
+       <rdf:Bag>
+        <rdf:li
+         stRef:instanceID="xmp.iid:5f74678a-2393-9b43-8743-d236c3e5da43"
+         stRef:documentID="c6b0ed34-4e7a-6780-2bd7-83b000000063"
+         stRef:fromPart="time:0d201299212800000f254016000000"
+         stRef:toPart="time:0d201299212800000f254016000000"
+         stRef:filePath="Vuelos_Final_NoSubtitles.mp4"
+         stRef:maskMarkers="None"/>
+        <rdf:li
+         stRef:instanceID="xmp.iid:5f74678a-2393-9b43-8743-d236c3e5da43"
+         stRef:documentID="c6b0ed34-4e7a-6780-2bd7-83b000000063"
+         stRef:fromPart="time:0d201299212800000f254016000000"
+         stRef:toPart="time:0d201299212800000f254016000000"
+         stRef:filePath="Vuelos_Final_NoSubtitles.mp4"
+         stRef:maskMarkers="None"/>
+       </rdf:Bag>
+      </xmpMM:Ingredients>
+      <creatorAtom:windowsAtom
+       creatorAtom:extension=".prproj"
+       creatorAtom:invocationFlags="/L"
+       creatorAtom:uncProjectPath="\\?\G:\.shortcut-targets-by-id\0B0BYhtvqkHMoNlNWa0J3MXBSc00\SITU RESEARCH\Projects\SPEA\Centro Prodh\03_WORK\production\premier\Untitled.prproj"/>
+      <creatorAtom:macAtom
+       creatorAtom:applicationCode="1347449455"
+       creatorAtom:invocationAppleEvent="1129468018"/>
+      </rdf:Description>
+     </rdf:li>
+     <rdf:li>
+      <rdf:Description
+       xmp:CreateDate="2024-03-24T21:16:38Z"
+       xmp:ModifyDate="2024-03-24T21:16:47Z"
+       xmp:MetadataDate="2024-03-24T17:16:47-04:00"
+       xmp:CreatorTool="Adobe Premiere Pro 2023.0 (Windows)"
+       xmpDM:videoFrameRate="30.000000"
+       xmpDM:videoFieldOrder="Progressive"
+       xmpDM:videoPixelAspectRatio="1/1"
+       xmpDM:audioSampleRate="48000"
+       xmpDM:audioSampleType="16Int"
+       xmpDM:audioChannelType="Stereo"
+       xmpDM:startTimeScale="30"
+       xmpDM:startTimeSampleSize="1"
+       tiff:Orientation="1"
+       xmpMM:InstanceID="xmp.iid:5f74678a-2393-9b43-8743-d236c3e5da43"
+       xmpMM:DocumentID="c6b0ed34-4e7a-6780-2bd7-83b000000063"
+       xmpMM:OriginalDocumentID="xmp.did:666bf0c1-5fae-5b40-a055-0967c606cf64"
+       dc:format="H.264">
+      <xmpDM:projectRef
+       xmpDM:type="movie"/>
+      <xmpDM:videoFrameSize
+       stDim:w="1920"
+       stDim:h="1080"
+       stDim:unit="pixel"/>
+      <xmpDM:startTimecode
+       xmpDM:timeFormat="30Timecode"
+       xmpDM:timeValue="00:00:00:00"/>
+      <xmpDM:altTimecode
+       xmpDM:timeValue="00:00:00:00"
+       xmpDM:timeFormat="30Timecode"/>
+      <xmpDM:duration
+       xmpDM:value="75605760"
+       xmpDM:scale="1/90000"/>
+      <xmpMM:History>
+       <rdf:Seq>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="736ab2f6-5ec9-ecc1-18a4-8a3400000090"
+         stEvt:when="2024-03-24T17:16:47-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="created"
+         stEvt:instanceID="xmp.iid:e642812a-1e00-104a-8ee4-c48e532419de"
+         stEvt:when="2024-03-24T17:15:51-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:1d0fb691-5598-dd4d-a060-933db958ac00"
+         stEvt:when="2024-03-24T17:16:47-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:5f74678a-2393-9b43-8743-d236c3e5da43"
+         stEvt:when="2024-03-24T17:16:47-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"
+         stEvt:changed="/metadata"/>
+       </rdf:Seq>
+      </xmpMM:History>
+      <xmpMM:DerivedFrom
+       stRef:instanceID="xmp.iid:e642812a-1e00-104a-8ee4-c48e532419de"
+       stRef:documentID="xmp.did:e642812a-1e00-104a-8ee4-c48e532419de"
+       stRef:originalDocumentID="xmp.did:e642812a-1e00-104a-8ee4-c48e532419de"/>
+      <xmpMM:Ingredients>
+       <rdf:Bag>
+        <rdf:li
+         stRef:instanceID="xmp.iid:6d6993c5-e8ac-8e46-a71f-41e780b01cf7"
+         stRef:documentID="xmp.did:6d6993c5-e8ac-8e46-a71f-41e780b01cf7"
+         stRef:fromPart="time:0d213373440000000f254016000000"
+         stRef:toPart="time:0d213373440000000f254016000000"
+         stRef:filePath="finalAudio2.wav"
+         stRef:maskMarkers="None"/>
+        <rdf:li
+         stRef:instanceID="xmp.iid:d07481cf-3a8d-2f4c-bfd4-8196b411bcc8"
+         stRef:documentID="xmp.did:73236831-9a79-d74d-9a61-89c559b63216"
+         stRef:fromPart="time:25520140800000f254016000000d11760940800000f254016000000"
+         stRef:toPart="time:25520140800000f254016000000d11760940800000f254016000000"
+         stRef:filePath="part1_0322.mp4"
+         stRef:maskMarkers="None"/>
+       </rdf:Bag>
+      </xmpMM:Ingredients>
+      <creatorAtom:windowsAtom
+       creatorAtom:extension=".prproj"
+       creatorAtom:invocationFlags="/L"
+       creatorAtom:uncProjectPath="\\?\G:\.shortcut-targets-by-id\0B0BYhtvqkHMoNlNWa0J3MXBSc00\SITU RESEARCH\Projects\SPEA\Centro Prodh\03_WORK\production\premier\Untitled.prproj"/>
+      <creatorAtom:macAtom
+       creatorAtom:applicationCode="1347449455"
+       creatorAtom:invocationAppleEvent="1129468018"/>
+      </rdf:Description>
+     </rdf:li>
+     <rdf:li>
+      <rdf:Description
+       xmp:CreatorTool="Adobe Audition 24.0 (Windows)"
+       xmp:CreateDate="2024-03-05T11:00:01-05:00"
+       xmp:MetadataDate="2025-09-18T09:33:00-04:00"
+       xmp:ModifyDate="2024-03-24T16:45:49-04:00"
+       xmpMM:InstanceID="xmp.iid:6d6993c5-e8ac-8e46-a71f-41e780b01cf7"
+       xmpMM:DocumentID="xmp.did:6d6993c5-e8ac-8e46-a71f-41e780b01cf7"
+       xmpMM:OriginalDocumentID="xmp.did:a8b21ba8-77d2-9a4a-b452-8d7ca904a71f"
+       dc:format="audio/x-wav"
+       bext:originationDate="2024-03-24"
+       bext:originationTime="16:45:49"
+       bext:timeReference="0"
+       bext:version="1">
+      <xmpMM:History>
+       <rdf:Seq>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:a8b21ba8-77d2-9a4a-b452-8d7ca904a71f"
+         stEvt:when="2024-03-05T11:00:01-05:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:98e954d8-a4cf-5d4e-b757-775dadfae0d4"
+         stEvt:when="2024-03-06T22:28:11-05:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:13b66799-d7ed-644f-ab6f-76e8c167ee44"
+         stEvt:when="2024-03-06T22:28:11-05:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:c01e9329-a837-b146-81b3-1e25b275102e"
+         stEvt:when="2024-03-08T10:40:32-05:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:a644980c-3102-784d-95a8-7b2326025199"
+         stEvt:when="2024-03-08T10:40:32-05:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:b1b6b1b5-301a-4844-8803-20314b3c5f07"
+         stEvt:when="2024-03-11T00:08:03-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:ec7f8295-ae95-a54f-8b97-915958773bb8"
+         stEvt:when="2024-03-11T00:08:03-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:49a5e4ab-7ed6-1349-99f1-d9df1efb6453"
+         stEvt:when="2024-03-12T02:47:40-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:d695d0d2-fd6a-5442-82e7-520c1cfa643e"
+         stEvt:when="2024-03-12T02:47:40-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:22d1ff6a-4807-ff42-b87b-bf7b4dbdcb17"
+         stEvt:when="2024-03-13T17:47:33-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:299e934f-6bf2-e14d-8ee1-8e3ee60900f0"
+         stEvt:when="2024-03-13T17:47:33-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:b58bb869-da17-954c-b749-479c469176aa"
+         stEvt:when="2024-03-13T18:44:34-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:6d9f8e2e-8fed-9347-99f7-e76708d67783"
+         stEvt:when="2024-03-13T18:44:34-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:72d54ea9-9f12-3f47-bf30-6fa50f7e3233"
+         stEvt:when="2024-03-14T11:22:56-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:4f8b7d0c-4cc4-d147-b404-a910224683b8"
+         stEvt:when="2024-03-14T11:22:56-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:e96021b4-e1c9-2348-9e5d-b7e2883cfa3e"
+         stEvt:when="2024-03-18T14:31:07-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:8d9026b2-5787-4347-8326-51b9c060d8e2"
+         stEvt:when="2024-03-18T14:31:07-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:ecc73fd6-99a1-2941-904e-b8db12a357bf"
+         stEvt:when="2024-03-18T14:32:13-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:6fbf265f-6abb-f041-b992-47cb6dd1895d"
+         stEvt:when="2024-03-18T14:32:13-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:dead9b92-b995-6540-a33a-8ff31a41abcc"
+         stEvt:when="2024-03-18T14:36:57-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:3abf72b6-fa44-304a-9bb8-1cd5b9e4e1d3"
+         stEvt:when="2024-03-18T14:36:57-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:4d237665-a827-d345-b3ec-572c58fe9c2c"
+         stEvt:when="2024-03-18T15:26:16-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:e7f51611-a1ef-b54f-bd93-a22c0ba9c39c"
+         stEvt:when="2024-03-18T15:26:16-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:f5738151-b2bc-4648-b543-f705f1ef937f"
+         stEvt:when="2024-03-18T20:53:07-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:83742600-db06-5340-8731-071c1a4f4175"
+         stEvt:when="2024-03-18T20:53:07-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:af5bd07a-5f82-4143-9a38-7b59c88b0380"
+         stEvt:when="2024-03-22T11:24:11-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:7ddfe835-ee18-174e-9dbf-04344a41fd73"
+         stEvt:when="2024-03-22T11:24:11-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:1c7d2572-0e9a-9f4a-87bf-2a4de3070012"
+         stEvt:when="2024-03-22T11:30:17-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:efe6b3e8-5a52-534a-8291-54fffad3fd5a"
+         stEvt:when="2024-03-22T11:30:17-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:d14381f1-faba-4a48-b052-0e0bd190938f"
+         stEvt:when="2024-03-22T14:13:49-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:9df34263-43b8-6b40-b9da-4d64c45b1c76"
+         stEvt:when="2024-03-22T14:13:49-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:d12770b6-cad3-cd4e-b2d3-a2a72813f8b9"
+         stEvt:when="2024-03-22T18:19:46-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:71da40bb-0ae2-374a-b063-c0a71d2154a0"
+         stEvt:when="2024-03-22T18:19:46-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:be43259f-0e2b-3d42-b2eb-b60b442138b4"
+         stEvt:when="2024-03-22T18:27:04-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:0c8b698d-ed4d-0244-a124-483d43b17fd2"
+         stEvt:when="2024-03-22T18:27:04-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:5b0e38d6-299a-8a4a-8db7-5a10d33a0fc0"
+         stEvt:when="2024-03-22T18:29:39-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:917ab7b7-8f0c-5648-a540-cd4734bb1a17"
+         stEvt:when="2024-03-22T18:29:39-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:6a23aeff-2fd4-ea4a-afb9-0315b290c5d9"
+         stEvt:when="2024-03-22T19:11:13-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:a9952dc7-12b6-5549-b8bf-88e02e87c682"
+         stEvt:when="2024-03-22T19:11:13-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:f9105a4f-52fe-d340-b538-c7a49fcc1298"
+         stEvt:when="2024-03-24T16:44:37-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:39c55f6b-eaf7-2248-a242-f9196de7d63f"
+         stEvt:when="2024-03-24T16:44:37-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:a9124d46-c7b2-bf4e-81d3-8d3693ab2f42"
+         stEvt:when="2024-03-24T16:45:49-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:976e7357-3e17-7240-98ac-551981a4e3b6"
+         stEvt:when="2024-03-24T16:45:49-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="converted"
+         stEvt:parameters="from application/xml to audio/x-wav"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:59ae0fb8-cfe7-df47-8c63-8a3299ffee2e"
+         stEvt:when="2024-03-24T16:45:49-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"/>
+        <rdf:li
+         stEvt:action="converted"
+         stEvt:parameters="from application/xml to audio/x-wav"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:6d6993c5-e8ac-8e46-a71f-41e780b01cf7"
+         stEvt:when="2024-03-24T16:45:49-04:00"
+         stEvt:softwareAgent="Adobe Audition 24.0 (Windows)"
+         stEvt:changed="/"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:e7286377-e0d5-a24b-8841-7a407f442400"
+         stEvt:when="2024-03-24T17:16:47-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2023.0 (Windows)"
+         stEvt:changed="/metadata"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:5d5eedbe-cf5f-4fc6-b291-c7afc036b043"
+         stEvt:when="2025-09-18T09:33:00-04:00"
+         stEvt:softwareAgent="Adobe Premiere Pro 2025.0 (Macintosh)"
+         stEvt:changed="/metadata"/>
+       </rdf:Seq>
+      </xmpMM:History>
+      <xmpMM:DerivedFrom
+       stRef:instanceID="xmp.iid:59ae0fb8-cfe7-df47-8c63-8a3299ffee2e"
+       stRef:documentID="xmp.did:59ae0fb8-cfe7-df47-8c63-8a3299ffee2e"
+       stRef:originalDocumentID="xmp.did:a8b21ba8-77d2-9a4a-b452-8d7ca904a71f"/>
+      <creatorAtom:windowsAtom
+       creatorAtom:extension=".sesx"
+       creatorAtom:invocationFlags="-EO"
+       creatorAtom:uncProjectPath="G:\.shortcut-targets-by-id\0B0BYhtvqkHMoNlNWa0J3MXBSc00\SITU RESEARCH\Projects\SPEA\Centro Prodh\03_WORK\production\audition\Untitled Session 4\Untitled Session 4.sesx"/>
+      <creatorAtom:macAtom
+       creatorAtom:applicationCode="1097089397"
+       creatorAtom:invocationAppleEvent="1164201842"/>
+      <xmpDM:Tracks>
+       <rdf:Bag>
+        <rdf:li
+         xmpDM:trackName="CuePoint Markers"
+         xmpDM:trackType="Cue"
+         xmpDM:frameRate="f48000"/>
+        <rdf:li
+         xmpDM:trackName="CD Track Markers"
+         xmpDM:trackType="Track"
+         xmpDM:frameRate="f48000"/>
+        <rdf:li
+         xmpDM:trackName="Subclip Markers"
+         xmpDM:trackType="InOut"
+         xmpDM:frameRate="f48000"/>
+       </rdf:Bag>
+      </xmpDM:Tracks>
+      </rdf:Description>
+     </rdf:li>
+     <rdf:li>
+      <rdf:Description
+       dc:format="application/vnd.adobe.aftereffects.layer"
+       xmpMM:InstanceID="xmp.iid:c66eec5d-9827-d546-8d99-96ff68e20058">
+      <dc:title>
+       <rdf:Alt>
+        <rdf:li xml:lang="x-default">Vuelos_Final_NoSubtitles_UpdatedSlide.mp4</rdf:li>
+       </rdf:Alt>
+      </dc:title>
+      <xmpMM:Ingredients>
+       <rdf:Bag>
+        <rdf:li
+         stRef:instanceID="4946c957-37c6-a7a6-5568-2098000000aa"
+         stRef:documentID="c27e3590-039a-92b4-32f2-74c90000007d"
+         stRef:fromPart="time:0d28428288f30720"
+         stRef:toPart="time:0d28428288f30720"
+         stRef:maskMarkers="All"/>
+       </rdf:Bag>
+      </xmpMM:Ingredients>
+      </rdf:Description>
+     </rdf:li>
+     <rdf:li>
+      <rdf:Description
+       xmp:CreateDate="2024-03-22T20:10:19Z"
+       xmp:ModifyDate="2024-03-22T20:10:20Z"
+       xmp:CreatorTool="Adobe After Effects 2024 (Windows)"
+       xmp:MetadataDate="2024-03-22T16:10:20-04:00"
+       xmpDM:videoFrameRate="30.000000"
+       xmpDM:videoFieldOrder="Progressive"
+       xmpDM:videoPixelAspectRatio="1/1"
+       xmpDM:audioSampleRate="48000"
+       xmpDM:audioSampleType="16Int"
+       xmpDM:audioChannelType="Stereo"
+       xmpDM:startTimeScale="30"
+       xmpDM:startTimeSampleSize="1"
+       tiff:Orientation="1"
+       xmpMM:InstanceID="xmp.iid:d07481cf-3a8d-2f4c-bfd4-8196b411bcc8"
+       xmpMM:DocumentID="xmp.did:73236831-9a79-d74d-9a61-89c559b63216"
+       xmpMM:OriginalDocumentID="xmp.did:73236831-9a79-d74d-9a61-89c559b63216"
+       dc:format="H.264">
+      <xmpDM:videoFrameSize
+       stDim:w="1920"
+       stDim:h="1080"
+       stDim:unit="pixel"/>
+      <xmpDM:startTimecode
+       xmpDM:timeFormat="30Timecode"
+       xmpDM:timeValue="00:00:00:00"/>
+      <xmpDM:altTimecode
+       xmpDM:timeValue="00:00:00:00"
+       xmpDM:timeFormat="30Timecode"/>
+      <xmpDM:duration
+       xmpDM:value="13211520"
+       xmpDM:scale="1/90000"/>
+      <xmpMM:History>
+       <rdf:Seq>
+        <rdf:li
+         stEvt:action="created"
+         stEvt:instanceID="xmp.iid:73236831-9a79-d74d-9a61-89c559b63216"
+         stEvt:when="2024-03-22T16:07:03-04:00"
+         stEvt:softwareAgent="Adobe After Effects 2024 (Windows)"/>
+        <rdf:li
+         stEvt:action="saved"
+         stEvt:instanceID="xmp.iid:d07481cf-3a8d-2f4c-bfd4-8196b411bcc8"
+         stEvt:when="2024-03-22T16:10:20-04:00"
+         stEvt:softwareAgent="Adobe After Effects 2024 (Windows)"
+         stEvt:changed="/"/>
+       </rdf:Seq>
+      </xmpMM:History>
+      <creatorAtom:windowsAtom
+       creatorAtom:extension=".aep"
+       creatorAtom:invocationFlags="-ep"/>
+      <creatorAtom:macAtom
+       creatorAtom:applicationCode="1180193859"
+       creatorAtom:invocationAppleEvent="1131559026"/>
+      <creatorAtom:aeProjectLink
+       creatorAtom:compositionID="22636"
+       creatorAtom:renderQueueItemID="196"
+       creatorAtom:renderOutputModuleIndex="0"
+       creatorAtom:fullPath="G:\.shortcut-targets-by-id\0B0BYhtvqkHMoNlNWa0J3MXBSc00\SITU RESEARCH\Projects\SPEA\Centro Prodh\03_WORK\production\ae\storyboard_11 folder\storyboard_AUDIO_14.aep"/>
+      </rdf:Description>
+     </rdf:li>
+     <rdf:li>
+      <rdf:Description
+       dc:format="application/vnd.adobe.aftereffects.comp"
+       xmpMM:InstanceID="xmp.iid:f24c8132-25af-d54c-a410-7564aab46ede">
+      <dc:title>
+       <rdf:Alt>
+        <rdf:li xml:lang="x-default">Vuelos_Final_NoSubtitles_UpdatedSlide</rdf:li>
+       </rdf:Alt>
+      </dc:title>
+      <xmpMM:Ingredients>
+       <rdf:Bag>
+        <rdf:li
+         stRef:instanceID="xmp.iid:c66eec5d-9827-d546-8d99-96ff68e20058"
+         stRef:fromPart="time:0d28428288f30720"
+         stRef:toPart="time:0d28428288f30720"
+         stRef:maskMarkers="None"/>
+       </rdf:Bag>
+      </xmpMM:Ingredients>
+      </rdf:Description>
+     </rdf:li>
+    </rdf:Bag>
+   </xmpMM:Pantry>
+   <xmpMM:DerivedFrom
+    stRef:instanceID="xmp.iid:b0b7311c-4318-40d7-b30f-d8bd8e2b8172"
+    stRef:documentID="xmp.did:b0b7311c-4318-40d7-b30f-d8bd8e2b8172"
+    stRef:originalDocumentID="xmp.did:b0b7311c-4318-40d7-b30f-d8bd8e2b8172"/>
+   <creatorAtom:windowsAtom
+    creatorAtom:extension=".prproj"
+    creatorAtom:invocationFlags="/L"/>
+   <creatorAtom:macAtom
+    creatorAtom:applicationCode="1347449455"
+    creatorAtom:invocationAppleEvent="1129468018"
+    creatorAtom:posixProjectPath="/Users/evangrothjan/Documents/Adobe/Premiere Pro/25.0/Untitled.prproj"/>
+   <xmpDM:projectRef
+    xmpDM:type="movie"/>
+   <xmpDM:videoFrameSize
+    stDim:w="1920"
+    stDim:h="1080"
+    stDim:unit="pixel"/>
+   <xmpDM:duration
+    xmpDM:value="289"
+    xmpDM:scale="1001/24000"/>
+   <xmpDM:startTimecode
+    xmpDM:timeFormat="23976Timecode"
+    xmpDM:timeValue="00:00:00:00"/>
+   <xmpDM:altTimecode
+    xmpDM:timeValue="00:00:00:00"
+    xmpDM:timeFormat="23976Timecode"/>
+  </rdf:Description>
+ </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+<?xpacket end="w"?>

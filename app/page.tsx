@@ -20,6 +20,8 @@ export default function Home() {
     { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
     { title: "2020 Tokyo Olympics", key: "olympics-ar", href: "#" },
     { title: "Eddie Martinez X Solinco", key: "solinco", href: "#" },
+    { title: "CV", key: "cv", href: "#" },
+
   ];
 
   const images: Record<string, { src: string; alt: string; width: number; height: number }> = {
@@ -83,12 +85,8 @@ Role: Fabricator
 
 This custom racquet combines Solinco’s expertise in crafting sporting equipment of quality, performance, and versatility with Brooklyn artist Eddie Martinez’s signature tennis ball and “blockhead” motifs, to create a stylish racquet for discerning players and fans.`,
 
+cv: "",
 
-  "eileen-gu": `Client: TK
-Role: TK
-Year: TK
-
-TKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTK`,
 
 
 };
@@ -128,7 +126,7 @@ const vogueSlides = [
   },
   {
     type: "video",
-    src: "/vogue_2.mp4",
+    src: "/vogue_2.webm",
     alt: "Vogue Slide 2",
     width: 700,
     height: 500,
@@ -238,7 +236,7 @@ const [isDeathFlightsLocked, setIsDeathFlightsLocked] = useState(false);
 const deathFlightsSlides = [
   {
     type: "video",
-    src: "/deathFlights_1.mp4",
+    src: "/deathFlights_1.webm",
     alt: "Death Flights Video",
     width: 800,
     height: 600,
@@ -271,7 +269,7 @@ useEffect(() => {
         setIsLocked(true);
         setIsTransitioning(true);
         setProject1Index((prev) => prev + 1);
-      }, 5000); // 10000 ms = 5 seconds
+      }, 8000); // 10000 ms = 5 seconds
     }
   };
 
@@ -382,12 +380,12 @@ useEffect(() => {
   return (
     <main className="h-screen overflow-hidden bg-background text-foreground">
       <div className="w-full h-full">
-        <div className="flex items-start gap-0 h-full">
+        <div className="flex flex-col sm:flex-row items-start gap-0 h-full">
           {/* Left: Titles */}
           <aside
-            ref={leftRef}
-            className="w-[315px] shrink-0 sticky top-0 self-start pr-1"
-          >
+    ref={leftRef}
+    className="w-[315px] shrink-0 sticky top-0 self-start pr-1 hidden sm:block"
+  >
             <div className="mb-10">
               <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">
                 Grothjan Studio
@@ -480,42 +478,89 @@ useEffect(() => {
             )}
           </aside>
 
-<div className="w-px bg-red-500 dark:bg-red-400 h-full" />
+<div className="w-px bg-red-500 dark:bg-red-400 h-full hidden sm:block" />
+
 
 
 
 {/* ---------------- MIDDLE COLUMN ---------------- */}
-<SimpleBar
+  <SimpleBar
   scrollableNodeProps={{ ref: scrollAreaRef }}
   style={{
     height: "100%",
-    width: baseGalleryWidthPx ? baseGalleryWidthPx * 0.72 : undefined,
+    width:
+      typeof window !== "undefined" && window.innerWidth >= 640
+        ? baseGalleryWidthPx
+          ? baseGalleryWidthPx * 0.72
+          : undefined
+        : "100%",
   }}
-  className="pt-0 px-1 pb-3 flex flex-col items-center border-b border-red-500 dark:border-red-400 custom-scrollbar h-full"
+  className="
+    pt-[50px] sm:pt-0 px-1 pb-3 flex flex-col items-center 
+    border-b border-red-500 dark:border-red-400 
+    custom-scrollbar h-full 
+    mx-auto w-full sm:w-auto
+  "
   autoHide={false}
 >
-  <div className="w-full text-left">
-    <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">
-      Select Projects
-    </h2>
-  </div>
+{/* Mobile-only fixed header */}
+<div className="sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b border-red-500 dark:border-red-400 px-3 py-2">
+  {activeKey === "cv" ? (
+    <>
+      <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
+        Studio Grothjan
+      </h2>
+      <p className="text-[10px] leading-relaxed text-foreground/80 mt-1">
+        CV
+      </p>
+    </>
+  ) : (
+    <>
+      <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
+        {projects.find((p) => p.key === activeKey)?.title}
+      </h2>
+      {projectDescriptions[activeKey] && (
+        <p className="text-[10px] leading-relaxed text-foreground/80 mt-1 whitespace-pre-line">
+          {projectDescriptions[activeKey]}
+        </p>
+      )}
+    </>
+  )}
+</div>
 
+
+
+{/* Desktop-only "Select Projects" + divider */}
+<div className="hidden sm:block w-full text-left">
+  <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">
+    Select Projects
+  </h2>
   <div className="w-full h-px bg-red-500 dark:bg-red-400 mt-[40px] mb-[65px]" />
+</div>
 
-  {projects.map((p, idx) => {
+
+  {projects
+  .filter((p) => p.key !== "cv")   // 👈 NEW: exclude cv here
+  .map((p, idx) => {
     const img = images[p.key];
-    const isLast = idx === projects.length - 1;
+    const isLast = idx === projects.length - 2;
 
     return (
       <div
-        key={p.key}
-        data-key={p.key}
-        ref={(el: HTMLDivElement | null) => {
-  itemRefs.current[p.key] = el;
-}}
-        className="w-full flex flex-col items-center"
-      >
-        <div className={`relative ${idx === 0 ? "-mt-[10px]" : ""}`}>
+  key={p.key}
+  data-key={p.key}
+  ref={(el: HTMLDivElement | null) => {
+    itemRefs.current[p.key] = el;
+  }}
+  className={`w-full flex flex-col items-center ${
+    idx === 0 ? "mt-[65px] sm:mt-0" : ""
+  }`}
+>
+        <div
+  className={`relative ${
+    idx === 0 ? "sm:-mt-[10px] mt-[65px]" : ""
+  }`}
+>
           {p.key === "play-magazine" ? (
             /* ---- PLAY Magazine carousel ---- */
             <div className="relative w-full flex justify-center overflow-hidden">
@@ -1002,7 +1047,7 @@ useEffect(() => {
             /* ---- Ed Sheeran video ---- */
             <div className="w-full flex justify-center">
               <video
-                src="/edsheeran_1.mp4"
+                src="/edsheeran_1.webm"
                 autoPlay
                 muted
                 loop
@@ -1142,7 +1187,7 @@ useEffect(() => {
             /* ---- Pluto video ---- */
             <div className="w-full flex justify-center">
               <video
-                src="/pluto_3.mp4"
+                src="/pluto_3.webm"
                 autoPlay
                 muted
                 loop
@@ -1261,22 +1306,87 @@ useEffect(() => {
 
         {/* Always show bottom divider */}
       <div className="flex flex-col items-center w-full">
-        <div className="h-[65px]" />
-        <div className="h-px bg-red-500 dark:bg-red-400 w-full" />
-        <div className="h-[65px]" />
-      </div>
+  <div className="h-[65px]" />
+  <div className="h-px bg-red-500 dark:bg-red-400 w-full" />
+  <div className={`${isLast ? "sm:h-[65px] h-0" : "h-[65px]"}`} />
+</div>
+
     </div>
   );
 })}
   
-</SimpleBar>
+  {/* Mobile-only CV at the very bottom */}
+<div
+  ref={(el) => {
+    itemRefs.current["cv"] = el;
+  }}
+  className="sm:hidden w-full px-3 py-10 mb-20 text-[10px] leading-relaxed"
+>
+
+  {/* Group Exhibitions */}
+  <div className="mb-6">
+    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+      Group Exhibitions
+    </h3>
+    <ul className="space-y-[0.2rem] text-[10px]">
+      <li>
+        Prada Foundation, <em>Diagrams</em>
+        <br />2025
+      </li>
+      <li>
+        Architekturmuseum der TUM, <em>Visual Investigations</em>
+        <br />2024
+      </li>
+    </ul>
+  </div>
+
+  <div className="h-px bg-red-500 dark:bg-red-400 mb-4 w-full" />
+
+  {/* Speaking */}
+  <div className="mb-6">
+    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+      Speaking
+    </h3>
+    <ul className="space-y-[0.2rem] text-[10px]">
+      <li>RightsCon, Talk, <em>Reconstructing History</em><br />2025</li>
+      <li>Politecnico di Milano, Design Density Course<br />2024</li>
+      <li>The Ukrainian Museum, Panel<br />2024</li>
+      <li>Harvard IHR Clinic, Presentation<br />2024</li>
+      <li>Columbia GSAPP, Guest Critic<br />2024</li>
+      <li>Society of Professional Journalists, Panel<br />2023</li>
+      <li>Newseum, Panel<br />2022</li>
+    </ul>
+  </div>
+
+  <div className="h-px bg-red-500 dark:bg-red-400 mb-4 w-full" />
+
+  {/* Select Awards */}
+  <div>
+    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+      Select Awards
+    </h3>
+    <ul className="space-y-[0.2rem] text-[10px]">
+      <li>Pulitzer Finalist, <em>Bronx Fire</em><br />2023</li>
+      <li>SND Bronze, <em>Bronx Fire</em><br />2023</li>
+      <li>SND Silver, <em>Dixie Fire</em><br />2022</li>
+      <li>Emmy Winner, <em>One Building, One Bomb</em><br />2019</li>
+      <li>SND &amp; Malofiej Medals, <em>Apollo 11</em><br />2019</li>
+      <li>World Press Photo, <em>Under a Cracked Sky</em><br />2018</li>
+    </ul>
+  </div>
+</div>
+
+
+  </SimpleBar>
+
+  <div className="w-px bg-red-500 dark:bg-red-400 h-full hidden sm:block" />
 
 
 
         <div className="w-px bg-red-500 dark:bg-red-400 h-full" />
 
           {/* Right: Details column */}
-          <aside className="flex-1 shrink-0 sticky top-0 self-start text-[10px] leading-relaxed px-1">
+          <aside className="flex-1 shrink-0 sticky top-0 self-start text-[10px] leading-relaxed px-1 hidden sm:block">
             <div className="mb-9.5">
               <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">
                 CV
