@@ -145,14 +145,16 @@ const [usainIndex, setUsainIndex] = useState(0);
 const [isUsainTransitioning, setIsUsainTransitioning] = useState(true);
 const [isUsainLocked, setIsUsainLocked] = useState(false);
 
+const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+
 const usainSlides = [
   {
     type: "video",
-    src: "/sprint_1.webm",  // or sprint_1.mp4 with fallback
+    src: isMobile ? "/sprint_mobile.webm" : "/sprint_1.webm",
     alt: "Usain Bolt Sprint 1",
     width: 700,
     height: 500,
-    className: "w-[100%]" // adjust size here
+    className: "w-[100%]"
   },
   {
     type: "image",
@@ -160,7 +162,7 @@ const usainSlides = [
     alt: "Usain Bolt Sprint 2",
     width: 700,
     height: 500,
-    className: "w-[100%]" // different size if needed
+    className: "w-[100%]"
   },
   {
     type: "image",
@@ -168,9 +170,10 @@ const usainSlides = [
     alt: "Usain Bolt Sprint 3",
     width: 700,
     height: 500,
-    className: "w-[80%]" // another size
+    className: "w-[80%]"
   },
 ];
+
 
 // ---- Carousel state (Bronx Fire) ----
 const [bronxIndex, setBronxIndex] = useState(0);
@@ -778,6 +781,8 @@ useEffect(() => {
                 <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
               </button>
             </div>
+
+            
           ) : p.key === "usain-bolt" ? (
             /* ---- Usain Bolt carousel ---- */
             <div className="relative w-full flex justify-center overflow-hidden">
