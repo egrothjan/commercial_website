@@ -1,303 +1,1378 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Lock } from "lucide-react";
+import "simplebar-react/dist/simplebar.min.css";
+import SimpleBar from "simplebar-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+type Project = { title: string; key: string; href: string };
 
 export default function Home() {
-  const router = useRouter();
-  const leftColRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const [hovered, setHovered] = useState("");
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [showCursorLabel, setShowCursorLabel] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [passwordInput, setPasswordInput] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-  const [leftColHeight, setLeftColHeight] = useState<number | null>(null);
-  const [slideshowIndex, setSlideshowIndex] = useState<number | null>(null);
-  const [hasMounted, setHasMounted] = useState(false);
-
-  const hoverImages: [string, string, string][] = [
-    ["iic_2.webp", "Immigration Industrial Complex", "immigration"],
-    ["deathFlights_2.webp", "The Death Flights", "death-flights"],
-    ["protests_1.webp", "George Floyd Protests 2020", "george-floyd"],
-    ["ant_1.webp", "The Antarctica Series", "antarctica"],
-    ["mariupol_1.webp", "Mariupol", "mariupol"],
-    ["bronx_1.webp", "Bronx Fire", "bronx-fire"],
-    ["mm_5.jpg", "Play Magazine", "mm"],
+  // --- Data ---
+  const projects: Project[] = [
+    { title: "Play Magazine", key: "play-magazine", href: "#" },
+    { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#",},
+    { title: "Vogue: Taylor Hill", key: "taylor-hill-vogue", href: "#",},
+    { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
+    { title: "Reconstructing the Bronx Fire", key: "bronx-fire", href: "#",},
+    { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#",},
+    { title: "The Death Flights", key: "death-flights", href: "#",},
+    { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
+    { title: "2020 Tokyo Olympics", key: "olympics-ar", href: "#" },
+    { title: "Eddie Martinez X Solinco", key: "solinco", href: "#" },
   ];
 
-  const hoverLabels: Record<string, string> = {
-    "immigration": "Remote Sensing",
-    "death-flights": "OSINT",
-    "george-floyd": "OSINT",
-    "mariupol": "Spatial Reconstruction",
-    "mm": "Spatial Reconstruction",
-    "bronx-fire": "Data Visualization",
-    "antarctica": "Emerging Tech",
+  const images: Record<string, { src: string; alt: string; width: number; height: number }> = {
+    pluto: { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
   };
 
-  const projectsByYear: [string, { title: string; key?: string; href: string }[]][] = [
-    ["Ongoing", [{ title: "Immigrant Industrial Complex", key: "immigration", href: "/work/immigration-industrial-complex" }]],
-    ["2025", [{ title: "Documenting the Disappeared: The Death Flights", key: "death-flights", href: "/work/the-death-flights" }]],
-    ["2024", [{ title: "Beneath the Rubble: Mariupol", key: "mariupol", href: "/work/mariupol" }]],
-    ["2023", [{ title: "Class Action Lawsuit vs. NYPD: 2020 George Floyd Protests", key: "george-floyd", href: "/work/george-floyd-protests-2020" }]],
-    ["2022", [{ title: "The Bronx Fire: A Series of Events that Left 17 Dead", key: "bronx-fire", href: "/work/bronx-fire" }]],
-    ["2021", [{ title: "Play Magazine", key: "mm", href: "/work/play-mag" }]],
-    ["2018", [{ title: "The Antarctica Series", key: "antarctica", href: "/work/antarctica-series" }]],
-  ];
+const projectDescriptions: Record<string, string> = {
+  "play-magazine": `Client: PLAY Magazine
+Role: Brand Identity, 3D Designer
 
-  useEffect(() => {
-    if (leftColRef.current) {
-      setLeftColHeight(leftColRef.current.offsetHeight);
+Designed the logo for the first edition of PLAY. A cookbook magazine featuring recipes, essays, and artwork from a community of LGBTQ+ chefs, writers, and artists.`,
+
+  "diary-ed-sheeran": `Client: The New York Times
+Role: Art Director, Animator
+
+How Ed Sheeran, Johnny McDaid and Steve Mac made the most-streamed track of 2017. `,
+
+  "taylor-hill-vogue": `Client: Vogue Arabia
+Role: VFX Artist
+
+Taylor Hill for Vogue Arabia by Ryan Lucca.`,
+
+"zhiyun-xs": `Client: Snakk Studio
+Role: Animator, 3D Designer
+
+This is Smooth-XS, the new colorful alternative of Smooth-X.`,
+
+
+  "pluto": `Client: The New York Times
+Role: 3D Designer, Animator
+
+Watch New Horizons glide through space at a million miles a day. Fly over Pluto's rugged surface and smooth heart-shaped plains. Stand on icy mountains.`,
+
+  "bronx-fire": `Client: The New York Times
+Role: Reporter, Animator, Art Director
+
+The main fire safety system failed disastrously in a blaze at a Bronx apartment building in January, killing 17 people, The New York Times has found.`,
+
+  "mariupol": `Client: Human Rights Watch
+Role: Reporter, 3D Specialist
+
+Thousands of civilians in Mariupol were killed during Russia's invasion, suffering some of the worst destruction in war-scarred Ukraine. SITU Research, Human Rights Watch, and Truth Hounds work to document this devastation and loss.`,
+
+  "death-flights": `Client: Centro Prodh
+Role: Director
+
+This video analysis is a visual reconstruction of one of the most clandestine programs of the so-called "Dirty War" era based on a military investigation, previous journalistic reporting,  and analytical and visualization tools.`,
+
+  "usain-bolt": `Client: The New York Times
+Role: 3D Designer
+
+There are three Usain Bolts on this track: one from Beijing in 2008, one from London in 2012 and one from Rio de Janeiro in 2016. The London .`,
+
+  "olympics-ar": `Client: The New York Times
+Role: Art Director, 3D Designer
+
+Suni Lee is making her Olympic debut after a challenging year. Her versatility is crucial to Team USA's shot at a third consecutive gold. Adam Ondra is the best climber in the world. But to win Olympic gold, he needed to learn a new way to climb. Fast.`,
+
+"solinco": `Client: The Second Serve Magazine
+Role: Fabricator
+
+This custom racquet combines Solinco’s expertise in crafting sporting equipment of quality, performance, and versatility with Brooklyn artist Eddie Martinez’s signature tennis ball and “blockhead” motifs, to create a stylish racquet for discerning players and fans.`,
+
+
+  "eileen-gu": `Client: TK
+Role: TK
+Year: TK
+
+TKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTKTK`,
+
+
+};
+
+
+    // ---- State ----
+  const [activeKey, setActiveKey] = useState<string>(projects[0]?.key ?? "");
+  const [baseGalleryWidthPx, setBaseGalleryWidthPx] = useState<number | null>(null);
+
+// ---- Carousel state (Play + Vogue + Usain Bolt) ----
+
+// PLAY
+const [project1Index, setProject1Index] = useState(0);
+const [isTransitioning, setIsTransitioning] = useState(true);
+const [isLocked, setIsLocked] = useState(false);
+
+const project1Slides = [
+  { src: "/play_1.webp", alt: "PLAY Slide 1", width: 700, height: 500 },
+  { src: "/play_2.webp", alt: "PLAY Slide 2", width: 700, height: 500 },
+  { src: "/play_3.webp", alt: "PLAY Slide 3", width: 700, height: 500 },
+  { src: "/play_4.webp", alt: "PLAY Slide 4", width: 700, height: 500 },
+];
+
+// VOGUE
+const [vogueIndex, setVogueIndex] = useState(0);
+const [isVogueTransitioning, setIsVogueTransitioning] = useState(true);
+const [isVogueLocked, setIsVogueLocked] = useState(false);
+
+const vogueSlides = [
+  {
+    type: "image",
+    src: "/vogue_1.png",
+    alt: "Vogue Slide 1",
+    width: 700,
+    height: 500,
+    className: "w-[110%]", // smaller
+  },
+  {
+    type: "video",
+    src: "/vogue_2.mp4",
+    alt: "Vogue Slide 2",
+    width: 700,
+    height: 500,
+    className: "w-[75%]", // normal size
+  },
+];
+
+// ---- Carousel state for Usain Bolt ----
+const [usainIndex, setUsainIndex] = useState(0);
+const [isUsainTransitioning, setIsUsainTransitioning] = useState(true);
+const [isUsainLocked, setIsUsainLocked] = useState(false);
+
+const usainSlides = [
+  {
+    type: "video",
+    src: "/sprint_1.webm",  // or sprint_1.mp4 with fallback
+    alt: "Usain Bolt Sprint 1",
+    width: 700,
+    height: 500,
+    className: "w-[100%]" // adjust size here
+  },
+  {
+    type: "image",
+    src: "/sprint_2.webp",
+    alt: "Usain Bolt Sprint 2",
+    width: 700,
+    height: 500,
+    className: "w-[100%]" // different size if needed
+  },
+  {
+    type: "image",
+    src: "/sprint_3.webp",
+    alt: "Usain Bolt Sprint 3",
+    width: 700,
+    height: 500,
+    className: "w-[80%]" // another size
+  },
+];
+
+// ---- Carousel state (Bronx Fire) ----
+const [bronxIndex, setBronxIndex] = useState(0);
+const [isBronxTransitioning, setIsBronxTransitioning] = useState(true);
+const [isBronxLocked, setIsBronxLocked] = useState(false);
+
+const bronxSlides = [
+  {
+    type: "video",
+    src: "/bronx_1.webm",
+    alt: "Bronx Fire Video 1",
+    width: 800,
+    height: 600,
+    className: "w-[100%]",
+  },
+  {
+    type: "video",
+    src: "/bronx_2.webm",
+    alt: "Bronx Fire Video 2",
+    width: 800,
+    height: 600,
+    className: "w-[100%]",
+  },
+  {
+    type: "video",
+    src: "/bronx_3.webm",
+    alt: "Bronx Fire Video 3",
+    width: 800,
+    height: 600,
+    className: "w-[100%]",
+  },
+  {
+    type: "video",
+    src: "/bronx_4.webm",
+    alt: "Bronx Fire Video 4",
+    width: 800,
+    height: 600,
+    className: "w-[100%]",
+  },
+];
+
+
+// ---- Carousel state (Mariupol) ----
+const [mariupolIndex, setMariupolIndex] = useState(0);
+const [isMariupolTransitioning, setIsMariupolTransitioning] = useState(true);
+const [isMariupolLocked, setIsMariupolLocked] = useState(false);
+
+const mariupolSlides = [
+  { src: "/mariupol_1.webp", alt: "Mariupol Slide 1", width: 800, height: 600, className: "w-[100%]" },
+  { src: "/mariupol_2.webp", alt: "Mariupol Slide 2", width: 800, height: 600, className: "w-[100%]" },
+];
+
+// ---- Carousel state (Solinco) ----
+const [solincoIndex, setSolincoIndex] = useState(0);
+const [isSolincoTransitioning, setIsSolincoTransitioning] = useState(true);
+const [isSolincoLocked, setIsSolincoLocked] = useState(false);
+
+const solincoSlides = [
+  { type: "image", src: "/solinco_1.webp", alt: "Solinco Slide 1", width: 800, height: 600, className: "w-[50%]" },
+  { type: "image", src: "/solinco_2.webp", alt: "Solinco Slide 2", width: 800, height: 600, className: "w-[50%]" },
+  { type: "image", src: "/solinco_3.webp", alt: "Solinco Slide 3", width: 800, height: 600, className: "w-[50%]" },
+];
+
+// ---- Carousel state (Death Flights) ----
+const [deathFlightsIndex, setDeathFlightsIndex] = useState(0);
+const [isDeathFlightsTransitioning, setIsDeathFlightsTransitioning] = useState(true);
+const [isDeathFlightsLocked, setIsDeathFlightsLocked] = useState(false);
+
+const deathFlightsSlides = [
+  {
+    type: "video",
+    src: "/deathFlights_1.mp4",
+    alt: "Death Flights Video",
+    width: 800,
+    height: 600,
+    className: "w-[75%]",
+  },
+  {
+    type: "image",
+    src: "/deathFlights_2.webp",
+    alt: "Death Flights Still",
+    width: 800,
+    height: 600,
+    className: "w-[75%]",
+  },
+];
+
+
+
+// ---- Refs ----
+const leftRef = useRef<HTMLDivElement>(null);
+const scrollAreaRef = useRef<HTMLDivElement>(null);
+const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+// ---- Autoplay effect (with tab visibility handling) ----
+useEffect(() => {
+  let interval: NodeJS.Timeout | null = null;
+
+  const start = () => {
+    if (!interval) {
+      interval = setInterval(() => {
+        setIsLocked(true);
+        setIsTransitioning(true);
+        setProject1Index((prev) => prev + 1);
+      }, 5000); // 10000 ms = 5 seconds
     }
-    setSlideshowIndex(Math.floor(Math.random() * hoverImages.length));
-    setHasMounted(true);
+  };
+
+  const stop = () => {
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+    }
+  };
+
+  const handleVisibility = () => {
+    if (document.hidden) {
+      stop();
+    } else {
+      // snap safely if user was gone a long time
+      setIsTransitioning(false);
+      setProject1Index((prev) => prev % project1Slides.length);
+      start();
+    }
+  };
+
+  // start on mount
+  start();
+
+  // listen for tab visibility change
+  document.addEventListener("visibilitychange", handleVisibility);
+
+  return () => {
+    stop();
+    document.removeEventListener("visibilitychange", handleVisibility);
+  };
+}, [project1Slides.length]);
+
+
+
+  // 🔑 Highlight update logic for gallery scroll
+  useEffect(() => {
+    const root = scrollAreaRef.current;
+    if (!root) return;
+
+    let raf: number | null = null;
+    const measureActive = () => {
+      raf = null;
+      const rootCenter = root.scrollTop + root.clientHeight / 2;
+
+      let bestKey = activeKey;
+      let bestDist = Infinity;
+
+      for (const p of projects) {
+        const el = itemRefs.current[p.key];
+        if (!el) continue;
+
+        const elCenter = el.offsetTop + el.offsetHeight / 2;
+        const dist = Math.abs(elCenter - rootCenter);
+
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestKey = p.key;
+        }
+      }
+
+      if (bestKey !== activeKey) setActiveKey(bestKey);
+    };
+
+    const onScroll = () => {
+      if (raf != null) return;
+      raf = requestAnimationFrame(measureActive);
+    };
+
+    root.addEventListener("scroll", onScroll, { passive: true });
+    requestAnimationFrame(measureActive);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      root.removeEventListener("scroll", onScroll);
+    };
+  }, [projects, activeKey]);
+
+  // 📌 Redirect page wheel scroll to gallery
+  useEffect(() => {
+    const gallery = scrollAreaRef.current;
+    if (!gallery) return;
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      gallery.scrollTop += e.deltaY;
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
   useEffect(() => {
-    if (hovered === "" && hasMounted && slideshowIndex !== null) {
-      intervalRef.current = setInterval(() => {
-        setSlideshowIndex((prev) => (prev !== null ? (prev + 1) % hoverImages.length : 0));
-      }, 5000);
-    } else {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    }
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+    const compute = () => {
+      if (typeof window === "undefined") return;
+      const base = Math.min(window.innerWidth * 0.78, 1200);
+      setBaseGalleryWidthPx(base);
     };
-  }, [hovered, hasMounted, slideshowIndex]);
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+
+  const scrollToKey = (key: string) => {
+    const el = itemRefs.current[key];
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="h-screen overflow-hidden bg-background text-foreground">
+      <div className="w-full h-full">
+        <div className="flex items-start gap-0 h-full">
+          {/* Left: Titles */}
+          <aside
+            ref={leftRef}
+            className="w-[315px] shrink-0 sticky top-0 self-start pr-1"
+          >
+            <div className="mb-10">
+              <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">
+                Grothjan Studio
+              </h2>
+            </div>
+
+            <div className="h-px bg-red-500 dark:bg-red-400" />
+
+            
+
+            {/* Bio block */}
+            <div className="px-3 mt-3 mb-4">
+              <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
+                Evan Grothjan is an art director, designer, and animator specializing in
+                spatial storytelling. Combining emerging technologies with an eye towards
+                cinema, he transforms complex ideas into engaging stories for audiences
+                and brands.
+                <br /><br />
+                Former editor at{" "}
+                <a
+                  href="https://www.nytimes.com/by/evan-grothjan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-red-500 hover:text-red-600"
+                >
+                  The New York Times
+                </a>.
+              </p>
+            </div>
+
+            <div className="h-px bg-red-500 dark:bg-red-400" />
+
+            {/* Project titles */}
+<div className="px-3 mt-4">
+  <ul className="space-y-[0.2875rem] text-left">
+    {projects.map(({ title, key }) => {
+      const active = activeKey === key;
+
+      return (
+        <li key={key} className="flex flex-col items-start">
+          {/* Category labels */}
+          {key === "play-magazine" && (
+            <span className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+              Culture
+            </span>
+          )}
+          {key === "usain-bolt" && (
+            <span className="text-neutral-600 dark:text-neutral-400 uppercase text-xs my-2">
+              Sports
+            </span>
+          )}
+          {key === "bronx-fire" && (
+            <span className="text-neutral-600 dark:text-neutral-400 uppercase text-xs my-2">
+              Science & Politics
+            </span>
+          )}
+
+          {/* Project title row */}
+          <div className="flex items-start gap-2">
+            <span
+              aria-hidden
+              className="w-2.5 h-2.5 rounded-full flex-none transition-transform duration-200 ease-out"
+              style={{
+                backgroundColor: active ? "rgb(220 38 38)" : "transparent",
+                transform: active ? "scale(1)" : "scale(0.8)",
+                marginTop: "calc((1.125rem - 0.625rem) / 2)",
+              }}
+            />
+            <button
+              onClick={() => scrollToKey(key)}
+              className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
+            >
+              {title}
+            </button>
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+</div>
+
+
+<div className="h-px bg-red-500 dark:bg-red-400 my-4 w-full" />
+
+            {/* Descriptions */}
+            {projectDescriptions[activeKey] && (
+              <div className="px-3 text-[10px] leading-relaxed text-red-500 dark:text-red-400 whitespace-pre-line">
+                {projectDescriptions[activeKey]}
+              </div>
+            )}
+          </aside>
+
+<div className="w-px bg-red-500 dark:bg-red-400 h-full" />
+
+
+
+{/* ---------------- MIDDLE COLUMN ---------------- */}
+<SimpleBar
+  scrollableNodeProps={{ ref: scrollAreaRef }}
+  style={{
+    height: "100%",
+    width: baseGalleryWidthPx ? baseGalleryWidthPx * 0.72 : undefined,
+  }}
+  className="pt-0 px-1 pb-3 flex flex-col items-center border-b border-red-500 dark:border-red-400 custom-scrollbar h-full"
+  autoHide={false}
+>
+  <div className="w-full text-left">
+    <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">
+      Select Projects
+    </h2>
+  </div>
+
+  <div className="w-full h-px bg-red-500 dark:bg-red-400 mt-[40px] mb-[65px]" />
+
+  {projects.map((p, idx) => {
+    const img = images[p.key];
+    const isLast = idx === projects.length - 1;
+
+    return (
       <div
-        className="relative max-w-screen-xl mx-auto px-4 sm:px-2 md:px-8 pt-4 pb-12"
-        onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}
+        key={p.key}
+        data-key={p.key}
+        ref={(el: HTMLDivElement | null) => {
+  itemRefs.current[p.key] = el;
+}}
+        className="w-full flex flex-col items-center"
       >
-        {/* Bio */}
-        <div className="mb-10 text-base sm:text-[12px] leading-relaxed text-left">
-          <p>Evan Grothjan is a filmmaker and journalist specializing in Visual Investigations, bridging investigative methods with cinematic storytelling to expose how power leaves its mark.</p>
-          <br className="sm:hidden" />
-          <p>He uses satellite and spatial analysis, 3D reconstructions, and visual storytelling to render visible complex events - working between accountability journalism and law.</p>
-          <p className="pt-5">
-            Former Senior Researcher at{" "}
-            <a href="https://situ.nyc/research" target="_blank" rel="noopener noreferrer" className="underline text-blue-600 dark:text-blue-400 hover:text-blue-400">
-              SITU Research
-            </a>. Former editor at{" "}
-            <a href="https://www.nytimes.com/by/evan-grothjan" target="_blank" rel="noopener noreferrer" className="underline text-blue-600 dark:text-blue-400 hover:text-blue-400">
-              The New York Times
-            </a>.
-          </p>
-          <br className="sm:hidden" />
-          <p>Collaborators include Frontline PBS, Human Rights Watch, and The National Lawyers Guild.</p>
-          <p>Contact: evangrothjan@gmail.com.</p>
-        </div>
+        <div className={`relative ${idx === 0 ? "-mt-[10px]" : ""}`}>
+          {p.key === "play-magazine" ? (
+            /* ---- PLAY Magazine carousel ---- */
+            <div className="relative w-full flex justify-center overflow-hidden">
+              <div
+                className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                style={{
+                  width: `${(project1Slides.length + 2) * 100}%`,
+                  transform: `translateX(-${(project1Index + 1) * 100}%)`,
+                }}
+                onTransitionEnd={() => {
+                  setIsLocked(false);
+                  if (project1Index === -1) {
+                    setIsTransitioning(false);
+                    setProject1Index(project1Slides.length - 1);
+                  } else if (project1Index === project1Slides.length) {
+                    setIsTransitioning(false);
+                    setProject1Index(0);
+                  } else {
+                    setIsTransitioning(true);
+                  }
+                }}
+              >
+                {/* Clone last */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  <Image
+                    src={project1Slides[project1Slides.length - 1].src}
+                    alt={project1Slides[project1Slides.length - 1].alt}
+                    width={project1Slides[project1Slides.length - 1].width}
+                    height={project1Slides[project1Slides.length - 1].height}
+                    className="object-contain w-[75%] h-auto"
+                  />
+                </div>
 
-        {/* Divider */}
-        <div className="w-full h-[1px] bg-blue-500 dark:bg-blue-400 mb-10" />
+                {/* Real slides */}
+                {project1Slides.map((slide, slideIdx) => (
+                  <div key={slideIdx} className="w-full flex justify-center flex-shrink-0">
+                    <Image
+                      src={slide.src}
+                      alt={slide.alt}
+                      width={slide.width}
+                      height={slide.height}
+                      className="object-contain w-[75%] h-auto"
+                    />
+                  </div>
+                ))}
 
-        {/* Project List and Preview */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-10 text-center md:text-left">
-          <div ref={leftColRef} className="flex flex-col gap-6 w-full md:w-[250px] shrink-0">
-            {projectsByYear.map(([year, projects]) => (
-              <div key={year}>
-                <h3 className="text-xs uppercase text-neutral-500 mb-1">{year}</h3>
-                {projects.map(({ title, key, href }) => {
-                  const image = hoverImages.find(([, , k]) => k === key);
-                  const isProtected = key === "immigration";
-
-                  return (
-                    <div key={title} className="mb-6 sm:mb-0">
-                      {/* MOBILE ONLY: Clickable image */}
-                      {image && (
-                        <div className="w-full aspect-[4/3] relative mb-2 sm:hidden">
-                          {isProtected ? (
-                            <button
-                              onClick={() => setShowPasswordModal(true)}
-                              className="w-full h-full absolute inset-0"
-                            >
-                              <Image
-                                src={`/${image[0]}`}
-                                alt={image[1]}
-                                fill
-                                className="object-cover border border-blue-500 dark:border-blue-400 rounded"
-                              />
-                            </button>
-                          ) : (
-                            <Link href={href} className="w-full h-full absolute inset-0">
-                              <Image
-                                src={`/${image[0]}`}
-                                alt={image[1]}
-                                fill
-                                className="object-cover border border-blue-500 dark:border-blue-400 rounded"
-                              />
-                            </Link>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Project link */}
-                      {isProtected ? (
-                        <button
-                          onClick={() => setShowPasswordModal(true)}
-                          onMouseEnter={() => {
-                            if (key) setHovered(key);
-                            setShowCursorLabel(true);
-                          }}
-                          onMouseLeave={() => {
-                            if (key) setHovered("");
-                            setShowCursorLabel(false);
-                          }}
-                          className="w-full flex justify-center md:justify-start items-center gap-1 text-base hover:underline hover:underline-offset-4 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                        >
-                          <Lock size={13} className="text-blue-600 dark:text-blue-400" />
-                          <span>{title}</span>
-                        </button>
-                      ) : (
-                        <Link
-                          href={href}
-                          onMouseEnter={() => {
-                            if (key) setHovered(key);
-                            setShowCursorLabel(true);
-                          }}
-                          onMouseLeave={() => {
-                            if (key) setHovered("");
-                            setShowCursorLabel(false);
-                          }}
-                          className="text-base hover:underline hover:underline-offset-4 hover:text-blue-600 dark:hover:text-blue-400 transition-colors block"
-                        >
-                          {title}
-                        </Link>
-                      )}
-                    </div>
-                  );
-                })}
+                {/* Clone first */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  <Image
+                    src={project1Slides[0].src}
+                    alt={project1Slides[0].alt}
+                    width={project1Slides[0].width}
+                    height={project1Slides[0].height}
+                    className="object-contain w-[75%] h-auto"
+                  />
+                </div>
               </div>
-            ))}
-          </div>
 
-          {/* Desktop slideshow */}
-          <div
-            className="relative flex-1 w-full max-w-full overflow-hidden hidden sm:block"
-            style={{ height: leftColHeight ? `${leftColHeight}px` : "600px" }}
-          >
-            {hoverImages.map(([src, alt, key], index) => {
-              const isVisible = (hovered === "" && index === slideshowIndex) || hovered === key;
-              return (
-                <Image
-                  key={key}
-                  src={`/${src}`}
-                  alt={alt}
-                  fill
-                  className={`absolute transition-opacity duration-1000 ease-in-out border border-blue-500 dark:border-blue-400 object-cover ${
-                    isVisible ? "opacity-100 z-20" : "opacity-0 z-10"
-                  }`}
-                />
-              );
-            })}
-          </div>
+              {/* Arrows */}
+              <button
+                onClick={() => {
+                  if (isLocked) return;
+                  setIsLocked(true);
+                  setIsTransitioning(true);
+                  setProject1Index((prev) => prev - 1);
+                }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+              <button
+                onClick={() => {
+                  if (isLocked) return;
+                  setIsLocked(true);
+                  setIsTransitioning(true);
+                  setProject1Index((prev) => prev + 1);
+                }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+            </div>
+          ) : p.key === "taylor-hill-vogue" ? (
+            /* ---- VOGUE carousel ---- */
+            <div className="relative w-full flex justify-center overflow-hidden">
+              <div
+                className={`flex ${isVogueTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                style={{
+                  width: `${(vogueSlides.length + 2) * 100}%`,
+                  transform: `translateX(-${(vogueIndex + 1) * 100}%)`,
+                }}
+                onTransitionEnd={() => {
+                  setIsVogueLocked(false);
+                  if (vogueIndex === -1) {
+                    setIsVogueTransitioning(false);
+                    setVogueIndex(vogueSlides.length - 1);
+                  } else if (vogueIndex === vogueSlides.length) {
+                    setIsVogueTransitioning(false);
+                    setVogueIndex(0);
+                  } else {
+                    setIsVogueTransitioning(true);
+                  }
+                }}
+              >
+                {/* Clone last */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  {vogueSlides[vogueSlides.length - 1].type === "image" ? (
+                    <Image
+                      src={vogueSlides[vogueSlides.length - 1].src}
+                      alt={vogueSlides[vogueSlides.length - 1].alt}
+                      width={vogueSlides[vogueSlides.length - 1].width}
+                      height={vogueSlides[vogueSlides.length - 1].height}
+                      className={`object-contain h-auto ${vogueSlides[vogueSlides.length - 1].className}`}
+                    />
+                  ) : (
+                    <video
+                      src={vogueSlides[vogueSlides.length - 1].src}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className={`object-contain h-auto ${vogueSlides[vogueSlides.length - 1].className}`}
+                    />
+                  )}
+                </div>
+
+                {/* Real slides */}
+                {vogueSlides.map((slide, slideIdx) => (
+                  <div key={slideIdx} className="w-full flex justify-center flex-shrink-0">
+                    {slide.type === "image" ? (
+                      <Image
+                        src={slide.src}
+                        alt={slide.alt}
+                        width={slide.width}
+                        height={slide.height}
+                        className={`object-contain h-auto ${slide.className}`}
+                      />
+                    ) : (
+                      <video
+                        src={slide.src}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className={`object-contain h-auto ${slide.className}`}
+                      />
+                    )}
+                  </div>
+                ))}
+
+                {/* Clone first */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  {vogueSlides[0].type === "image" ? (
+                    <Image
+                      src={vogueSlides[0].src}
+                      alt={vogueSlides[0].alt}
+                      width={vogueSlides[0].width}
+                      height={vogueSlides[0].height}
+                      className={`object-contain h-auto ${vogueSlides[0].className}`}
+                    />
+                  ) : (
+                    <video
+                      src={vogueSlides[0].src}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className={`object-contain h-auto ${vogueSlides[0].className}`}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Arrows */}
+              <button
+                onClick={() => {
+                  if (isVogueLocked) return;
+                  setIsVogueLocked(true);
+                  setIsVogueTransitioning(true);
+                  setVogueIndex((prev) => prev - 1);
+                }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+              <button
+                onClick={() => {
+                  if (isVogueLocked) return;
+                  setIsVogueLocked(true);
+                  setIsVogueTransitioning(true);
+                  setVogueIndex((prev) => prev + 1);
+                }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+            </div>
+          ) : p.key === "usain-bolt" ? (
+            /* ---- Usain Bolt carousel ---- */
+            <div className="relative w-full flex justify-center overflow-hidden">
+              <div
+                className={`flex ${isUsainTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                style={{
+                  width: `${(usainSlides.length + 2) * 100}%`,
+                  transform: `translateX(-${(usainIndex + 1) * 100}%)`,
+                }}
+                onTransitionEnd={() => {
+                  setIsUsainLocked(false);
+                  if (usainIndex === -1) {
+                    setIsUsainTransitioning(false);
+                    setUsainIndex(usainSlides.length - 1);
+                  } else if (usainIndex === usainSlides.length) {
+                    setIsUsainTransitioning(false);
+                    setUsainIndex(0);
+                  } else {
+                    setIsUsainTransitioning(true);
+                  }
+                }}
+              >
+                {/* Clone last */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  {usainSlides[usainSlides.length - 1].type === "image" ? (
+                    <Image
+                      src={usainSlides[usainSlides.length - 1].src}
+                      alt={usainSlides[usainSlides.length - 1].alt}
+                      width={usainSlides[usainSlides.length - 1].width}
+                      height={usainSlides[usainSlides.length - 1].height}
+                      className={`object-contain h-auto ${usainSlides[usainSlides.length - 1].className}`}
+                    />
+                  ) : (
+                    <video
+                      src={usainSlides[usainSlides.length - 1].src}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className={`object-contain h-auto ${usainSlides[usainSlides.length - 1].className}`}
+                    />
+                  )}
+                </div>
+
+                {/* Real slides */}
+                {usainSlides.map((slide, slideIdx) => (
+                  <div key={slideIdx} className="w-full flex justify-center flex-shrink-0">
+                    {slide.type === "image" ? (
+                      <Image
+                        src={slide.src}
+                        alt={slide.alt}
+                        width={slide.width}
+                        height={slide.height}
+                        className={`object-contain h-auto ${slide.className}`}
+                      />
+                    ) : (
+                      <video
+                        src={slide.src}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className={`object-contain h-auto ${slide.className}`}
+                      />
+                    )}
+                  </div>
+                ))}
+
+                {/* Clone first */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  {usainSlides[0].type === "image" ? (
+                    <Image
+                      src={usainSlides[0].src}
+                      alt={usainSlides[0].alt}
+                      width={usainSlides[0].width}
+                      height={usainSlides[0].height}
+                      className={`object-contain h-auto ${usainSlides[0].className}`}
+                    />
+                  ) : (
+                    <video
+                      src={usainSlides[0].src}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className={`object-contain h-auto ${usainSlides[0].className}`}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Arrows */}
+              <button
+                onClick={() => {
+                  if (isUsainLocked) return;
+                  setIsUsainLocked(true);
+                  setIsUsainTransitioning(true);
+                  setUsainIndex((prev) => prev - 1);
+                }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+              <button
+                onClick={() => {
+                  if (isUsainLocked) return;
+                  setIsUsainLocked(true);
+                  setIsUsainTransitioning(true);
+                  setUsainIndex((prev) => prev + 1);
+                }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+            </div>
+            ) : p.key === "solinco" ? (
+  /* ---- Solinco carousel ---- */
+  <div className="relative w-full flex justify-center overflow-hidden">
+    <div
+      className={`flex ${isSolincoTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+      style={{
+        width: `${(solincoSlides.length + 2) * 100}%`,
+        transform: `translateX(-${(solincoIndex + 1) * 100}%)`,
+      }}
+      onTransitionEnd={() => {
+        setIsSolincoLocked(false);
+        if (solincoIndex === -1) {
+          setIsSolincoTransitioning(false);
+          setSolincoIndex(solincoSlides.length - 1);
+        } else if (solincoIndex === solincoSlides.length) {
+          setIsSolincoTransitioning(false);
+          setSolincoIndex(0);
+        } else {
+          setIsSolincoTransitioning(true);
+        }
+      }}
+    >
+      {/* Clone last */}
+      <div className="w-full flex justify-center flex-shrink-0">
+        <Image
+          src={solincoSlides[solincoSlides.length - 1].src}
+          alt={solincoSlides[solincoSlides.length - 1].alt}
+          width={solincoSlides[solincoSlides.length - 1].width}
+          height={solincoSlides[solincoSlides.length - 1].height}
+          className={`object-contain h-auto ${solincoSlides[solincoSlides.length - 1].className}`}
+        />
+      </div>
+
+      {/* Real slides */}
+      {solincoSlides.map((slide, slideIdx) => (
+        <div key={slideIdx} className="w-full flex justify-center flex-shrink-0">
+          <Image
+            src={slide.src}
+            alt={slide.alt}
+            width={slide.width}
+            height={slide.height}
+            className={`object-contain h-auto ${slide.className}`}
+          />
         </div>
+      ))}
 
-        {/* Cursor Label */}
-        {showCursorLabel && hovered && (
-          <div
-            className="pointer-events-none fixed z-50 text-sm px-2 py-1 border border-blue-500 text-white rounded shadow"
-            style={{
-              top: cursorPos.y - 35,
-              left: cursorPos.x + 12,
-              backgroundColor: "rgba(59, 130, 246, 0.5)",
-            }}
-          >
-            {hoverLabels[hovered] || "Project"}
-          </div>
-        )}
+      {/* Clone first */}
+      <div className="w-full flex justify-center flex-shrink-0">
+        <Image
+          src={solincoSlides[0].src}
+          alt={solincoSlides[0].alt}
+          width={solincoSlides[0].width}
+          height={solincoSlides[0].height}
+          className={`object-contain h-auto ${solincoSlides[0].className}`}
+        />
+      </div>
+    </div>
 
-        {/* Password Modal */}
-        {showPasswordModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40 pointer-events-none">
-            <div className="bg-white dark:bg-neutral-900 border border-blue-500 dark:border-blue-400 rounded-lg p-6 w-[300px] shadow-xl text-sm pointer-events-auto">
-              <h2 className="text-lg mb-4 font-medium">Enter Password</h2>
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Password"
-                className="w-full px-3 py-2 border border-gray-300 rounded mb-3 text-black"
+    {/* Arrows */}
+    <button
+      onClick={() => {
+        if (isSolincoLocked) return;
+        setIsSolincoLocked(true);
+        setIsSolincoTransitioning(true);
+        setSolincoIndex((prev) => prev - 1);
+      }}
+      className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+    >
+      <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+    </button>
+    <button
+      onClick={() => {
+        if (isSolincoLocked) return;
+        setIsSolincoLocked(true);
+        setIsSolincoTransitioning(true);
+        setSolincoIndex((prev) => prev + 1);
+      }}
+      className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+    >
+      <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+    </button>
+  </div>
+
+          ) : p.key === "bronx-fire" ? (
+  /* ---- Bronx Fire video carousel ---- */
+  <div className="relative w-full flex justify-center overflow-hidden">
+    <div
+      className={`flex ${isBronxTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+      style={{
+        width: `${(bronxSlides.length + 2) * 100}%`,
+        transform: `translateX(-${(bronxIndex + 1) * 100}%)`,
+      }}
+      onTransitionEnd={() => {
+        setIsBronxLocked(false);
+        if (bronxIndex === -1) {
+          setIsBronxTransitioning(false);
+          setBronxIndex(bronxSlides.length - 1);
+        } else if (bronxIndex === bronxSlides.length) {
+          setIsBronxTransitioning(false);
+          setBronxIndex(0);
+        } else {
+          setIsBronxTransitioning(true);
+        }
+      }}
+    >
+      {/* Clone last */}
+      <div className="w-full flex justify-center flex-shrink-0">
+        <video
+          src={bronxSlides[bronxSlides.length - 1].src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className={`object-contain h-auto ${bronxSlides[bronxSlides.length - 1].className}`}
+        />
+      </div>
+
+      {/* Real slides */}
+      {bronxSlides.map((slide, slideIdx) => (
+        <div key={slideIdx} className="w-full flex justify-center flex-shrink-0">
+          <video
+            src={slide.src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`object-contain h-auto ${slide.className}`}
+          />
+        </div>
+      ))}
+
+      {/* Clone first */}
+      <div className="w-full flex justify-center flex-shrink-0">
+        <video
+          src={bronxSlides[0].src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className={`object-contain h-auto ${bronxSlides[0].className}`}
+        />
+      </div>
+    </div>
+
+    {/* Arrows */}
+    <button
+      onClick={() => {
+        if (isBronxLocked) return;
+        setIsBronxLocked(true);
+        setIsBronxTransitioning(true);
+        setBronxIndex((prev) => prev - 1);
+      }}
+      className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+    >
+      <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+    </button>
+    <button
+      onClick={() => {
+        if (isBronxLocked) return;
+        setIsBronxLocked(true);
+        setIsBronxTransitioning(true);
+        setBronxIndex((prev) => prev + 1);
+      }}
+      className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+    >
+      <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+    </button>
+  </div>
+
+
+          ) : p.key === "diary-ed-sheeran" ? (
+            /* ---- Ed Sheeran video ---- */
+            <div className="w-full flex justify-center">
+              <video
+                src="/edsheeran_1.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="object-contain w-[100%] h-auto"
               />
-              {passwordError && <p className="text-red-600 text-xs mb-2">Incorrect password. Try again.</p>}
-              <div className="flex justify-end gap-2">
-                <button
-                  onClick={() => {
-                    if (passwordInput === "IIC2025") {
-                      setShowPasswordModal(false);
-                      setPasswordInput("");
-                      setPasswordError(false);
-                      router.push("/work/immigration-industrial-complex");
-                    } else {
-                      setPasswordError(true);
-                    }
-                  }}
-                  className="px-3 py-1 border border-blue-500 text-blue-600 dark:text-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition"
-                >
-                  Submit
-                </button>
-                <button
-                  onClick={() => {
-                    setShowPasswordModal(false);
-                    setPasswordInput("");
-                    setPasswordError(false);
-                  }}
-                  className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 dark:hover:bg-neutral-800 transition"
-                >
-                  Cancel
-                </button>
-              </div>
             </div>
-          </div>
+          ) : p.key === "death-flights" ? (
+  /* ---- Death Flights carousel ---- */
+  <div className="relative w-full flex justify-center overflow-hidden">
+    <div
+      className={`flex ${isDeathFlightsTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+      style={{
+        width: `${(deathFlightsSlides.length + 2) * 100}%`,
+        transform: `translateX(-${(deathFlightsIndex + 1) * 100}%)`,
+      }}
+      onTransitionEnd={() => {
+        setIsDeathFlightsLocked(false);
+        if (deathFlightsIndex === -1) {
+          setIsDeathFlightsTransitioning(false);
+          setDeathFlightsIndex(deathFlightsSlides.length - 1);
+        } else if (deathFlightsIndex === deathFlightsSlides.length) {
+          setIsDeathFlightsTransitioning(false);
+          setDeathFlightsIndex(0);
+        } else {
+          setIsDeathFlightsTransitioning(true);
+        }
+      }}
+    >
+      {/* Clone last */}
+      <div className="w-full flex justify-center flex-shrink-0">
+        {deathFlightsSlides[deathFlightsSlides.length - 1].type === "image" ? (
+          <Image
+            src={deathFlightsSlides[deathFlightsSlides.length - 1].src}
+            alt={deathFlightsSlides[deathFlightsSlides.length - 1].alt}
+            width={deathFlightsSlides[deathFlightsSlides.length - 1].width}
+            height={deathFlightsSlides[deathFlightsSlides.length - 1].height}
+            className={`object-contain h-auto ${deathFlightsSlides[deathFlightsSlides.length - 1].className}`}
+          />
+        ) : (
+          <video
+            src={deathFlightsSlides[deathFlightsSlides.length - 1].src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`object-contain h-auto ${deathFlightsSlides[deathFlightsSlides.length - 1].className}`}
+          />
         )}
+      </div>
 
-        {/* Mobile Divider */}
-        <div className="block sm:hidden mb-4 px-4">
-          <div className="h-[1px] bg-blue-500 dark:bg-blue-400 w-full" />
+      {/* Real slides */}
+      {deathFlightsSlides.map((slide, slideIdx) => (
+        <div key={slideIdx} className="w-full flex justify-center flex-shrink-0">
+          {slide.type === "image" ? (
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              width={slide.width}
+              height={slide.height}
+              className={`object-contain h-auto ${slide.className}`}
+            />
+          ) : (
+            <video
+              src={slide.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className={`object-contain h-auto ${slide.className}`}
+            />
+          )}
+        </div>
+      ))}
+
+      {/* Clone first */}
+      <div className="w-full flex justify-center flex-shrink-0">
+        {deathFlightsSlides[0].type === "image" ? (
+          <Image
+            src={deathFlightsSlides[0].src}
+            alt={deathFlightsSlides[0].alt}
+            width={deathFlightsSlides[0].width}
+            height={deathFlightsSlides[0].height}
+            className={`object-contain h-auto ${deathFlightsSlides[0].className}`}
+          />
+        ) : (
+          <video
+            src={deathFlightsSlides[0].src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`object-contain h-auto ${deathFlightsSlides[0].className}`}
+          />
+        )}
+      </div>
+    </div>
+
+    {/* Arrows */}
+    <button
+      onClick={() => {
+        if (isDeathFlightsLocked) return;
+        setIsDeathFlightsLocked(true);
+        setIsDeathFlightsTransitioning(true);
+        setDeathFlightsIndex((prev) => prev - 1);
+      }}
+      className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+    >
+      <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+    </button>
+    <button
+      onClick={() => {
+        if (isDeathFlightsLocked) return;
+        setIsDeathFlightsLocked(true);
+        setIsDeathFlightsTransitioning(true);
+        setDeathFlightsIndex((prev) => prev + 1);
+      }}
+      className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+    >
+      <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+    </button>
+  </div>
+
+            ) : p.key === "olympics-ar" ? (
+            /* ---- Olympics AR video ---- */
+            <div className="w-full flex justify-center">
+              <video
+                src="/olympicsAR_2.webm"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="object-contain w-[100%] h-auto"
+              />
+            </div>
+          ) : p.key === "pluto" ? (
+            /* ---- Pluto video ---- */
+            <div className="w-full flex justify-center">
+              <video
+                src="/pluto_3.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="object-contain w-[75%] h-auto"
+              />
+            </div>
+
+            ) : p.key === "zhiyun-xs" ? (
+  /* ---- Zhiyun XS video ---- */
+  <div className="w-full flex justify-center">
+    <video
+      src="/zhiyun_1.webm"
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="object-contain w-[100%] h-auto"
+    />
+  </div>
+
+          ) : p.key === "mariupol" ? (
+            /* ---- Mariupol carousel ---- */
+            <div className="relative w-full flex justify-center overflow-hidden">
+              <div
+                className={`flex ${isMariupolTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
+                style={{
+                  width: `${(mariupolSlides.length + 2) * 100}%`,
+                  transform: `translateX(-${(mariupolIndex + 1) * 100}%)`,
+                }}
+                onTransitionEnd={() => {
+                  setIsMariupolLocked(false);
+                  if (mariupolIndex === -1) {
+                    setIsMariupolTransitioning(false);
+                    setMariupolIndex(mariupolSlides.length - 1);
+                  } else if (mariupolIndex === mariupolSlides.length) {
+                    setIsMariupolTransitioning(false);
+                    setMariupolIndex(0);
+                  } else {
+                    setIsMariupolTransitioning(true);
+                  }
+                }}
+              >
+                {/* Clone last */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  <Image
+                    src={mariupolSlides[mariupolSlides.length - 1].src}
+                    alt={mariupolSlides[mariupolSlides.length - 1].alt}
+                    width={mariupolSlides[mariupolSlides.length - 1].width}
+                    height={mariupolSlides[mariupolSlides.length - 1].height}
+                    className={`object-contain h-auto ${mariupolSlides[mariupolSlides.length - 1].className}`}
+                  />
+                </div>
+
+                {/* Real slides */}
+                {mariupolSlides.map((slide, slideIdx) => (
+                  <div key={slideIdx} className="w-full flex justify-center flex-shrink-0">
+                    <Image
+                      src={slide.src}
+                      alt={slide.alt}
+                      width={slide.width}
+                      height={slide.height}
+                      className={`object-contain h-auto ${slide.className}`}
+                    />
+                  </div>
+                ))}
+
+                {/* Clone first */}
+                <div className="w-full flex justify-center flex-shrink-0">
+                  <Image
+                    src={mariupolSlides[0].src}
+                    alt={mariupolSlides[0].alt}
+                    width={mariupolSlides[0].width}
+                    height={mariupolSlides[0].height}
+                    className={`object-contain h-auto ${mariupolSlides[0].className}`}
+                  />
+                </div>
+              </div>
+
+              {/* Arrows */}
+              <button
+                onClick={() => {
+                  if (isMariupolLocked) return;
+                  setIsMariupolLocked(true);
+                  setIsMariupolTransitioning(true);
+                  setMariupolIndex((prev) => prev - 1);
+                }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+              <button
+                onClick={() => {
+                  if (isMariupolLocked) return;
+                  setIsMariupolLocked(true);
+                  setIsMariupolTransitioning(true);
+                  setMariupolIndex((prev) => prev + 1);
+                }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+              >
+                <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
+              </button>
+            </div>
+          ) : img ? (
+            /* ---- Default images ---- */
+            <Image
+              src={img.src}
+              alt={img.alt}
+              width={img.width}
+              height={img.height}
+              className="object-contain"
+              priority={idx === 0}
+            />
+          ) : null}
         </div>
 
-        {/* CV Section */}
-        <div className="pt-10 sm:pt-16 pb-24 text-[12px] leading-relaxed">
-          <div className="flex flex-col md:flex-row justify-between gap-8 text-center md:text-left">
-            <div>
-              <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
-              <ul className="space-y-1">
-                <li>2025, Prada Foundation, <em>Diagrams</em> at the Venice Biennale</li>
-                <li>2024, Architekturmuseum der TUM, <em>Visual Investigations</em></li>
-              </ul>
+        {/* Always show bottom divider */}
+      <div className="flex flex-col items-center w-full">
+        <div className="h-[65px]" />
+        <div className="h-px bg-red-500 dark:bg-red-400 w-full" />
+        <div className="h-[65px]" />
+      </div>
+    </div>
+  );
+})}
+  
+</SimpleBar>
+
+
+
+        <div className="w-px bg-red-500 dark:bg-red-400 h-full" />
+
+          {/* Right: Details column */}
+          <aside className="flex-1 shrink-0 sticky top-0 self-start text-[10px] leading-relaxed px-1">
+            <div className="mb-9.5">
+              <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">
+                CV
+              </h2>
             </div>
-            <div>
-              <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Speaking</h3>
-              <ul className="space-y-1">
-                <li>2025, RightsCon, Talk, <em>Reconstructing History</em></li>
-                <li>2024, Politecnico di Milano, Design Density Course, Presentation</li>
-                <li>2024, The Ukrainian Museum, Panel</li>
-                <li>2024, Harvard IHR Clinic, Presentation</li>
-                <li>2024, Columbia University GSAPP, Guest Critic</li>
-                <li>2023, Society of Professional Journalists, Panel</li>
-                <li>2022, Newseum, Panel</li>
-              </ul>
+
+            <div className="h-px bg-red-500 dark:bg-red-400 mb-4 w-full" />
+
+            {/* Group Exhibitions */}
+            <div className="w-full mt-4 mb-4">
+              <div
+                className="text-left block"
+                style={{ width: "min(85%, 28rem)", marginInline: "auto" }}
+              >
+                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                  Group Exhibitions
+                </h3>
+                <ul className="space-y-[0.2rem] text-[10px]">
+                  <li>
+                    Prada Foundation, <em>Diagrams</em>
+                    <br />2025
+                  </li>
+                  <li>
+                    Architekturmuseum der TUM, <em>Visual Investigations</em>
+                    <br />2024
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
-              <ul className="space-y-1">
-                <li>2023, Pulitzer Finalist, <em>Bronx Fire</em></li>
-                <li>2023, SND Bronze, <em>Bronx Fire</em></li>
-                <li>2022, SND Silver, <em>Dixie Fire</em></li>
-                <li>2019, Emmy Winner, <em>One Building, One Bomb</em></li>
-                <li>2019, SND & Malofiej Medals, <em>Apollo 11</em></li>
-                <li>2018, World Press Photo, First Place, <em>Under a Cracked Sky</em></li>
-              </ul>
+
+            <div className="h-px bg-red-500 dark:bg-red-400 my-4 w-full" />
+
+            {/* Speaking */}
+            <div className="w-full mt-4 mb-4">
+              <div
+                className="text-left block"
+                style={{ width: "min(85%, 28rem)", marginInline: "auto" }}
+              >
+                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                  Speaking
+                </h3>
+                <ul className="space-y-[0.2rem] text-[10px]">
+                  <li>
+                    RightsCon, Talk, <em>Reconstructing History</em>
+                    <br />2025
+                  </li>
+                  <li>Politecnico di Milano, Design Density Course<br />2024</li>
+                  <li>The Ukrainian Museum, Panel<br />2024</li>
+                  <li>Harvard IHR Clinic, Presentation<br />2024</li>
+                  <li>Columbia GSAPP, Guest Critic<br />2024</li>
+                  <li>Society of Professional Journalists, Panel<br />2023</li>
+                  <li>Newseum, Panel<br />2022</li>
+                </ul>
+              </div>
             </div>
-          </div>
+
+            <div className="h-px bg-red-500 dark:bg-red-400 my-4 w-full" />
+
+            {/* Select Awards */}
+            <div className="w-full mt-4 mb-4">
+              <div
+                className="text-left block"
+                style={{ width: "min(85%, 28rem)", marginInline: "auto" }}
+              >
+                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                  Select Awards
+                </h3>
+                <ul className="space-y-[0.2rem] text-[10px]">
+                  <li>
+                    Pulitzer Finalist, <em>Bronx Fire</em>
+                    <br />2023
+                  </li>
+                  <li>
+                    SND Bronze, <em>Bronx Fire</em>
+                    <br />2023
+                  </li>
+                  <li>
+                    SND Silver, <em>Dixie Fire</em>
+                    <br />2022
+                  </li>
+                  <li>
+                    Emmy Winner, <em>One Building, One Bomb</em>
+                    <br />2019
+                  </li>
+                  <li>
+                    SND &amp; Malofiej Medals, <em>Apollo 11</em>
+                    <br />2019
+                  </li>
+                  <li>
+                    World Press Photo, <em>Under a Cracked Sky</em>
+                    <br />2018
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </main>

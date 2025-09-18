@@ -20,3 +20,14 @@ body {
   color: var(--foreground);
   font-family: var(--font-ibm-plex), sans-serif;
 }
+
+/* Custom SimpleBar scrollbar */
+.custom-scrollbar .simplebar-scrollbar::before {
+  background: rgb(220 38 38); /* Tailwind red-600 */
+  border-radius: 9999px;
+  width: 2px; /* thin thumb */
+}
+
+.custom-scrollbar .simplebar-track.simplebar-vertical {
+  width: 6px; /* track width */
+}
