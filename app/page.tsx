@@ -102,6 +102,16 @@ cv: "",
   const [activeKey, setActiveKey] = useState<string>(projects[0]?.key ?? "");
   const [baseGalleryWidthPx, setBaseGalleryWidthPx] = useState<number | null>(null);
 
+    // ✅ Mobile detection state
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile(); // run once on mount
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
 // ---- Carousel state (Play + Vogue + Usain Bolt) ----
 
 // PLAY
@@ -145,34 +155,33 @@ const [usainIndex, setUsainIndex] = useState(0);
 const [isUsainTransitioning, setIsUsainTransitioning] = useState(true);
 const [isUsainLocked, setIsUsainLocked] = useState(false);
 
-const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
-
-const usainSlides = [
-  {
-    type: "video",
-    src: isMobile ? "/sprint_mobile.webm" : "/sprint_1.webm",
-    alt: "Usain Bolt Sprint 1",
-    width: 700,
-    height: 500,
-    className: "w-[100%]"
-  },
-  {
-    type: "image",
-    src: "/sprint_2.webp",
-    alt: "Usain Bolt Sprint 2",
-    width: 700,
-    height: 500,
-    className: "w-[100%]"
-  },
-  {
-    type: "image",
-    src: "/sprint_3.webp",
-    alt: "Usain Bolt Sprint 3",
-    width: 700,
-    height: 500,
-    className: "w-[80%]"
-  },
-];
+// ✅ Usain Bolt slides now use `isMobile`
+  const usainSlides = [
+    {
+      type: "video",
+      src: isMobile ? "/sprint_mobile.webm" : "/sprint_1.webm",
+      alt: "Usain Bolt Sprint 1",
+      width: 700,
+      height: 500,
+      className: "w-[100%]"
+    },
+    {
+      type: "image",
+      src: "/sprint_2.webp",
+      alt: "Usain Bolt Sprint 2",
+      width: 700,
+      height: 500,
+      className: "w-[100%]"
+    },
+    {
+      type: "image",
+      src: "/sprint_3.webp",
+      alt: "Usain Bolt Sprint 3",
+      width: 700,
+      height: 500,
+      className: "w-[80%]"
+    },
+  ];
 
 
 // ---- Carousel state (Bronx Fire) ----
