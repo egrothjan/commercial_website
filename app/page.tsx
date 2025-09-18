@@ -418,11 +418,11 @@ useEffect(() => {
       className="text-red-500 hover:text-red-600"
     >
       The New York Times
-    </a>.
-    <br /><br />
-    Contact:{" "}
+    </a>. Contact:{" "}
     <a
       href="mailto:evangrothjan@gmail.com"
+      target="_blank"
+      rel="noopener noreferrer"
       className="text-red-500 hover:text-red-600"
     >
       evangrothjan@gmail.com
