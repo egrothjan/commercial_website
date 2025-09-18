@@ -421,7 +421,9 @@ useEffect(() => {
             {/* Project titles */}
 <div className="px-3 mt-4">
   <ul className="space-y-[0.2875rem] text-left">
-    {projects.map(({ title, key }) => {
+  {projects
+    .filter((p) => p.key !== "cv") // 👈 exclude CV from left column
+    .map(({ title, key }) => {
       const active = activeKey === key;
 
       return (
