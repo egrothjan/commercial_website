@@ -13,27 +13,22 @@ const ibmPlex = IBM_Plex_Sans({
 export const metadata: Metadata = {
   title: "Grothjan Studio",
   description: "Art Direction, Animation, & Design",
-  icons: {
-    icon: "/favicon-2.ico",
-  },
+  icons: { icon: "/favicon-2.ico" },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={ibmPlex.variable}>
       <head>
-        <link rel="icon" href="/favicon-2.ico" type="image/x-icon" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
       </head>
-      <body className="antialiased font-sans bg-[var(--background)] text-[var(--foreground)]">
-        {/* 🔑 Fixed 4cm padding left & right */}
-        <main style={{ paddingLeft: ".1cm", paddingRight: ".05cm" }}>
-          {children}
-        </main>
-
+      <body className="antialiased font-sans bg-[var(--background)] text-[var(--foreground)] overflow-x-hidden">
+        {children}
         <GoogleAnalytics />
         <Analytics />
       </body>

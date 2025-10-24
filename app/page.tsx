@@ -25,6 +25,48 @@ type Slide =
       className?: string;
     };
 
+/* ===================== Small helper for robust video loading ===================== */
+/** Renders a video with WEBM + MP4 fallbacks.
+ * Pass srcBase without the extension, e.g. "/deathFlights_compressed"
+ */
+function SmartVideo({
+  srcBase,
+  className,
+  autoPlay = true,
+  muted = true,
+  loop = true,
+  playsInline = true,
+  preload = "metadata",
+  poster,
+}: {
+  srcBase: string;
+  className?: string;
+  autoPlay?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  playsInline?: boolean;
+  preload?: "auto" | "metadata" | "none";
+  poster?: string;
+}) {
+  // Note: ensure the files actually exist in /public: `${srcBase}.webm` and/or `${srcBase}.mp4`
+  return (
+    <video
+      autoPlay={autoPlay}
+      muted={muted}
+      loop={loop}
+      playsInline={playsInline}
+      preload={preload}
+      className={className}
+      poster={poster}
+    >
+      <source src={`${srcBase}.webm`} type="video/webm" />
+      <source src={`${srcBase}.mp4`} type="video/mp4" />
+      {/* Fallback text if neither source loads */}
+      Your browser does not support the video tag.
+    </video>
+  );
+}
+
 /* ===================== Reusable Looping Carousel ===================== */
 function LoopingCarousel({
   slides,
@@ -32,7 +74,7 @@ function LoopingCarousel({
   autoplayMs,
 }: {
   slides: Slide[];
-  slideWidthPercent?: number; // visual width per slide (e.g., 75 -> w-[75%])
+  slideWidthPercent?: number; // visual width per slide on desktop (e.g., 75 -> sm:w-[75%])
   autoplayMs?: number; // e.g. 8000 for 8s; omit/undefined to disable
 }) {
   const [index, setIndex] = useState(0);
@@ -42,7 +84,8 @@ function LoopingCarousel({
   // autoplay w/ page visibility handling
   useEffect(() => {
     if (!autoplayMs) return;
-    let timer: NodeJS.Timeout | null = null;
+    let timer: ReturnType<typeof setInterval> | null = null;
+
     const start = () => {
       if (!timer) {
         timer = setInterval(() => {
@@ -60,6 +103,7 @@ function LoopingCarousel({
       if (document.hidden) stop();
       else start();
     };
+
     start();
     document.addEventListener("visibilitychange", onVis);
     return () => {
@@ -72,19 +116,13 @@ function LoopingCarousel({
   const containerPct = (total + 2) * 100; // clones
 
   const SlideNode = (s: Slide, i: number) => {
-    const widthClass = `w-[${slideWidthPercent}%]`;
-    const common = `object-contain h-auto ${widthClass} ${s.className ?? ""}`;
+    // Mobile: w-full prevents sideways scroll; Desktop: respect slideWidthPercent + any sm: overrides
+    const common = `object-contain h-auto w-full max-w-none sm:w-[${slideWidthPercent}%] ${s.className ?? ""}`;
+
     return (
       <div key={i} className="w-full flex justify-center flex-shrink-0">
         {s.type === "video" ? (
-          <video
-            src={s.src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={common}
-          />
+          <video src={s.src} autoPlay muted loop playsInline preload="metadata" className={common} />
         ) : (
           <Image
             src={s.src}
@@ -101,9 +139,7 @@ function LoopingCarousel({
   return (
     <div className="relative w-full flex justify-center overflow-hidden">
       <div
-        className={`flex ${
-          isTransitioning ? "transition-transform duration-700 ease-in-out" : ""
-        }`}
+        className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
         style={{
           width: `${containerPct}%`,
           transform: `translateX(-${(index + 1) * 100}%)`,
@@ -166,7 +202,7 @@ export default function Home() {
     { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#" },
     { title: "Vogue: Taylor Hill", key: "taylor-hill-vogue", href: "#" },
     { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
-    { title: "Olympians, as You’ve Never Seen Them", key: "winter-olympics", href: "#" },
+    // REMOVED: { title: "Olympians, as You’ve Never Seen Them", key: "winter-olympics", href: "#" },
     { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
     { title: "2020 Tokyo Olympics", key: "olympics-ar", href: "#" },
     { title: "Eddie Martinez X Solinco", key: "solinco", href: "#" },
@@ -181,42 +217,29 @@ export default function Home() {
   };
 
   const projectDescriptions: Record<string, string> = {
-    "play-magazine": `Client: PLAY Magazine
-
-Designed the logo for the first edition of PLAY. A cookbook magazine featuring recipes, essays, and artwork from a community of LGBTQ+ chefs, writers, and artists.`,
-    "diary-ed-sheeran": `Client: The New York Times
-
-How Ed Sheeran, Johnny McDaid and Steve Mac made the most-streamed track of 2017.`,
-    "taylor-hill-vogue": `Client: Vogue Arabia
-
-Taylor Hill for Vogue Arabia by Ryan Lucca.`,
-    "zhiyun-xs": `Client: Snakk Studio
-
-This is Smooth-XS, the new colorful alternative of Smooth-X.`,
-    pluto: `Client: The New York Times
-
-Watch New Horizons glide through space at a million miles a day. Fly over Pluto's rugged surface and smooth heart-shaped plains. Stand on icy mountains.`,
-    "bronx-fire": `Client: The New York Times
-
-The main fire safety system failed disastrously in a blaze at a Bronx apartment building in January, killing 17 people, The New York Times has found.`,
-    mariupol: `Client: Human Rights Watch
-
-Thousands of civilians in Mariupol were killed during Russia's invasion, suffering some of the worst destruction in war-scarred Ukraine. SITU Research, Human Rights Watch, and Truth Hounds work to document this devastation and loss.`,
-    "death-flights": `Client: Centro Prodh
-
-This video analysis is a visual reconstruction of one of the most clandestine programs of the so-called "Dirty War" era based on a military investigation, previous journalistic reporting, and analytical and visualization tools.`,
-    "usain-bolt": `Client: The New York Times
-
-There are three Usain Bolts on this track: one from Beijing in 2008, one from London in 2012 and one from Rio de Janeiro in 2016.`,
-    "winter-olympics": `Client: The New York Times
-
-Four Olympic champions captured in a new way — a unique look at the athletes redefining their sports.`,
-    "olympics-ar": `Client: The New York Times
-
-Suni Lee is making her Olympic debut after a challenging year. Her versatility is crucial to Team USA's shot at a third consecutive gold. Adam Ondra is the best climber in the world. But to win Olympic gold, he needed to learn a new way to climb. Fast.`,
-    solinco: `Client: The Second Serve Magazine
-
-This custom racquet combines Solinco’s expertise in crafting sporting equipment of quality, performance, and versatility with Brooklyn artist Eddie Martinez’s signature tennis ball and “blockhead” motifs, to create a stylish racquet for discerning players and fans.`,
+    "play-magazine":
+      "Client: PLAY Magazine\nDesigned the logo for the first edition of PLAY. A cookbook magazine featuring recipes, essays, and artwork from a community of LGBTQ+ chefs, writers, and artists.",
+    "diary-ed-sheeran":
+      "Client: The New York Times\nHow Ed Sheeran, Johnny McDaid and Steve Mac made the most-streamed track of 2017.",
+    "taylor-hill-vogue":
+      "Client: Vogue Arabia\nTaylor Hill for Vogue Arabia by Ryan Lucca.",
+    "zhiyun-xs":
+      "Client: Snakk Studio\nThis is Smooth-XS, the new colorful alternative of Smooth-X.",
+    pluto:
+      "Client: The New York Times\nWatch New Horizons glide through space at a million miles a day. Fly over Pluto's rugged surface and smooth heart-shaped plains. Stand on icy mountains.",
+    "bronx-fire":
+      "Client: The New York Times\nThe main fire safety system failed disastrously in a blaze at a Bronx apartment building in January, killing 17 people, The New York Times has found.",
+    mariupol:
+      "Client: Human Rights Watch\nThousands of civilians in Mariupol were killed during Russia's invasion, suffering some of the worst destruction in war-scarred Ukraine. SITU Research, Human Rights Watch, and Truth Hounds work to document this devastation and loss.",
+    "death-flights":
+      "Client: Centro Prodh\nThis video analysis is a visual reconstruction of one of the most clandestine programs of the so-called \"Dirty War\" era based on a military investigation, previous journalistic reporting, and analytical and visualization tools.",
+    "usain-bolt":
+      "Client: The New York Times\nThere are three Usain Bolts on this track: one from Beijing in 2008, one from London in 2012 and one from Rio de Janeiro in 2016.",
+    // REMOVED: "winter-olympics": ...,
+    "olympics-ar":
+      "Client: The New York Times\nSuni Lee is making her Olympic debut after a challenging year. Her versatility is crucial to Team USA's shot at a third consecutive gold. Adam Ondra is the best climber in the world. But to win Olympic gold, he needed to learn a new way to climb. Fast.",
+    solinco:
+      "Client: The Second Serve Magazine\nThis custom racquet combines Solinco’s expertise in crafting sporting equipment of quality, performance, and versatility with Brooklyn artist Eddie Martinez’s signature tennis ball and “blockhead” motifs, to create a stylish racquet for discerning players and fans.",
     cv: "",
   };
 
@@ -245,6 +268,7 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
       const rootCenter = root.scrollTop + root.clientHeight / 2;
       let bestKey = activeKey;
       let bestDist = Infinity;
+
       for (const p of projects) {
         const el = itemRefs.current[p.key];
         if (!el) continue;
@@ -300,50 +324,49 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
   );
 
   const vogueSlides: Slide[] = [
-    { type: "image", src: "/vogue_1.png", alt: "Vogue Slide 1", width: 700, height: 500, className: "w-[110%]" },
-    { type: "video", src: "/vogue_2.webm", alt: "Vogue Slide 2", width: 700, height: 500, className: "w-[75%]" },
+    { type: "image", src: "/vogue_1.png", alt: "Vogue Slide 1", width: 700, height: 500, className: "sm:w-[110%]" },
+    { type: "video", src: "/vogue_compressed.webm", alt: "Vogue Slide 2", width: 700, height: 500, className: "sm:w-[75%]" },
   ];
 
   const usainSlides: Slide[] = [
-    { type: "video", src: isMobile ? "/sprint_mobile.webm" : "/sprint_1.webm", alt: "Usain Bolt Sprint 1", width: 700, height: 500, className: "w-[100%]" },
-    { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500, className: "w-[100%]" },
-    { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500, className: "w-[80%]" },
+    { type: "video", src: isMobile ? "/sprint_mobile.webm" : "/sprint_1.webm", alt: "Usain Bolt Sprint 1", width: 700, height: 500, className: "sm:w-[100%]" },
+    { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500, className: "sm:w-[100%]" },
+    { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500, className: "sm:w-[80%]" },
   ];
 
+  // kept for reference; not used since Bronx is standalone now
   const bronxSlides: Slide[] = [
-    { type: "video", src: "/bronx_1.webm", alt: "Bronx Fire Video 1", width: 800, height: 600, className: "w-[100%]" },
-    { type: "video", src: "/bronx_2.webm", alt: "Bronx Fire Video 2", width: 800, height: 600, className: "w-[100%]" },
-    { type: "video", src: "/bronx_3.webm", alt: "Bronx Fire Video 3", width: 800, height: 600, className: "w-[100%]" },
-    { type: "video", src: "/bronx_4.webm", alt: "Bronx Fire Video 4", width: 800, height: 600, className: "w-[100%]" },
+    { type: "video", src: "/bronx_compressed.webm", alt: "Bronx Fire Video 1", width: 800, height: 600, className: "sm:w-[100%]" },
   ];
 
   const mariupolSlides: Slide[] = [
-    { src: "/mariupol_1.webp", alt: "Mariupol Slide 1", width: 800, height: 600, className: "w-[100%]" },
-    { src: "/mariupol_2.webp", alt: "Mariupol Slide 2", width: 800, height: 600, className: "w-[100%]" },
+    { src: "/mariupol_1.webp", alt: "Mariupol Slide 1", width: 800, height: 600, className: "sm:w-[100%]" },
+    { src: "/mariupol_2.webp", alt: "Mariupol Slide 2", width: 800, height: 600, className: "sm:w-[100%]" },
   ];
 
   const solincoSlides: Slide[] = [
-    { type: "image", src: "/solinco_1.webp", alt: "Solinco Slide 1", width: 800, height: 600, className: "w-[50%]" },
-    { type: "image", src: "/solinco_2.webp", alt: "Solinco Slide 2", width: 800, height: 600, className: "w-[50%]" },
-    { type: "image", src: "/solinco_3.webp", alt: "Solinco Slide 3", width: 800, height: 600, className: "w-[50%]" },
+    { type: "image", src: "/solinco_1.webp", alt: "Solinco Slide 1", width: 800, height: 600, className: "sm:w-[50%]" },
+    { type: "image", src: "/solinco_2.webp", alt: "Solinco Slide 2", width: 800, height: 600, className: "sm:w-[50%]" },
+    { type: "image", src: "/solinco_3.webp", alt: "Solinco Slide 3", width: 800, height: 600, className: "sm:w-[50%]" },
   ];
 
   const deathSlides: Slide[] = [
-    { type: "video", src: "/deathFlights_1.webm", alt: "Death Flights Video", width: 800, height: 600, className: "w-[75%]" },
-    { type: "image", src: "/deathFlights_2.webp", alt: "Death Flights Still", width: 800, height: 600, className: "w-[75%]" },
+    // Kept in case you revert to the carousel, but we render Death Flights as a standalone SmartVideo below.
+    { type: "video", src: "/deathFlights_compressed.webm", alt: "Death Flights Video", width: 800, height: 600, className: "sm:w-[75%]" },
+    { type: "image", src: "/deathFlights_2.webp", alt: "Death Flights Still", width: 800, height: 600, className: "sm:w-[75%]" },
   ];
 
   /* ===================== Category Labels (optional) ===================== */
   const categoryForKey = (key: string) => {
     if (key === "play-magazine") return "Culture";
-    if (key === "winter-olympics") return "Sports";
+    if (key === "usain-bolt") return "Sports";
     if (key === "bronx-fire") return "Science & Politics";
     return null;
   };
 
   /* ===================== Render ===================== */
   return (
-    <main className="h-screen overflow-hidden bg-background text-foreground">
+    <main className="h-screen overflow-x-hidden sm:overflow-x-visible overflow-y-hidden bg-background text-foreground">
       <div className="w-full h-full">
         {/* Row */}
         <div className="flex flex-col sm:flex-row items-start gap-0 h-full min-h-0">
@@ -363,8 +386,7 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
             {/* Bio block */}
             <div className="px-3 mt-3 mb-4">
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
-                Award-winning art direction and animation.
-                <br />
+                Award-winning art direction and animation. <br />
                 Contact:{" "}
                 <a
                   href="mailto:evangrothjan@gmail.com"
@@ -435,12 +457,7 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
             <SimpleBar
               scrollableNodeProps={{ ref: scrollAreaRef }}
               style={{ height: "100%" }}
-              className="
-                w-full max-w-[1200px] mx-auto
-                pt-[50px] sm:pt-0 px-1 pb-3 flex flex-col items-center
-                border-b border-red-500 dark:border-red-400
-                custom-scrollbar h-full
-              "
+              className="w-full sm:max-w-[1200px] sm:mx-auto pt-[50px] sm:pt-0 pb-3 flex flex-col items-stretch sm:items-center border-b border-red-500 dark:border-red-400 custom-scrollbar h-full overflow-x-hidden sm:overflow-x-visible px-0 sm:px-0"
               autoHide={false}
             >
               {/* Mobile-only fixed header */}
@@ -479,6 +496,7 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
                 .map((p, idx) => {
                   const img = images[p.key];
                   const isLast = idx === projects.length - 2;
+                  const isDeathFlights = p.key === "death-flights";
 
                   return (
                     <div
@@ -489,8 +507,16 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
                       }}
                       className={`w-full flex flex-col items-center ${idx === 0 ? "mt-[65px] sm:mt-0" : ""}`}
                     >
+                      {/* Pull Death Flights up slightly on mobile to reduce extra above-gap */}
+                      {isDeathFlights && <div className="sm:hidden -mt-[24px]" />}
+
                       <div className={`relative ${idx === 0 ? "sm:-mt-[10px] mt-[65px]" : ""}`}>
-                        {/* Per-project renderers using the reusable LoopingCarousel */}
+                        {/* EXTRA MOBILE-ONLY TOP BUFFER JUST FOR THE FIRST PLAY IMAGE */}
+                        {idx === 0 && p.key === "play-magazine" && (
+                          <div className="sm:hidden h-[30px]" />
+                        )}
+
+                        {/* Per-project renderers */}
                         {p.key === "play-magazine" ? (
                           <LoopingCarousel slides={playSlides} slideWidthPercent={75} autoplayMs={8000} />
                         ) : p.key === "taylor-hill-vogue" ? (
@@ -499,63 +525,55 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
                           <LoopingCarousel slides={usainSlides} />
                         ) : p.key === "solinco" ? (
                           <LoopingCarousel slides={solincoSlides} />
-                        ) : p.key === "bronx-fire" ? (
-                          <LoopingCarousel slides={bronxSlides} />
                         ) : p.key === "diary-ed-sheeran" ? (
                           <div className="w-full flex justify-center">
-                            <video
-                              src="/edsheeran_1.webm"
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              className="object-contain w-[100%] h-auto"
+                            <SmartVideo
+                              srcBase="/edsheeran_compressed"
+                              className="object-contain w-full max-w-none sm:w-[100%] h-auto"
+                              preload="metadata"
                             />
                           </div>
                         ) : p.key === "death-flights" ? (
-                          <LoopingCarousel slides={deathSlides} slideWidthPercent={75} />
+                          // Standalone robust video with webm+mp4
+                          <div className="w-full flex justify-center">
+                            <SmartVideo
+                              srcBase="/deathFlights_compressed"
+                              className="object-contain w-full max-w-none sm:w-[75%] h-auto"
+                              preload="metadata"
+                              // poster="/deathFlights_poster.jpg" // optional if you have it
+                            />
+                          </div>
+                        ) : p.key === "bronx-fire" ? (
+                          // You mentioned removing the carousel for Bronx — render as a single video
+                          <div className="w-full flex justify-center">
+                            <SmartVideo
+                              srcBase="/bronx_compressed"
+                              className="object-contain w-full max-w-none sm:w-[100%] h-auto"
+                              preload="metadata"
+                            />
+                          </div>
                         ) : p.key === "olympics-ar" ? (
                           <div className="w-full flex justify-center">
-                            <video
-                              src="/olympicsAR_2.webm"
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              className="object-contain w-[100%] h-auto"
+                            <SmartVideo
+                              srcBase="/olympicsAR_compressed_2"
+                              className="object-contain w-full max-w-none sm:w-[100%] h-auto"
+                              preload="metadata"
                             />
                           </div>
                         ) : p.key === "pluto" ? (
                           <div className="w-full flex justify-center">
-                            <video
-                              src="/pluto_3.webm"
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              className="object-contain w-[75%] h-auto"
-                            />
-                          </div>
-                        ) : p.key === "winter-olympics" ? (
-                          <div className="w-full flex justify-center">
-                            <video
-                              src="/winterOlympics_2.webm"
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              className="object-contain w-[100%] h-auto"
+                            <SmartVideo
+                              srcBase="/pluto_compressed"
+                              className="object-contain w-full max-w-none sm:w-[75%] h-auto"
+                              preload="metadata"
                             />
                           </div>
                         ) : p.key === "zhiyun-xs" ? (
                           <div className="w-full flex justify-center">
-                            <video
-                              src="/zhiyun_1.webm"
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              className="object-contain w-[100%] h-auto"
+                            <SmartVideo
+                              srcBase="/zhiyun_compressed"
+                              className="object-contain w-full max-w-none sm:w-[100%] h-auto"
+                              preload="metadata"
                             />
                           </div>
                         ) : p.key === "mariupol" ? (
@@ -566,7 +584,7 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
                             alt={img.alt}
                             width={img.width}
                             height={img.height}
-                            className="object-contain"
+                            className="object-contain w-full max-w-none sm:w-auto"
                             priority={idx === 0}
                           />
                         ) : null}
@@ -574,85 +592,82 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
 
                       {/* Bottom divider */}
                       <div className="flex flex-col items-center w-full">
-                        <div className="h-[65px]" />
+                        {/* Pre-divider gap: shorter on mobile for Death Flights */}
+                        <div className={`${isDeathFlights ? "h-[32px] sm:h-[65px]" : "h-[65px]"}`} />
                         <div className="h-px bg-red-500 dark:bg-red-400 w-full" />
-                        <div className={`${isLast ? "sm:h-[65px] h-0" : "h-[65px]"}`} />
+                        {/* Post-divider gap: shorter on mobile for Death Flights */}
+                        <div className={`${isLast ? "sm:h-[65px] h-0" : isDeathFlights ? "h-[32px]" : "h-[65px]"}`} />
                       </div>
                     </div>
                   );
                 })}
 
-              {/* Mobile-only CV at the very bottom */}
+              {/* ---------------- MOBILE-ONLY CV ---------------- */}
               <div
                 ref={(el) => {
                   itemRefs.current["cv"] = el;
                 }}
-                className="sm:hidden w-full px-3 py-10 mb-20 text-[10px] leading-relaxed"
+                className="sm:hidden w-full px-3 pt-3 pb-12 mb-20 text-[10px] leading-relaxed"
               >
-                {/* Group Exhibitions */}
-                <div className="mb-6">
+                {/* Group Exhibitions (reduced top spacing from red line above) */}
+                <div className="mb-4">
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
                     Group Exhibitions
                   </h3>
                   <ul className="space-y-[0.2rem] text-[10px]">
                     <li>
-                      Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em>
-                      <br />
-                      2025
+                      Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em> <br /> 2025
                     </li>
                     <li>
-                      Architekturmuseum der TUM, <em>Visual Investigations</em>
-                      <br />
-                      2024
+                      Architekturmuseum der TUM, <em>Visual Investigations</em> <br /> 2024
                     </li>
                   </ul>
                 </div>
 
-                <div className="h-px bg-red-500 dark:bg-red-400 mb-4 w-full" />
-
-                
-
-                
+                {/* Divider between sections */}
+                <div className="h-px bg-red-500 dark:bg-red-400 my-3 w-full" />
 
                 {/* Select Awards */}
-                <div>
+                <div className="mt-0">
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
                     Select Awards
                   </h3>
                   <ul className="space-y-[0.2rem] text-[10px]">
                     <li>
-                      Pulitzer Finalist, <em>Bronx Fire</em>
-                      <br />
-                      2023
+                      Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
                     </li>
                     <li>
-                      SND Bronze, <em>Bronx Fire</em>
-                      <br />
-                      2023
+                      SND Bronze, <em>Bronx Fire</em> <br /> 2023
                     </li>
                     <li>
-                      SND Silver, <em>Dixie Fire</em>
-                      <br />
-                      2022
+                      SND Silver, <em>Dixie Fire</em> <br /> 2022
                     </li>
                     <li>
-                      Emmy Winner, <em>One Building, One Bomb</em>
-                      <br />
-                      2019
+                      Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
                     </li>
                     <li>
-                      SND &amp; Malofiej Medals, <em>Apollo 11</em>
-                      <br />
-                      2019
+                      SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
                     </li>
                     <li>
-                      World Press Photo, <em>Under a Cracked Sky</em>
-                      <br />
-                      2018
+                      World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
                     </li>
                   </ul>
                 </div>
+
+                {/* Divider, then Select Clients BELOW Awards */}
+                <div className="h-px bg-red-500 dark:bg-red-400 my-3 w-full" />
+
+                {/* Select Clients (added below awards per request) */}
+                <div className="mt-0">
+                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                    Select Clients
+                  </h3>
+                  <p className="text-[10px]">
+                    The New York Times, Bloomberg News, Eater, Vogue, MTV, Meta, Human Rights Watch, National Lawyers Guild
+                  </p>
+                </div>
               </div>
+              {/* ---------------- /MOBILE-ONLY CV ---------------- */}
             </SimpleBar>
           </div>
 
@@ -670,17 +685,15 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
             {/* Group Exhibitions */}
             <div className="w-full mt-4 mb-4">
               <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
+                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                  Group Exhibitions
+                </h3>
                 <ul className="space-y-[0.2rem] text-[10px]">
                   <li>
-                    Prada Foundation, Venice Biennali, <em>Diagrams</em>
-                    <br />
-                    2025
+                    Prada Foundation, Venice Biennali, <em>Diagrams</em> <br /> 2025
                   </li>
                   <li>
-                    Architekturmuseum TUM, <em>Visual Investigations</em>
-                    <br />
-                    2024
+                    Architekturmuseum TUM, <em>Visual Investigations</em> <br /> 2024
                   </li>
                 </ul>
               </div>
@@ -688,42 +701,30 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
 
             <div className="h-px bg-red-500 dark:bg-red-400 my-4 w-full" />
 
-            
-
             {/* Select Awards */}
             <div className="w-full mt-4 mb-4">
               <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
+                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                  Select Awards
+                </h3>
                 <ul className="space-y-[0.2rem] text-[10px]">
                   <li>
-                    Pulitzer Finalist, <em>Bronx Fire</em>
-                    <br />
-                    2023
+                    Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
                   </li>
                   <li>
-                    SND Bronze, <em>Bronx Fire</em>
-                    <br />
-                    2023
+                    SND Bronze, <em>Bronx Fire</em> <br /> 2023
                   </li>
                   <li>
-                    SND Silver, <em>Dixie Fire</em>
-                    <br />
-                    2022
+                    SND Silver, <em>Dixie Fire</em> <br /> 2022
                   </li>
                   <li>
-                    Emmy Winner, <em>One Building, One Bomb</em>
-                    <br />
-                    2019
+                    Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
                   </li>
                   <li>
-                    SND &amp; Malofiej Medals, <em>Apollo 11</em>
-                    <br />
-                    2019
+                    SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
                   </li>
                   <li>
-                    World Press Photo, <em>Under a Cracked Sky</em>
-                    <br />
-                    2018
+                    World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
                   </li>
                 </ul>
               </div>
@@ -734,9 +735,14 @@ This custom racquet combines Solinco’s expertise in crafting sporting equipmen
             {/* Select Clients */}
             <div className="w-full mt-4 mb-4">
               <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Clients</h3>
+                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                  Select Clients
+                </h3>
+              </div>
+              <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
                 <p className="text-[10px]">
-                  The New York Times, Bloomberg News, Eater, Vogue, MTV, Meta, Human Rights Watch, National Lawyers Guild
+                  The New York Times, Bloomberg News, Eater, Vogue, MTV, Meta, Human Rights Watch,
+                  National Lawyers Guild
                 </p>
               </div>
             </div>
