@@ -575,7 +575,7 @@ export default function Home() {
 
   const dixieSlides: Slide[] = [
     { type: "video", src: "/dixie_compressed_1.webm", alt: "Dixie Fire – Clip 1", width: 1280, height: 720 },
-    { type: "video", src: "/dixie_compressed_2.webm", alt: "Dixie Fire – Clip 2", width: 1280, height: 720 },
+
   ];
 
   const mexicoMetroSlides: Slide[] = useMemo(
@@ -756,8 +756,8 @@ export default function Home() {
                         </Sized>
                       ) : p.key === "dixie-fire-weather" ? (
                         <Sized pct={pct}>
-                          <Lazy rootMargin="500px">
-                            {(inView) => (inView ? <LoopingCarousel slides={dixieSlides} slideWidthPercent={100} /> : <div className="aspect-[16/9] w-full" />)}
+                          <Lazy rootMargin="400px">
+                            {(inView) => <SmartVideo srcBase="/dixie_compressed_1" className="object-contain w-full h-auto" preload="none" inView={inView} />}
                           </Lazy>
                         </Sized>
                       ) : p.key === "diary-ed-sheeran" ? (
