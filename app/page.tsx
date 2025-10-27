@@ -51,9 +51,6 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
   "bronx-fire": { src: "/bronx_cover.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
   "sow-et-al": { src: "/protests_1.webp", alt: "Sow, et al. – Protests still", width: 800, height: 600 },
   "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
-  "mexican-metro": { src: "/mm_compressed.webp", alt: "Why the Mexico City Metro Collapsed", width: 600, height: 600 },
-
-  "david-bowie-3d": { src: "/bowie_compressed.webp", alt: "David Bowie in Three Dimensions", width: 800, height: 600 },
   "diary-ed-sheeran": { src: "/edsheeran_cover.webp", alt: "Diary of a Song: Shape of You", width: 800, height: 600 },
   "play-magazine": { src: "/play_1.webp", alt: "PLAY Magazine", width: 700, height: 500 },
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
@@ -68,7 +65,7 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
 
 const DESCRIPTIONS: Record<string, string> = {
   "immigration-industrial-complex":
-  "Client: Lawfare<br /><br />Simplifying the complex network of relationships that make up the deportation-industrial complex.",
+    "Client: Lawfare<br /><br />Simplifying the complex network of relationships that make up the deportation-industrial complex.",
   "bronx-fire":
     "Client: The New York Times<br /><br />When the main fire-safety system catastrophically failed in a Bronx apartment building, 17 residents lost their lives.\nThrough smoke analysis and architectural reconstruction, this piece steps viewers through how the tragedy unfolded.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "sow-et-al":
@@ -121,12 +118,11 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
   antarctica: 90,
   // Sports
   "olympics-ar": 85,
-  "modern-games": 100,
   "usain-bolt": 100,
 };
 
 const CULTURE_KEYS = ["david-bowie-3d", "play-magazine", "zhiyun-xs", "diary-ed-sheeran"] as const;
-const SPORTS_KEYS = ["usain-bolt", "olympics-ar", "modern-games"] as const;
+const SPORTS_KEYS = ["usain-bolt", "olympics-ar"] as const;
 const SCIENCE_KEYS = ["dixie-fire-weather", "pluto", "antarctica", "cern"] as const;
 const CIVIC_KEYS = ["immigration-industrial-complex", "bronx-fire", "death-flights", "donors", "sow-et-al", "mexican-metro"] as const;
 
@@ -189,11 +185,13 @@ function LoopingCarousel({
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [locked, setLocked] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Make timers DOM-safe for TS on Vercel
+  const timerRef = useRef<number | null>(null);
 
   const stopTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
+    if (timerRef.current !== null) {
+      window.clearInterval(timerRef.current);
       timerRef.current = null;
     }
   }, []);
@@ -201,7 +199,7 @@ function LoopingCarousel({
   const startTimer = useCallback(() => {
     if (!autoplayMs) return;
     stopTimer();
-    timerRef.current = setInterval(() => {
+    timerRef.current = window.setInterval(() => {
       setLocked(true);
       setIsTransitioning(true);
       setIndex((p) => p + 1);
@@ -209,41 +207,57 @@ function LoopingCarousel({
   }, [autoplayMs, stopTimer]);
 
   useEffect(() => {
-  if (!autoplayMs) return;
+    if (!autoplayMs) return;
 
-  // random delay between 0–3 seconds so slideshows start out of sync
-  const initialDelay = Math.random() * 3000;
+    // random delay between 0–3 seconds so slideshows start out of sync
+    const initialDelay = Math.random() * 3000;
 
-  const start = () => {
-    startTimer();
-    const onVis = () => (document.hidden ? stopTimer() : startTimer());
-    document.addEventListener("visibilitychange", onVis);
-    return () => {
-      stopTimer();
-      document.removeEventListener("visibilitychange", onVis);
+    const start = () => {
+      startTimer();
+      const onVis = () => (document.hidden ? stopTimer() : startTimer());
+      document.addEventListener("visibilitychange", onVis);
+      return () => {
+        stopTimer();
+        document.removeEventListener("visibilitychange", onVis);
+      };
     };
-  };
 
-  const timeout = setTimeout(start, initialDelay);
+    const timeout = window.setTimeout(start, initialDelay);
 
-  return () => {
-    clearTimeout(timeout);
-    stopTimer();
-  };
-}, [autoplayMs, startTimer, stopTimer]);
-
+    return () => {
+      window.clearTimeout(timeout);
+      stopTimer();
+    };
+  }, [autoplayMs, startTimer, stopTimer]);
 
   const total = slides.length;
   const containerPct = (total + 2) * 100;
 
   const SlideNode = (s: Slide, i: number) => {
-    const common = `object-contain h-auto w-full max-w-none sm:w-[${slideWidthPercent}%] ${s.className ?? ""}`;
+    // Avoid dynamic Tailwind interpolation; use inline width for desktop
+    const inlineStyle: CSSProperties = { width: "100%" };
     return (
       <div key={i} className="w-full flex justify-center flex-shrink-0">
         {s.type === "video" ? (
-          <video src={s.src} autoPlay muted loop playsInline preload="metadata" className={common} />
+          <video
+            src={s.src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className={`object-contain h-auto max-w-none sm:w-auto ${s.className ?? ""}`}
+            style={inlineStyle}
+          />
         ) : (
-          <Image src={s.src} alt={s.alt} width={s.width} height={s.height} className={common} />
+          <Image
+            src={s.src}
+            alt={s.alt}
+            width={s.width}
+            height={s.height}
+            className={`object-contain h-auto max-w-none sm:w-auto ${s.className ?? ""}`}
+            style={inlineStyle}
+          />
         )}
       </div>
     );
@@ -302,7 +316,8 @@ function LoopingCarousel({
 
 /* ===================== Width helper ===================== */
 function Sized({ pct, children }: { pct: number; children: React.ReactNode }) {
-  const style = { "--pct": `${pct}%` } as CSSProperties & Record<"--pct", string>;
+  // TS-safe CSS var for Vercel/strict TS: cast through unknown -> CSSProperties
+  const style = { ["--pct" as any]: `${pct}%` } as unknown as CSSProperties;
   return (
     <div className="w-full flex justify-center">
       <div className="pct-box" style={style}>
@@ -335,14 +350,14 @@ export default function Home() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // NEW: track last programmatic scroll timestamp (used by spy pause window)
+  // track last programmatic scroll timestamp (used by spy pause window)
   const lastProgrammaticRef = useRef(0);
 
-  // Keys that actually render as sections (exclude CV here)
+  // Keys that actually render as sections (exclude CV here on desktop)
   const VISIBLE_KEYS = useMemo(() => {
-  const base = PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key);
-  return isMobile ? [...base, "cv"] : base;
-}, [isMobile]);
+    const base = PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key);
+    return isMobile ? [...base, "cv"] : base;
+  }, [isMobile]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -351,31 +366,31 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Mobile header: prevent top image from being overlapped; balanced top padding
   useEffect(() => {
-  if (!isMobile) return;
+    if (!isMobile) return;
 
-  const header = document.querySelector(".mobile-header") as HTMLElement | null;
-  const scroller = scrollAreaRef.current;
+    const header = document.querySelector(".mobile-header") as HTMLElement | null;
+    const scroller = scrollAreaRef.current;
 
-  if (header && scroller) {
-    const EXTRA_TOP_GAP = 12; // <- gives breathing room between description and top image
+    if (header && scroller) {
+      const EXTRA_TOP_GAP = 12;
 
-    const updatePadding = () => {
-      scroller.style.paddingTop = `${header.offsetHeight + EXTRA_TOP_GAP}px`;
-    };
-    updatePadding();
+      const updatePadding = () => {
+        scroller.style.paddingTop = `${header.offsetHeight + EXTRA_TOP_GAP}px`;
+      };
+      updatePadding();
 
-    const resizeObserver = new ResizeObserver(updatePadding);
-    resizeObserver.observe(header);
+      const resizeObserver = new ResizeObserver(updatePadding);
+      resizeObserver.observe(header);
 
-    window.addEventListener("resize", updatePadding);
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", updatePadding);
-    };
-  }
-}, [isMobile]);
-
+      window.addEventListener("resize", updatePadding);
+      return () => {
+        resizeObserver.disconnect();
+        window.removeEventListener("resize", updatePadding);
+      };
+    }
+  }, [isMobile]);
 
   /* ========= Smooth center-based scroll spy (edge overrides) ========= */
   useEffect(() => {
@@ -385,7 +400,7 @@ export default function Home() {
     const STABLE_MS = 70;
     const MAX_LAG_MS = 180;
     const IGNORE_MS_AFTER_PROGRAMMATIC = 280;
-    const EDGE_THRESHOLD = 8; // snap when within 8px of top/bottom
+    const EDGE_THRESHOLD = 8;
 
     let raf = 0;
     let candidateKey = activeKey;
@@ -395,12 +410,11 @@ export default function Home() {
     const measure = (now: number) => {
       raf = 0;
 
-      // briefly pause spy right after programmatic scrolls
       if (now - lastProgrammaticRef.current < IGNORE_MS_AFTER_PROGRAMMATIC) return;
 
       const { scrollTop, scrollHeight, clientHeight } = scroller;
 
-      // --- Edge overrides so it never "sticks" on fling-to-ends ---
+      // Edge snap
       if (scrollTop <= EDGE_THRESHOLD) {
         const firstKey = VISIBLE_KEYS[0];
         if (activeKey !== firstKey) setActiveKey(firstKey);
@@ -418,7 +432,6 @@ export default function Home() {
         lastUpdate = now;
         return;
       }
-      // -------------------------------------------------------------
 
       const centerY = scrollTop + clientHeight / 2;
 
@@ -436,7 +449,6 @@ export default function Home() {
         }
       }
 
-      // Eagerly accept new candidate
       if (bestKey !== candidateKey) {
         candidateKey = bestKey;
         candidateSince = now;
@@ -455,7 +467,6 @@ export default function Home() {
       if (!raf) raf = requestAnimationFrame(measure);
     };
 
-    // initial kick
     onScroll();
 
     scroller.addEventListener("scroll", onScroll, { passive: true });
@@ -465,22 +476,19 @@ export default function Home() {
     };
   }, [activeKey, VISIBLE_KEYS]);
 
-  // Smooth programmatic scrolling + mark timestamp so spy pauses briefly
+  // Smooth programmatic scrolling + brief spy pause
   const scrollToKey = useCallback((key: string) => {
     const el = itemRefs.current[key];
     const scroller = scrollAreaRef.current;
     if (!el || !scroller) return;
 
-    // mark a programmatic scroll (the spy pauses briefly)
     lastProgrammaticRef.current = performance.now();
 
-    // Center the element inside the custom scroller
     const target = el.offsetTop + el.offsetHeight / 2 - scroller.clientHeight / 2;
     scroller.scrollTo({ top: target, behavior: "smooth" });
     setActiveKey(key);
 
-    // small safety window if user interrupts mid-scroll
-    setTimeout(() => {
+    window.setTimeout(() => {
       lastProgrammaticRef.current = 0;
     }, 320);
   }, []);
@@ -506,24 +514,9 @@ export default function Home() {
   );
 
   const usainSlides: Slide[] = [
-    { type: "video", src: isMobile ? "/sprint_mobile.webm" : "/sprint_1.webm", alt: "Usain Bolt Sprint 1", width: 700, height: 500 },
+    { type: "video", src: "/sprint_final.webm", alt: "Usain Bolt Sprint 1", width: 700, height: 500 },
     { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500 },
     { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500 },
-  ];
-
-  const mariupolSlides: Slide[] = [
-    { src: "/mariupol_1.webp", alt: "Mariupol Slide 1", width: 800, height: 600 },
-    { src: "/mariupol_2.webp", alt: "Mariupol Slide 2", width: 800, height: 600 },
-  ];
-
-  const deathSlides: Slide[] = [
-    { type: "video", src: "/deathFlights_compressed.webm", alt: "Death Flights Video", width: 800, height: 600 },
-    { type: "image", src: "/deathFlights_2.webp", alt: "Death Flights Still", width: 800, height: 600 },
-  ];
-
-  const dixieSlides: Slide[] = [
-    { type: "video", src: "/dixie_compressed_1.webm", alt: "Dixie Fire – Clip 1", width: 1280, height: 720 },
-    { type: "video", src: "/dixie_compressed_2.webm", alt: "Dixie Fire – Clip 2", width: 1280, height: 720 },
   ];
 
   const mexicoMetroSlides: Slide[] = useMemo(
@@ -563,7 +556,6 @@ export default function Home() {
                 </a>
               </p>
             </div>
-            
 
             <div className="h-px" style={{ backgroundColor: UMBER }} />
 
@@ -625,24 +617,21 @@ export default function Home() {
               scrollableNodeProps={{ ref: scrollAreaRef }}
               style={{ height: "100%" }}
               className="w-full sm:max-w-[1200px] sm:mx-auto pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch sm:items-center border-b custom-scrollbar h-full overflow-x-hidden sm:overflow-x-visible px-0"
-
               autoHide={false}
             >
-              <style>{`.simplebar-content-wrapper + .border-b { border-bottom-color: ${UMBER}; }`}</style>
-
               {/* Mobile header */}
-<div className="mobile-header sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2" style={{ borderColor: UMBER }}>
-  <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
-    {activeKey === "cv" ? "CV" : PROJECTS.find((p) => p.key === activeKey)?.title}
-  </h2>
+              <div className="mobile-header sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2" style={{ borderColor: UMBER }}>
+                <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
+                  {activeKey === "cv" ? "CV" : PROJECTS.find((p) => p.key === activeKey)?.title}
+                </h2>
 
-  {activeKey !== "cv" && DESCRIPTIONS[activeKey] && (
-    <div
-      className="text-[10px] leading-relaxed text-foreground/80 mt-1"
-      dangerouslySetInnerHTML={{ __html: DESCRIPTIONS[activeKey] }}
-    />
-  )}
-</div>
+                {activeKey !== "cv" && DESCRIPTIONS[activeKey] && (
+                  <div
+                    className="text-[10px] leading-relaxed text-foreground/80 mt-1"
+                    dangerouslySetInnerHTML={{ __html: DESCRIPTIONS[activeKey] }}
+                  />
+                )}
+              </div>
 
               {/* Desktop header */}
               <div className="hidden sm:block w-full text-left">
@@ -655,8 +644,6 @@ export default function Home() {
               {PROJECTS.filter((p) => p.key !== "cv").map((p, idx) => {
                 const img = IMAGES[p.key];
                 const pct = getPct(p.key);
-
-                // Hover-only for the marked case-study keys
                 const showCaseStudy = CASE_STUDY_KEYS.has(p.key);
 
                 const Placeholder = (
@@ -690,7 +677,7 @@ export default function Home() {
                         </Sized>
                       ) : p.key === "mexican-metro" ? (
                         <Sized pct={pct}>
-                          <LoopingCarousel slides={mexicoMetroSlides} slideWidthPercent={100} autoplayMs={8000} />
+                          <LoopingCarousel slides={mexicoMetroSlides as any} slideWidthPercent={100} autoplayMs={8000} />
                         </Sized>
                       ) : p.key === "usain-bolt" ? (
                         <Sized pct={pct}>
@@ -698,16 +685,16 @@ export default function Home() {
                         </Sized>
                       ) : p.key === "dixie-fire-weather" ? (
                         <Sized pct={pct}>
-                          <LoopingCarousel slides={dixieSlides} slideWidthPercent={100} />
+                          <SmartVideo srcBase="/dixie_final" className="object-contain w-full h-auto" preload="metadata" />
                         </Sized>
                       ) : p.key === "diary-ed-sheeran" ? (
                         <Sized pct={pct}>
-                          <SmartVideo srcBase="/edsheeran_compressed" className="object-contain w-full h-auto" preload="metadata" />
+                          <SmartVideo srcBase="/edsheeran_final" className="object-contain w-full h-auto" preload="metadata" />
                         </Sized>
                       ) : p.key === "death-flights" ? (
                         <Sized pct={pct}>
                           <Link href="/work/the-death-flights" aria-label="Open The Death Flights project" className="block cursor-pointer">
-                            <SmartVideo srcBase="/deathFlights_compressed" className="object-contain w-full h-auto" preload="metadata" />
+                            <SmartVideo srcBase="/deathFlights_final" className="object-contain w-full h-auto" preload="metadata" />
                           </Link>
                         </Sized>
                       ) : p.key === "sow-et-al" ? (
@@ -719,45 +706,38 @@ export default function Home() {
                       ) : p.key === "bronx-fire" ? (
                         <Sized pct={pct}>
                           <Link href="/work/bronx-fire" aria-label="Open Reconstructing the Bronx Fire" className="block cursor-pointer">
-                            <SmartVideo srcBase="/bronx_compressed_2" className="object-contain w-full h-auto" preload="metadata" />
+                            <SmartVideo srcBase="/bronx_final" className="object-contain w-full h-auto" preload="metadata" />
                           </Link>
                         </Sized>
                       ) : p.key === "olympics-ar" ? (
                         <Sized pct={pct}>
-                          <SmartVideo srcBase="/olympicsAR_compressed_2" className="object-contain w-full h-auto" preload="metadata" />
+                          <SmartVideo srcBase="/olympicsAR_final" className="object-contain w-full h-auto" preload="metadata" />
                         </Sized>
                       ) : p.key === "pluto" ? (
                         <Sized pct={pct}>
-                          <SmartVideo srcBase="/pluto_compressed" className="object-contain w-full h-auto" preload="metadata" />
+                          <SmartVideo srcBase="/pluto_final" className="object-contain w-full h-auto" preload="metadata" />
                         </Sized>
                       ) : p.key === "antarctica" ? (
                         <Sized pct={pct}>
-                          <SmartVideo srcBase="/antarctica" className="object-contain w-full h-auto" preload="metadata" />
+                          <SmartVideo srcBase="/antarctica_final" className="object-contain w-full h-auto" preload="metadata" />
                         </Sized>
                       ) : p.key === "david-bowie-3d" ? (
                         <Sized pct={pct}>
-                          <SmartVideo srcBase="/bowie" className="object-contain w-full h-auto" preload="metadata" loop autoPlay muted playsInline />
+                          <SmartVideo srcBase="/bowie_final" className="object-contain w-full h-auto" preload="metadata" loop autoPlay muted playsInline />
                         </Sized>
-
-                        ) : p.key === "immigration-industrial-complex" ? (
-  <Sized pct={pct}>
-    <SmartVideo srcBase="/iic" className="object-contain w-full h-auto" preload="metadata" />
-  </Sized>
-
-
+                      ) : p.key === "immigration-industrial-complex" ? (
+                        <Sized pct={pct}>
+                          <SmartVideo srcBase="/iic_final" className="object-contain w-full h-auto" preload="metadata" />
+                        </Sized>
                       ) : p.key === "zhiyun-xs" ? (
                         <Sized pct={pct}>
-                          <SmartVideo srcBase="/zhiyun_compressed" className="object-contain w-full h-auto" preload="metadata" />
-                        </Sized>
-                      ) : p.key === "mariupol" ? (
-                        <Sized pct={pct}>
-                          <LoopingCarousel slides={mariupolSlides} slideWidthPercent={100} />
+                          <SmartVideo srcBase="/zhiyun_final" className="object-contain w-full h-auto" preload="metadata" />
                         </Sized>
                       ) : img ? (
                         <Sized pct={pct}>
                           <Image src={img.src} alt={img.alt} width={img.width} height={img.height} className="object-contain w-full" priority={idx === 0} />
                         </Sized>
-                      ) : p.key === "antarctica" || p.key === "cern" || p.key === "david-bowie-3d" || p.key === "modern-games" ? (
+                      ) : p.key === "antarctica" || p.key === "cern" || p.key === "david-bowie-3d" ? (
                         Placeholder
                       ) : null}
 
@@ -766,66 +746,73 @@ export default function Home() {
                     </div>
 
                     {/* Divider with equal buffers */}
-<div className="flex flex-col items-center w-full">
-  <div style={{ height: GAP }} />
-  <div className="h-px w-full" style={{ backgroundColor: UMBER }} />
-  <div
-    style={{
-      height:
-        isMobile && idx === PROJECTS.filter((p) => p.key !== "cv").length - 1
-          ? 0
-          : GAP,
-    }}
-  />
-</div>
+                    <div className="flex flex-col items-center w-full">
+                      <div style={{ height: GAP }} />
+                      <div className="h-px w-full" style={{ backgroundColor: UMBER }} />
+                      <div style={{ height: isMobile && idx === PROJECTS.filter((p) => p.key !== "cv").length - 1 ? 0 : GAP }} />
+                    </div>
                   </div>
                 );
               })}
 
               {/* Mobile-only CV (full-bleed lines, extra bottom padding) */}
-<div
-  ref={(el) => {
-    itemRefs.current["cv"] = el;
-  }}
-  className="sm:hidden w-full px-3 pt-4 pb-14 text-[10px] leading-relaxed"
->
-  <div className="mb-0">
-    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
-    <ul className="space-y-[0.2rem] text-[10px]">
-      <li>Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em> <br /> 2025</li>
-      <li>Architekturmuseum der TUM, <em>Visual Investigations</em> <br /> 2024</li>
-    </ul>
-  </div>
+              <div
+                ref={(el) => {
+                  itemRefs.current["cv"] = el;
+                }}
+                className="sm:hidden w-full px-3 pt-4 pb-14 text-[10px] leading-relaxed"
+              >
+                <div className="mb-0">
+                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
+                  <ul className="space-y-[0.2rem] text-[10px]">
+                    <li>
+                      Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em> <br /> 2025
+                    </li>
+                    <li>
+                      Architekturmuseum der TUM, <em>Visual Investigations</em> <br /> 2024
+                    </li>
+                  </ul>
+                </div>
 
-  {/* full-bleed line */}
-  <div className="-mx-3">
-    <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER }} />
-  </div>
+                {/* full-bleed line */}
+                <div className="-mx-3">
+                  <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER }} />
+                </div>
 
-  <div className="mt-0">
-    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
-    <ul className="space-y-[0.2rem] text-[10px]">
-      <li>Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023</li>
-      <li>SND Bronze, <em>Bronx Fire</em> <br /> 2023</li>
-      <li>SND Silver, <em>Dixie Fire</em> <br /> 2022</li>
-      <li>Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019</li>
-      <li>SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019</li>
-      <li>World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018</li>
-    </ul>
-  </div>
+                <div className="mt-0">
+                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
+                  <ul className="space-y-[0.2rem] text-[10px]">
+                    <li>
+                      Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
+                    </li>
+                    <li>
+                      SND Bronze, <em>Bronx Fire</em> <br /> 2023
+                    </li>
+                    <li>
+                      SND Silver, <em>Dixie Fire</em> <br /> 2022
+                    </li>
+                    <li>
+                      Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
+                    </li>
+                    <li>
+                      SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
+                    </li>
+                    <li>
+                      World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
+                    </li>
+                  </ul>
+                </div>
 
-  {/* full-bleed line */}
-  <div className="-mx-3">
-    <div className="h-px my-4 w-full sm:my-3" style={{ backgroundColor: UMBER }} />
-  </div>
+                {/* full-bleed line */}
+                <div className="-mx-3">
+                  <div className="h-px my-4 w-full sm:my-3" style={{ backgroundColor: UMBER }} />
+                </div>
 
-  <div className="mt-0">
-    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Clients</h3>
-    <p className="text-[10px]">
-      Bloomberg, Human Rights Watch, Meta, MTV, National Lawyers Guild, The New York Times, Vogue, Vox
-    </p>
-  </div>
-</div>
+                <div className="mt-0">
+                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Clients</h3>
+                  <p className="text-[10px]">Bloomberg, Human Rights Watch, Meta, MTV, National Lawyers Guild, The New York Times, Vogue, Vox</p>
+                </div>
+              </div>
             </SimpleBar>
           </div>
 
@@ -838,7 +825,6 @@ export default function Home() {
               <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">CV</h2>
             </div>
 
-            {/* Move the top line + below up slightly; keep the "CV" title fixed */}
             <div className="translate-y-[-2px]">
               <div className="h-px mb-4 w-full" style={{ backgroundColor: UMBER }} />
 
@@ -846,8 +832,12 @@ export default function Home() {
                 <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
                   <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>Prada Foundation, Venice Biennali, <em>Diagrams</em> <br /> 2025</li>
-                    <li>Architekturmuseum TUM, <em>Visual Investigations</em> <br /> 2024</li>
+                    <li>
+                      Prada Foundation, Venice Biennali, <em>Diagrams</em> <br /> 2025
+                    </li>
+                    <li>
+                      Architekturmuseum TUM, <em>Visual Investigations</em> <br /> 2024
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -858,12 +848,24 @@ export default function Home() {
                 <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
                   <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023</li>
-                    <li>SND Bronze, <em>Bronx Fire</em> <br /> 2023</li>
-                    <li>SND Silver, <em>Dixie Fire</em> <br /> 2022</li>
-                    <li>Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019</li>
-                    <li>SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019</li>
-                    <li>World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018</li>
+                    <li>
+                      Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
+                    </li>
+                    <li>
+                      SND Bronze, <em>Bronx Fire</em> <br /> 2023
+                    </li>
+                    <li>
+                      SND Silver, <em>Dixie Fire</em> <br /> 2022
+                    </li>
+                    <li>
+                      Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
+                    </li>
+                    <li>
+                      SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
+                    </li>
+                    <li>
+                      World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
+                    </li>
                   </ul>
                 </div>
               </div>

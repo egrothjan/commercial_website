@@ -60,11 +60,3 @@ body {
     max-width: 100% !important;
   }
 }
-
-/* ===== MOBILE EXTRA TOP SPACING BELOW FIXED HEADER ===== */
-@media (max-width: 639px) {
-  /* Add breathing room between fixed header and first project */
-  .custom-scrollbar [data-key]:first-of-type {
-    margin-top: 100px !important; /* try 80–120px depending on your visual taste */
-  }
-}
