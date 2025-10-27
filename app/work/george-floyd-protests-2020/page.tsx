@@ -558,10 +558,10 @@ export default function Home() {
   );
 
   const usainSlides: Slide[] = [
-    { type: "video", src: isMobile ? "/sprint_mobile.webm" : "/sprint_1.webm", alt: "Usain Bolt Sprint 1", width: 700, height: 500 },
-    { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500 },
-    { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500 },
-  ];
+  { type: "video", src: "/sprint_final.webm", alt: "Usain Bolt Sprint 1", width: 700, height: 500 },
+  { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500 },
+  { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500 },
+];
 
   const mariupolSlides: Slide[] = [
     { src: "/mariupol_1.webp", alt: "Mariupol Slide 1", width: 800, height: 600 },
@@ -569,12 +569,11 @@ export default function Home() {
   ];
 
   const deathSlides: Slide[] = [
-    { type: "video", src: "/deathFlights_compressed.webm", alt: "Death Flights Video", width: 800, height: 600 },
-    { type: "image", src: "/deathFlights_2.webp", alt: "Death Flights Still", width: 800, height: 600 },
-  ];
+  { type: "video", src: "/deathFlights_final.webm", alt: "Death Flights Video", width: 800, height: 600 },
+];
 
   const dixieSlides: Slide[] = [
-    { type: "video", src: "/dixie_compressed_1.webm", alt: "Dixie Fire – Clip 1", width: 1280, height: 720 },
+    { type: "video", src: "/dixie_final.webm", alt: "Dixie Fire – Clip 1", width: 1280, height: 720 },
 
   ];
 
@@ -757,14 +756,14 @@ export default function Home() {
                       ) : p.key === "dixie-fire-weather" ? (
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
-                            {(inView) => <SmartVideo srcBase="/dixie_compressed_1" className="object-contain w-full h-auto" preload="none" inView={inView} />}
+                            {(inView) => <SmartVideo srcBase="/dixie_final" className="object-contain w-full h-auto" preload="none" inView={inView} />}
                           </Lazy>
                         </Sized>
                       ) : p.key === "diary-ed-sheeran" ? (
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
                             {(inView) => (
-                              <SmartVideo srcBase="/edsheeran_compressed" className="object-contain w-full h-auto" preload="none" inView={inView} />
+                              <SmartVideo srcBase="/edsheeran_final" className="object-contain w-full h-auto" preload="none" inView={inView} />
                             )}
                           </Lazy>
                         </Sized>
@@ -773,7 +772,7 @@ export default function Home() {
                           <Lazy rootMargin="400px">
                             {(inView) => (
                               <Link href="/work/the-death-flights" aria-label="Open The Death Flights project" className="block cursor-pointer">
-                                <SmartVideo srcBase="/deathFlights_compressed" className="object-contain w-full h-auto" preload="none" inView={inView} />
+                                <SmartVideo srcBase="/deathFlights_final" className="object-contain w-full h-auto" preload="none" inView={inView} />
                               </Link>
                             )}
                           </Lazy>
@@ -805,7 +804,7 @@ export default function Home() {
                           <Lazy rootMargin="400px">
                             {(inView) => (
                               <Link href="/work/bronx-fire" aria-label="Open Reconstructing the Bronx Fire" className="block cursor-pointer">
-                                <SmartVideo srcBase="/bronx_compressed_2" className="object-contain w-full h-auto" preload="none" inView={inView} />
+                                <SmartVideo srcBase="/bronx_final" className="object-contain w-full h-auto" preload="none" inView={inView} />
                               </Link>
                             )}
                           </Lazy>
@@ -814,49 +813,50 @@ export default function Home() {
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
                             {(inView) => (
-                              <SmartVideo srcBase="/olympicsAR_compressed_2" className="object-contain w-full h-auto" preload="none" inView={inView} />
+                              <SmartVideo srcBase="/olympicsAR_final" className="object-contain w-full h-auto" preload="none" inView={inView} />
                             )}
                           </Lazy>
                         </Sized>
                       ) : p.key === "pluto" ? (
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
-                            {(inView) => <SmartVideo srcBase="/pluto_compressed" className="object-contain w-full h-auto" preload="none" inView={inView} />}
+                            {(inView) => <SmartVideo srcBase="/pluto_final" className="object-contain w-full h-auto" preload="none" inView={inView} />}
                           </Lazy>
                         </Sized>
                       ) : p.key === "antarctica" ? (
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
-                            {(inView) => <SmartVideo srcBase="/antarctica" className="object-contain w-full h-auto" preload="none" inView={inView} />}
+                            {(inView) => <SmartVideo srcBase="/antarctica_final" className="object-contain w-full h-auto" preload="none" inView={inView} />}
                           </Lazy>
                         </Sized>
                       ) : p.key === "david-bowie-3d" ? (
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
                             {(inView) => (
-                              <SmartVideo
-                                srcBase="/bowie"
-                                className="object-contain w-full h-auto"
-                                preload="none"
-                                loop
-                                autoPlay
-                                muted
-                                playsInline
-                                inView={inView}
-                              />
+                              // AFTER
+<SmartVideo
+  srcBase="/bowie_final"
+  className="object-contain w-full h-auto"
+  preload="none"
+  loop
+  autoPlay
+  muted
+  playsInline
+  inView={inView}
+/>
                             )}
                           </Lazy>
                         </Sized>
                       ) : p.key === "immigration-industrial-complex" ? (
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
-                            {(inView) => <SmartVideo srcBase="/iic" className="object-contain w-full h-auto" preload="none" inView={inView} />}
+                            {(inView) => <SmartVideo srcBase="/iic_final" className="object-contain w-full h-auto" preload="none" inView={inView} />}
                           </Lazy>
                         </Sized>
                       ) : p.key === "zhiyun-xs" ? (
                         <Sized pct={pct}>
                           <Lazy rootMargin="400px">
-                            {(inView) => <SmartVideo srcBase="/zhiyun_compressed" className="object-contain w-full h-auto" preload="none" inView={inView} />}
+                            {(inView) => <SmartVideo srcBase="/zhiyun_final" className="object-contain w-full h-auto" preload="none" inView={inView} />}
                           </Lazy>
                         </Sized>
                       ) : p.key === "mariupol" ? (
