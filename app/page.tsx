@@ -202,7 +202,12 @@ function LoopingCarousel({
   }, [autoplayMs, stopTimer]);
 
   useEffect(() => {
-    if (!autoplayMs) return;
+  if (!autoplayMs) return;
+
+  // random delay between 0–3 seconds so slideshows start out of sync
+  const initialDelay = Math.random() * 3000;
+
+  const start = () => {
     startTimer();
     const onVis = () => (document.hidden ? stopTimer() : startTimer());
     document.addEventListener("visibilitychange", onVis);
@@ -210,7 +215,16 @@ function LoopingCarousel({
       stopTimer();
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, [autoplayMs, startTimer, stopTimer]);
+  };
+
+  const timeout = setTimeout(start, initialDelay);
+
+  return () => {
+    clearTimeout(timeout);
+    stopTimer();
+  };
+}, [autoplayMs, startTimer, stopTimer]);
+
 
   const total = slides.length;
   const containerPct = (total + 2) * 100;
@@ -298,7 +312,7 @@ function CaseStudyBadge() {
       aria-hidden
       className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
     >
-      <span className="bg-black/75 border border-red-500 text-red-500 px-3 py-1.5 rounded-sm lowercase leading-none">
+      <span className="bg-[#4a1f14]/80 border border-red-500 text-red-500 px-3 py-1.5 rounded-sm lowercase leading-none">
         case study
       </span>
     </div>
@@ -506,7 +520,7 @@ export default function Home() {
 
             <div className="px-3 mt-3 mb-4">
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
-                Pulitzer-Nominated and Emmy Award-Winning Data Visualization and Information Design. <br />
+                Pulitzer-Finalist and Emmy Award-Winning Data Visualization and Information Design. <br />
                 Contact:{" "}
                 <a href="mailto:evangrothjan@gmail.com" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-600">
                   evangrothjan@gmail.com
