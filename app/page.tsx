@@ -348,7 +348,7 @@ function CaseStudyBadgeMobile({ href, aria }: { href: string; aria: string }) {
       aria-label={aria}
       className="sm:hidden absolute bottom-3 left-3 z-10"
     >
-      <span className="bg-white/75 border border-[#4a1f14] text-[#4a1f14] px-3 py-1.5 rounded-sm lowercase leading-none shadow scale-[0.75] origin-bottom-left">
+      <span className="bg-white/75 border border-[#4a1f14] text-[#4a1f14] px-3 py-1.5 rounded-sm lowercase leading-none shadow scale-[0.50] origin-bottom-left">
         case study
       </span>
     </Link>
