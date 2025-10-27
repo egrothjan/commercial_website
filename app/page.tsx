@@ -722,7 +722,7 @@ useEffect(() => {
                 );
 
                 // Extra top buffer above the FIRST project (Death Flights) on MOBILE only
-                const extraTopMobileFirst = isMobile && idx === 0 ? 40 : 0;
+                const extraTopMobileFirst = isMobile && idx === 0 ? 20 : 0;
 
                 return (
                   <div
