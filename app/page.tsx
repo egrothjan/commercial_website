@@ -52,7 +52,6 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
   "sow-et-al": { src: "/protests_1.webp", alt: "Sow, et al. – Protests still", width: 800, height: 600 },
   "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
   "diary-ed-sheeran": { src: "/edsheeran_cover.webp", alt: "Diary of a Song: Shape of You", width: 800, height: 600 },
-  "play-magazine": { src: "/play_1.webp", alt: "PLAY Magazine", width: 800, height: 600 },
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
 
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
@@ -743,7 +742,7 @@ useEffect(() => {
                         </Sized>
                       ) : null}
 
-                      {p.key === "mexican-metro" ? null : p.key === "usain-bolt" ? (
+                      {p.key === "play-magazine" || p.key === "mexican-metro" || p.key === "donors" ? null : p.key === "usain-bolt" ? (
                         <Sized pct={pct}>
                           <LoopingCarousel slides={usainSlides} slideWidthPercent={100} />
                         </Sized>
