@@ -109,7 +109,7 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
   "immigration-industrial-complex": 75,
   "bronx-fire": 100,
   "sow-et-al": 85,
-  "death-flights": 100,
+  "death-flights": 75,
   "donors": 75,
   "mexican-metro": 85,
   // Culture
