@@ -52,7 +52,7 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
   "sow-et-al": { src: "/protests_1.webp", alt: "Sow, et al. – Protests still", width: 800, height: 600 },
   "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
   "diary-ed-sheeran": { src: "/edsheeran_cover.webp", alt: "Diary of a Song: Shape of You", width: 800, height: 600 },
-  "play-magazine": { src: "/play_1.webp", alt: "PLAY Magazine", width: 700, height: 500 },
+  "play-magazine": { src: "/play_1.webp", alt: "PLAY Magazine", width: 800, height: 600 },
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
 
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
@@ -325,8 +325,9 @@ function Sized({ pct, children }: { pct: number; children: React.ReactNode }) {
   );
 }
 
-/* ===================== Case Study Badge (hover reveal) ===================== */
-function CaseStudyBadge() {
+/* ===================== Case Study Badges ===================== */
+/** Desktop/hover badge (non-interactive, fades in on hover) */
+function CaseStudyBadgeHover() {
   return (
     <div
       aria-hidden
@@ -336,6 +337,21 @@ function CaseStudyBadge() {
         case study
       </span>
     </div>
+  );
+}
+
+/** Mobile-only clickable badge overlay */
+function CaseStudyBadgeMobile({ href, aria }: { href: string; aria: string }) {
+  return (
+    <Link
+      href={href}
+      aria-label={aria}
+      className="sm:hidden absolute bottom-3 left-3 z-10"
+    >
+      <span className="bg-white border border-[#4a1f14] text-[#4a1f14] px-3 py-1.5 rounded-sm lowercase leading-none shadow">
+        case study
+      </span>
+    </Link>
   );
 }
 
@@ -369,44 +385,52 @@ export default function Home() {
   }, []);
 
   // Keep mobile header height stable; cache tallest; sync scroller padding
-  useEffect(() => {
-    if (!isMobile) return;
+useEffect(() => {
+  if (!isMobile) return;
+
+  const EXTRA_TOP_GAP = 12;
+
+  const measureAndSync = () => {
     const header = mobileHeaderRef.current;
     const scroller = scrollAreaRef.current;
-    if (!header || !scroller) return;
+    if (!header || !scroller) return; // guard INSIDE the function
 
-    const EXTRA_TOP_GAP = 12;
+    // Measure natural height
+    const prev = header.style.height;
+    header.style.height = "auto";
+    const natural = header.getBoundingClientRect().height; // safer than offsetHeight
+    header.style.height = prev;
 
-    const measureAndSync = () => {
-      // measure natural height
-      const prev = header.style.height;
-      header.style.height = "auto";
-      const natural = header.offsetHeight;
-      header.style.height = prev;
+    // Update using functional set to avoid stale closure,
+    // and do padding/height writes in the same tick.
+    setMobileHeaderH((prevH) => {
+      const next = Math.max(prevH, natural);
+      scroller.style.paddingTop = `${next + EXTRA_TOP_GAP}px`;
+      // lock the header box to the tallest seen so far (prevents jitter)
+      header.style.height = `${next}px`;
+      return next;
+    });
+  };
 
-      // grow to tallest seen (prevents shrinking/jitter)
-      setMobileHeaderH((prevH) => (natural > prevH ? natural : prevH));
+  // Initial measure after paint
+  const raf = requestAnimationFrame(measureAndSync);
 
-      // use the fixed (possibly larger) height for padding
-      const used = Math.max(natural, mobileHeaderH);
-      scroller.style.paddingTop = `${used + EXTRA_TOP_GAP}px`;
-    };
+  // React to header content changes
+  const ro = new ResizeObserver(() => measureAndSync());
+  if (mobileHeaderRef.current) ro.observe(mobileHeaderRef.current);
 
-    // Initial + on resize/content changes
-    measureAndSync();
+  // React to viewport changes
+  const onResize = () => measureAndSync();
+  window.addEventListener("resize", onResize, { passive: true });
 
-    const ro = new ResizeObserver(() => measureAndSync());
-    ro.observe(header);
+  return () => {
+    cancelAnimationFrame(raf);
+    ro.disconnect();
+    window.removeEventListener("resize", onResize);
+  };
+// Recompute when content swaps in the header (activeKey) or mobile mode flips.
+}, [isMobile, activeKey]);
 
-    const onResize = () => measureAndSync();
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", onResize);
-    };
-    // re-run when activeKey changes (description swaps) or cached height updates
-  }, [isMobile, activeKey, mobileHeaderH]);
 
   /* ========= Smooth center-based scroll spy (edge overrides) ========= */
   useEffect(() => {
@@ -555,6 +579,9 @@ export default function Home() {
   );
 
   /* ===================== Render ===================== */
+  const nonCVProjects = PROJECTS.filter((p) => p.key !== "cv");
+  const lastIndex = nonCVProjects.length - 1;
+
   return (
     <main className="h-screen overflow-x-hidden sm:overflow-x-visible overflow-y-hidden bg-background text-foreground">
       <style jsx global>{`
@@ -673,7 +700,7 @@ export default function Home() {
                 <div className="w-full h-px" style={{ backgroundColor: UMBER }} />
               </div>
 
-              {PROJECTS.filter((p) => p.key !== "cv").map((p, idx) => {
+              {nonCVProjects.map((p, idx) => {
                 const img = IMAGES[p.key];
                 const pct = getPct(p.key);
                 const showCaseStudy = CASE_STUDY_KEYS.has(p.key);
@@ -686,6 +713,9 @@ export default function Home() {
                   </Sized>
                 );
 
+                // Extra top buffer above the FIRST project (Death Flights) on MOBILE only
+                const extraTopMobileFirst = isMobile && idx === 0 ? 40 : 0;
+
                 return (
                   <div
                     key={p.key}
@@ -695,9 +725,9 @@ export default function Home() {
                     }}
                     className="w-full flex flex-col items-center"
                   >
-                    {idx === 0 && <div style={{ height: GAP }} />}
+                    {idx === 0 && <div style={{ height: GAP + extraTopMobileFirst }} />}
 
-                    {/* Media wrapper is a hover group so the badge fades in */}
+                    {/* Media wrapper is a hover group so the desktop badge fades in */}
                     <div className="relative group">
                       {p.key === "play-magazine" ? (
                         <Sized pct={pct}>
@@ -775,26 +805,46 @@ export default function Home() {
                         Placeholder
                       ) : null}
 
-                      {/* Hover-only CASE STUDY badge */}
-                      {showCaseStudy && <CaseStudyBadge />}
+                      {/* Desktop hover badge */}
+                      {showCaseStudy && <CaseStudyBadgeHover />}
+
+                      {/* Mobile clickable badge for the three case-study projects */}
+                      {showCaseStudy && (
+                        <CaseStudyBadgeMobile
+                          href={
+                            p.key === "death-flights"
+                              ? "/work/the-death-flights"
+                              : p.key === "bronx-fire"
+                              ? "/work/bronx-fire"
+                              : "/work/george-floyd-protests-2020"
+                          }
+                          aria={
+                            p.key === "death-flights"
+                              ? "Open The Death Flights case study"
+                              : p.key === "bronx-fire"
+                              ? "Open Reconstructing the Bronx Fire case study"
+                              : "Open Sow, et al. v. City of New York, et al. case study"
+                          }
+                        />
+                      )}
                     </div>
 
-                    {/* Divider with equal buffers */}
+                    {/* Divider with equal buffers (always keep bottom gap, including last, on mobile) */}
                     <div className="flex flex-col items-center w-full">
                       <div style={{ height: GAP }} />
                       <div className="h-px w-full" style={{ backgroundColor: UMBER }} />
-                      <div style={{ height: isMobile && idx === PROJECTS.filter((p) => p.key !== "cv").length - 1 ? 0 : GAP }} />
+                      <div style={{ height: GAP }} />
                     </div>
                   </div>
                 );
               })}
 
-              {/* Mobile-only CV (full-bleed lines, extra bottom padding) */}
+              {/* Mobile-only CV (full-bleed lines, extra bottom padding to keep some room after clients) */}
               <div
                 ref={(el) => {
                   itemRefs.current["cv"] = el;
                 }}
-                className="sm:hidden w-full px-3 pt-4 pb-14 text-[10px] leading-relaxed"
+                className="sm:hidden w-full px-3 pt-4 pb-16 text-[10px] leading-relaxed"
               >
                 <div className="mb-0">
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
