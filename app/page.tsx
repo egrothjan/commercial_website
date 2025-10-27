@@ -48,17 +48,18 @@ const PROJECTS: Project[] = [
 ];
 
 const IMAGES: Record<string, { src: string; alt: string; width: number; height: number }> = {
+  "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
+  "donors": { src: "/donors.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
   "bronx-fire": { src: "/bronx_cover.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
   "sow-et-al": { src: "/protests_1.webp", alt: "Sow, et al. – Protests still", width: 800, height: 600 },
-  "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
+    "immigration-industrial-complex": { src: "/iic.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
   "diary-ed-sheeran": { src: "/edsheeran_cover.webp", alt: "Diary of a Song: Shape of You", width: 800, height: 600 },
   "play-magazine": { src: "/play_1.webp", alt: "PLAY Magazine", width: 700, height: 500 },
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
-
+  
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
-  cern: { src: "/cern_2.webp", alt: "Inside CERN's Large Hadron Collider", width: 800, height: 600 },
-  pluto: { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
-
+  "cern": { src: "/cern_2.webp", alt: "Inside CERN's Large Hadron Collider", width: 800, height: 600 },
+  "pluto": { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
   "olympics-ar": { src: "/olympics_cover.webp", alt: "The Gymnast. The Climber.", width: 800, height: 600 },
   "usain-bolt": { src: "/sprint_2.webp", alt: "Usain Bolt and the Fastest Men in the World", width: 700, height: 500 },
 };
@@ -513,11 +514,22 @@ export default function Home() {
     []
   );
 
-  const usainSlides: Slide[] = [
-    { type: "video", src: "/sprint_final.webm", alt: "Usain Bolt Sprint 1", width: 700, height: 500 },
+  // Replace your existing `usainSlides` with this:
+const usainSlides: Slide[] = useMemo(
+  () => [
+    {
+      type: "video",
+      src: isMobile ? "/sprint_mobile.webm" : "/sprint_final.webm",
+      alt: "Usain Bolt Sprint 1",
+      width: 700,
+      height: 500,
+    },
     { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500 },
     { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500 },
-  ];
+  ],
+  [isMobile]
+);
+
 
   const mexicoMetroSlides: Slide[] = useMemo(
     () => [
@@ -549,7 +561,7 @@ export default function Home() {
 
             <div className="px-3 mt-3 mb-4">
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
-                Pulitzer-Finalist and Emmy Award-Winning Data Visualization and Information Design. <br />
+                Pulitzer Finalist and Emmy Award-Winning <br /> Data Visualization and Information Design. <br />
                 Contact:{" "}
                 <a href="mailto:evangrothjan@gmail.com" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-600">
                   evangrothjan@gmail.com
