@@ -20,10 +20,11 @@ const GAP = 65;
 
 const PROJECTS: Project[] = [
   // Civic
+  { title: "The Death Flights", key: "death-flights", href: "/work/the-death-flights" },
+  { title: "Deportation-Industrial Complex", key: "immigration-industrial-complex", href: "#" },
+  { title: "Families Funding the 2016 Election", key: "donors", href: "#" },
   { title: "Reconstructing the Bronx Fire", key: "bronx-fire", href: "/work/bronx-fire" },
   { title: "Sow, et al. v. City of New York, et al.", key: "sow-et-al", href: "#" },
-  { title: "The Death Flights", key: "death-flights", href: "/work/the-death-flights" },
-  { title: "The Families Funding the 2016 Election", key: "donors", href: "#" },
   { title: "Why the Mexico City Metro Collapsed", key: "mexican-metro", href: "#" },
 
   // Culture
@@ -33,10 +34,10 @@ const PROJECTS: Project[] = [
   { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
 
   // Science
+  { title: "The Antarctica Dispatches", key: "antarctica", href: "#" },
   { title: "How the Dixie Fire Created Its Own Weather", key: "dixie-fire-weather", href: "#" },
   { title: "Inside CERN's Large Hadron Collider", key: "cern", href: "#" },
   { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#" },
-  { title: "The Antarctica Dispatches", key: "antarctica", href: "#" },
 
   // Sports
   { title: "The Gymnast. The Climber.", key: "olympics-ar", href: "#" },
@@ -66,6 +67,8 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
 };
 
 const DESCRIPTIONS: Record<string, string> = {
+  "immigration-industrial-complex":
+  "Client: Lawfare<br /><br />Simplifying the complex network of relationships that make up the deportation-industrial complex.",
   "bronx-fire":
     "Client: The New York Times<br /><br />When the main fire-safety system catastrophically failed in a Bronx apartment building, 17 residents lost their lives.\nThrough smoke analysis and architectural reconstruction, this piece steps viewers through how the tragedy unfolded.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "sow-et-al":
@@ -100,10 +103,11 @@ const DESCRIPTIONS: Record<string, string> = {
 
 const MEDIA_PCT: Partial<Record<string, number>> = {
   // Civic
+  "immigration-industrial-complex": 75,
   "bronx-fire": 100,
   "sow-et-al": 85,
   "death-flights": 100,
-  donors: 75,
+  "donors": 75,
   "mexican-metro": 85,
   // Culture
   "david-bowie-3d": 85,
@@ -124,7 +128,7 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
 const CULTURE_KEYS = ["david-bowie-3d", "play-magazine", "zhiyun-xs", "diary-ed-sheeran"] as const;
 const SPORTS_KEYS = ["usain-bolt", "olympics-ar", "modern-games"] as const;
 const SCIENCE_KEYS = ["dixie-fire-weather", "pluto", "antarctica", "cern"] as const;
-const CIVIC_KEYS = ["bronx-fire", "death-flights", "donors", "sow-et-al", "mexican-metro"] as const;
+const CIVIC_KEYS = ["immigration-industrial-complex", "bronx-fire", "death-flights", "donors", "sow-et-al", "mexican-metro"] as const;
 
 const DIAMOND_KEYS = ["bronx-fire", "sow-et-al", "death-flights"] as const;
 
@@ -132,7 +136,10 @@ const DIAMOND_KEYS = ["bronx-fire", "sow-et-al", "death-flights"] as const;
 const CASE_STUDY_KEYS = new Set<string>(["bronx-fire", "sow-et-al", "death-flights"]);
 
 /* ===================== Helpers ===================== */
-const sortByTitle = (a: Project, b: Project) => a.title.localeCompare(b.title);
+const sortByTitle = (a: Project, b: Project) => {
+  const stripThe = (t: string) => t.replace(/^The\s+/i, "").trim();
+  return stripThe(a.title).localeCompare(stripThe(b.title));
+};
 const CULTURE_LIST = PROJECTS.filter((p) => (CULTURE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
 const SPORTS_LIST = PROJECTS.filter((p) => (SPORTS_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
 const SCIENCE_LIST = PROJECTS.filter((p) => (SCIENCE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
@@ -312,7 +319,7 @@ function CaseStudyBadge() {
       aria-hidden
       className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
     >
-      <span className="bg-[#4a1f14]/80 border border-red-500 text-red-500 px-3 py-1.5 rounded-sm lowercase leading-none">
+      <span className="bg-white/75 border border-[#4a1f14] text-[#4a1f14] px-3 py-1.5 rounded-sm lowercase leading-none">
         case study
       </span>
     </div>
@@ -527,6 +534,7 @@ export default function Home() {
                 </a>
               </p>
             </div>
+            
 
             <div className="h-px" style={{ backgroundColor: UMBER }} />
 
@@ -543,7 +551,7 @@ export default function Home() {
                             const isDiamond = (DIAMOND_KEYS as readonly string[]).includes(key);
                             const size = isDiamond ? "w-2 h-2" : "w-2.5 h-2.5";
                             return (
-                              <li key={key} className="flex items-start gap-2">
+                              <li key={key} className={`flex items-start gap-2 ${isDiamond ? "pl-[2px]" : ""}`}>
                                 <span
                                   aria-hidden
                                   className={`${size} flex-none transition-transform duration-200 ease-out ${isDiamond ? "" : "rounded-full"}`}
@@ -705,6 +713,13 @@ export default function Home() {
                         <Sized pct={pct}>
                           <SmartVideo srcBase="/bowie" className="object-contain w-full h-auto" preload="metadata" loop autoPlay muted playsInline />
                         </Sized>
+
+                        ) : p.key === "immigration-industrial-complex" ? (
+  <Sized pct={pct}>
+    <SmartVideo srcBase="/iic" className="object-contain w-full h-auto" preload="metadata" />
+  </Sized>
+
+
                       ) : p.key === "zhiyun-xs" ? (
                         <Sized pct={pct}>
                           <SmartVideo srcBase="/zhiyun_compressed" className="object-contain w-full h-auto" preload="metadata" />
