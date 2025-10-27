@@ -67,7 +67,7 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
 
 const DESCRIPTIONS: Record<string, string> = {
   "bronx-fire":
-  "Client: The New York Times<br /><br />When the main fire-safety system catastrophically failed in a Bronx apartment building, 17 residents lost their lives.\nThrough smoke analysis and architectural reconstruction, this piece steps viewers through how the tragedy unfolded.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times<br /><br />When the main fire-safety system catastrophically failed in a Bronx apartment building, 17 residents lost their lives.\nThrough smoke analysis and architectural reconstruction, this piece steps viewers through how the tragedy unfolded.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "sow-et-al":
     "Client: National Lawyers Guild\n\nGraphic analysis uncovering widespread and pervasive constitutional violations by the NYPD during the 2020 George Floyd protests. \nUsed as key evidence in a successful class-action lawsuit.<br /><br /><a href='https://situ.nyc/research/projects/sow-et-al-v-city-of-new-york-et-al' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "death-flights":
@@ -126,17 +126,18 @@ const SPORTS_KEYS = ["usain-bolt", "olympics-ar", "modern-games"] as const;
 const SCIENCE_KEYS = ["dixie-fire-weather", "pluto", "antarctica", "cern"] as const;
 const CIVIC_KEYS = ["bronx-fire", "death-flights", "donors", "sow-et-al", "mexican-metro"] as const;
 
-const DIAMOND_KEYS = ["bronx-fire", "sow-et-al", "death-flights", "david-bowie-3d", "diary-ed-sheeran"] as const;
+const DIAMOND_KEYS = ["bronx-fire", "sow-et-al", "death-flights"] as const;
 
+/* === Badge only for these === */
+const CASE_STUDY_KEYS = new Set<string>(["bronx-fire", "sow-et-al", "death-flights"]);
+
+/* ===================== Helpers ===================== */
 const sortByTitle = (a: Project, b: Project) => a.title.localeCompare(b.title);
-
-// Precomputed grouped lists (no hooks -> no deps warnings)
 const CULTURE_LIST = PROJECTS.filter((p) => (CULTURE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
 const SPORTS_LIST = PROJECTS.filter((p) => (SPORTS_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
 const SCIENCE_LIST = PROJECTS.filter((p) => (SCIENCE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
 const CIVIC_LIST = PROJECTS.filter((p) => (CIVIC_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
 
-/* ===================== Helpers ===================== */
 const getPct = (key: string) => MEDIA_PCT[key] ?? 100;
 
 /* ===================== Small helper for robust video loading ===================== */
@@ -286,6 +287,20 @@ function Sized({ pct, children }: { pct: number; children: React.ReactNode }) {
       <div className="pct-box" style={style}>
         {children}
       </div>
+    </div>
+  );
+}
+
+/* ===================== Case Study Badge (hover reveal) ===================== */
+function CaseStudyBadge() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+    >
+      <span className="bg-black/75 border border-red-500 text-red-500 px-3 py-1.5 rounded-sm lowercase leading-none">
+        case study
+      </span>
     </div>
   );
 }
@@ -468,7 +483,7 @@ export default function Home() {
       { src: "/mm_3.webp", alt: "Mexico City Metro – 3", width: 1600, height: 900 },
     ],
     []
-  )
+  );
 
   /* ===================== Render ===================== */
   return (
@@ -543,12 +558,11 @@ export default function Home() {
             <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER }} />
 
             {DESCRIPTIONS[activeKey] && (
-  <div
-    className="px-3 text-[10px] leading-relaxed text-red-500 dark:text-red-400"
-    dangerouslySetInnerHTML={{ __html: DESCRIPTIONS[activeKey] }}
-  />
-)}
-
+              <div
+                className="px-3 text-[10px] leading-relaxed text-red-500 dark:text-red-400"
+                dangerouslySetInnerHTML={{ __html: DESCRIPTIONS[activeKey] }}
+              />
+            )}
           </aside>
 
           {/* Vertical divider */}
@@ -595,6 +609,9 @@ export default function Home() {
                 const img = IMAGES[p.key];
                 const pct = getPct(p.key);
 
+                // Hover-only for the marked case-study keys
+                const showCaseStudy = CASE_STUDY_KEYS.has(p.key);
+
                 const Placeholder = (
                   <Sized pct={pct}>
                     <div className="aspect-[16/9] border border-dashed grid place-items-center text-[10px]" style={{ borderColor: `${UMBER}99`, color: `${UMBER}cc` }}>
@@ -614,7 +631,8 @@ export default function Home() {
                   >
                     {idx === 0 && <div style={{ height: GAP }} />}
 
-                    <div className="relative">
+                    {/* Media wrapper is a hover group so the badge fades in */}
+                    <div className="relative group">
                       {p.key === "play-magazine" ? (
                         <Sized pct={pct}>
                           <LoopingCarousel slides={playSlides} slideWidthPercent={100} autoplayMs={8000} />
@@ -688,6 +706,9 @@ export default function Home() {
                       ) : p.key === "antarctica" || p.key === "cern" || p.key === "david-bowie-3d" || p.key === "modern-games" ? (
                         Placeholder
                       ) : null}
+
+                      {/* Hover-only CASE STUDY badge */}
+                      {showCaseStudy && <CaseStudyBadge />}
                     </div>
 
                     {/* Divider with equal buffers */}
