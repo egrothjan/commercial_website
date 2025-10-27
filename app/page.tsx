@@ -48,18 +48,17 @@ const PROJECTS: Project[] = [
 ];
 
 const IMAGES: Record<string, { src: string; alt: string; width: number; height: number }> = {
-  "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
-  "donors": { src: "/donors.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
   "bronx-fire": { src: "/bronx_cover.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
   "sow-et-al": { src: "/protests_1.webp", alt: "Sow, et al. – Protests still", width: 800, height: 600 },
-    "immigration-industrial-complex": { src: "/iic.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
+  "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
   "diary-ed-sheeran": { src: "/edsheeran_cover.webp", alt: "Diary of a Song: Shape of You", width: 800, height: 600 },
   "play-magazine": { src: "/play_1.webp", alt: "PLAY Magazine", width: 700, height: 500 },
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
-  
+
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
-  "cern": { src: "/cern_2.webp", alt: "Inside CERN's Large Hadron Collider", width: 800, height: 600 },
-  "pluto": { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
+  cern: { src: "/cern_2.webp", alt: "Inside CERN's Large Hadron Collider", width: 800, height: 600 },
+  pluto: { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
+
   "olympics-ar": { src: "/olympics_cover.webp", alt: "The Gymnast. The Climber.", width: 800, height: 600 },
   "usain-bolt": { src: "/sprint_2.webp", alt: "Usain Bolt and the Fastest Men in the World", width: 700, height: 500 },
 };
@@ -187,7 +186,7 @@ function LoopingCarousel({
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [locked, setLocked] = useState(false);
 
-  // Make timers DOM-safe for TS on Vercel
+  // Timer refs typed for DOM environment
   const timerRef = useRef<number | null>(null);
 
   const stopTimer = useCallback(() => {
@@ -234,35 +233,34 @@ function LoopingCarousel({
   const total = slides.length;
   const containerPct = (total + 2) * 100;
 
-  const SlideNode = (s: Slide, i: number) => {
-    // Avoid dynamic Tailwind interpolation; use inline width for desktop
-    const inlineStyle: CSSProperties = { width: "100%" };
-    return (
-      <div key={i} className="w-full flex justify-center flex-shrink-0">
-        {s.type === "video" ? (
-          <video
-            src={s.src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className={`object-contain h-auto max-w-none sm:w-auto ${s.className ?? ""}`}
-            style={inlineStyle}
-          />
-        ) : (
-          <Image
-            src={s.src}
-            alt={s.alt}
-            width={s.width}
-            height={s.height}
-            className={`object-contain h-auto max-w-none sm:w-auto ${s.className ?? ""}`}
-            style={inlineStyle}
-          />
-        )}
-      </div>
-    );
-  };
+  // width control via CSS var (prevents Tailwind dynamic-class lint)
+  const slideStyle = { "--slide-pct": `${slideWidthPercent}%` } as Record<"--slide-pct", string> & CSSProperties;
+
+  const SlideNode = (s: Slide, i: number) => (
+    <div key={i} className="w-full flex justify-center flex-shrink-0">
+      {s.type === "video" ? (
+        <video
+          src={s.src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className={`object-contain h-auto max-w-none slide-inner ${s.className ?? ""}`}
+          style={slideStyle}
+        />
+      ) : (
+        <Image
+          src={s.src}
+          alt={s.alt}
+          width={s.width}
+          height={s.height}
+          className={`object-contain h-auto max-w-none slide-inner ${s.className ?? ""}`}
+          style={slideStyle}
+        />
+      )}
+    </div>
+  );
 
   const handlePrev = () => {
     if (locked) return;
@@ -317,8 +315,7 @@ function LoopingCarousel({
 
 /* ===================== Width helper ===================== */
 function Sized({ pct, children }: { pct: number; children: React.ReactNode }) {
-  // TS-safe CSS var for Vercel/strict TS: cast through unknown -> CSSProperties
-  const style = { ["--pct" as any]: `${pct}%` } as unknown as CSSProperties;
+  const style = { "--pct": `${pct}%` } as Record<"--pct", string> & CSSProperties;
   return (
     <div className="w-full flex justify-center">
       <div className="pct-box" style={style}>
@@ -367,7 +364,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Mobile header: prevent top image from being overlapped; balanced top padding
+  // Mobile header spacing
   useEffect(() => {
     if (!isMobile) return;
 
@@ -514,22 +511,21 @@ export default function Home() {
     []
   );
 
-  // Replace your existing `usainSlides` with this:
-const usainSlides: Slide[] = useMemo(
-  () => [
-    {
-      type: "video",
-      src: isMobile ? "/sprint_mobile.webm" : "/sprint_final.webm",
-      alt: "Usain Bolt Sprint 1",
-      width: 700,
-      height: 500,
-    },
-    { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500 },
-    { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500 },
-  ],
-  [isMobile]
-);
-
+  // Mobile-first source for sprint video
+  const usainSlides: Slide[] = useMemo(
+    () => [
+      {
+        type: "video",
+        src: isMobile ? "/sprint_mobile.webm" : "/sprint_final.webm",
+        alt: "Usain Bolt Sprint 1",
+        width: 700,
+        height: 500,
+      },
+      { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt Sprint 2", width: 700, height: 500 },
+      { type: "image", src: "/sprint_3.webp", alt: "Usain Bolt Sprint 3", width: 700, height: 500 },
+    ],
+    [isMobile]
+  );
 
   const mexicoMetroSlides: Slide[] = useMemo(
     () => [
@@ -547,6 +543,8 @@ const usainSlides: Slide[] = useMemo(
         .pct-box { width: 100%; }
         @media (min-width: 640px) { .pct-box { width: var(--pct); } }
         .custom-scrollbar .simplebar-content-wrapper { overscroll-behavior-y: contain; }
+        .slide-inner { width: 100%; }
+        @media (min-width: 640px) { .slide-inner { width: var(--slide-pct, 100%); } }
       `}</style>
 
       <div className="w-full h-full">
@@ -561,7 +559,7 @@ const usainSlides: Slide[] = useMemo(
 
             <div className="px-3 mt-3 mb-4">
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
-                Pulitzer Finalist and Emmy Award-Winning <br /> Data Visualization and Information Design. <br />
+                Pulitzer-Finalist and Emmy Award-Winning Data Visualization and Information Design. <br />
                 Contact:{" "}
                 <a href="mailto:evangrothjan@gmail.com" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-600">
                   evangrothjan@gmail.com
@@ -689,7 +687,7 @@ const usainSlides: Slide[] = useMemo(
                         </Sized>
                       ) : p.key === "mexican-metro" ? (
                         <Sized pct={pct}>
-                          <LoopingCarousel slides={mexicoMetroSlides as any} slideWidthPercent={100} autoplayMs={8000} />
+                          <LoopingCarousel slides={mexicoMetroSlides} slideWidthPercent={100} autoplayMs={8000} />
                         </Sized>
                       ) : p.key === "usain-bolt" ? (
                         <Sized pct={pct}>
