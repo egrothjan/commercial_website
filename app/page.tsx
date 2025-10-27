@@ -339,7 +339,10 @@ export default function Home() {
   const lastProgrammaticRef = useRef(0);
 
   // Keys that actually render as sections (exclude CV here)
-  const VISIBLE_KEYS = useMemo(() => PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key), []);
+  const VISIBLE_KEYS = useMemo(() => {
+  const base = PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key);
+  return isMobile ? [...base, "cv"] : base;
+}, [isMobile]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -347,6 +350,32 @@ export default function Home() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  useEffect(() => {
+  if (!isMobile) return;
+
+  const header = document.querySelector(".mobile-header") as HTMLElement | null;
+  const scroller = scrollAreaRef.current;
+
+  if (header && scroller) {
+    const EXTRA_TOP_GAP = 12; // <- gives breathing room between description and top image
+
+    const updatePadding = () => {
+      scroller.style.paddingTop = `${header.offsetHeight + EXTRA_TOP_GAP}px`;
+    };
+    updatePadding();
+
+    const resizeObserver = new ResizeObserver(updatePadding);
+    resizeObserver.observe(header);
+
+    window.addEventListener("resize", updatePadding);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updatePadding);
+    };
+  }
+}, [isMobile]);
+
 
   /* ========= Smooth center-based scroll spy (edge overrides) ========= */
   useEffect(() => {
@@ -595,29 +624,25 @@ export default function Home() {
             <SimpleBar
               scrollableNodeProps={{ ref: scrollAreaRef }}
               style={{ height: "100%" }}
-              className="w-full sm:max-w-[1200px] sm:mx-auto pt-[50px] sm:pt-0 pb-3 flex flex-col items-stretch sm:items-center border-b custom-scrollbar h-full overflow-x-hidden sm:overflow-x-visible px-0"
+              className="w-full sm:max-w-[1200px] sm:mx-auto pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch sm:items-center border-b custom-scrollbar h-full overflow-x-hidden sm:overflow-x-visible px-0"
+
               autoHide={false}
             >
               <style>{`.simplebar-content-wrapper + .border-b { border-bottom-color: ${UMBER}; }`}</style>
 
               {/* Mobile header */}
-              <div className="sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2" style={{ borderColor: UMBER }}>
-                {activeKey === "cv" ? (
-                  <>
-                    <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">Studio Grothjan</h2>
-                    <p className="text-[10px] leading-relaxed text-foreground/80 mt-1">CV</p>
-                  </>
-                ) : (
-                  <>
-                    <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
-                      {PROJECTS.find((p) => p.key === activeKey)?.title}
-                    </h2>
-                    {DESCRIPTIONS[activeKey] && (
-                      <p className="text-[10px] leading-relaxed text-foreground/80 mt-1 whitespace-pre-line">{DESCRIPTIONS[activeKey]}</p>
-                    )}
-                  </>
-                )}
-              </div>
+<div className="mobile-header sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2" style={{ borderColor: UMBER }}>
+  <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
+    {activeKey === "cv" ? "CV" : PROJECTS.find((p) => p.key === activeKey)?.title}
+  </h2>
+
+  {activeKey !== "cv" && DESCRIPTIONS[activeKey] && (
+    <div
+      className="text-[10px] leading-relaxed text-foreground/80 mt-1"
+      dangerouslySetInnerHTML={{ __html: DESCRIPTIONS[activeKey] }}
+    />
+  )}
+</div>
 
               {/* Desktop header */}
               <div className="hidden sm:block w-full text-left">
@@ -741,51 +766,66 @@ export default function Home() {
                     </div>
 
                     {/* Divider with equal buffers */}
-                    <div className="flex flex-col items-center w-full">
-                      <div style={{ height: GAP }} />
-                      <div className="h-px w-full" style={{ backgroundColor: UMBER }} />
-                      <div style={{ height: GAP }} />
-                    </div>
+<div className="flex flex-col items-center w-full">
+  <div style={{ height: GAP }} />
+  <div className="h-px w-full" style={{ backgroundColor: UMBER }} />
+  <div
+    style={{
+      height:
+        isMobile && idx === PROJECTS.filter((p) => p.key !== "cv").length - 1
+          ? 0
+          : GAP,
+    }}
+  />
+</div>
                   </div>
                 );
               })}
 
-              {/* Mobile-only CV */}
-              <div
-                ref={(el) => {
-                  itemRefs.current["cv"] = el;
-                }}
-                className="sm:hidden w-full px-3 pt-3 pb-12 mb-20 text-[10px] leading-relaxed"
-              >
-                <div className="mb-4">
-                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
-                  <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em> <br /> 2025</li>
-                    <li>Architekturmuseum der TUM, <em>Visual Investigations</em> <br /> 2024</li>
-                  </ul>
-                </div>
+              {/* Mobile-only CV (full-bleed lines, extra bottom padding) */}
+<div
+  ref={(el) => {
+    itemRefs.current["cv"] = el;
+  }}
+  className="sm:hidden w-full px-3 pt-4 pb-14 text-[10px] leading-relaxed"
+>
+  <div className="mb-0">
+    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
+    <ul className="space-y-[0.2rem] text-[10px]">
+      <li>Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em> <br /> 2025</li>
+      <li>Architekturmuseum der TUM, <em>Visual Investigations</em> <br /> 2024</li>
+    </ul>
+  </div>
 
-                <div className="h-px my-3 w-full" style={{ backgroundColor: UMBER }} />
+  {/* full-bleed line */}
+  <div className="-mx-3">
+    <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER }} />
+  </div>
 
-                <div className="mt-0">
-                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
-                  <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023</li>
-                    <li>SND Bronze, <em>Bronx Fire</em> <br /> 2023</li>
-                    <li>SND Silver, <em>Dixie Fire</em> <br /> 2022</li>
-                    <li>Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019</li>
-                    <li>SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019</li>
-                    <li>World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018</li>
-                  </ul>
-                </div>
+  <div className="mt-0">
+    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
+    <ul className="space-y-[0.2rem] text-[10px]">
+      <li>Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023</li>
+      <li>SND Bronze, <em>Bronx Fire</em> <br /> 2023</li>
+      <li>SND Silver, <em>Dixie Fire</em> <br /> 2022</li>
+      <li>Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019</li>
+      <li>SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019</li>
+      <li>World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018</li>
+    </ul>
+  </div>
 
-                <div className="h-px my-3 w-full" style={{ backgroundColor: UMBER }} />
+  {/* full-bleed line */}
+  <div className="-mx-3">
+    <div className="h-px my-4 w-full sm:my-3" style={{ backgroundColor: UMBER }} />
+  </div>
 
-                <div className="mt-0">
-                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Clients</h3>
-                  <p className="text-[10px]">Bloomberg, Human Rights Watch, Meta, MTV, National Lawyers Guild, The New York Times, Vogue, Vox</p>
-                </div>
-              </div>
+  <div className="mt-0">
+    <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Clients</h3>
+    <p className="text-[10px]">
+      Bloomberg, Human Rights Watch, Meta, MTV, National Lawyers Guild, The New York Times, Vogue, Vox
+    </p>
+  </div>
+</div>
             </SimpleBar>
           </div>
 
