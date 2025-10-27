@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -125,11 +126,20 @@ const SPORTS_KEYS = ["usain-bolt", "olympics-ar", "modern-games"] as const;
 const SCIENCE_KEYS = ["dixie-fire-weather", "pluto", "antarctica", "cern"] as const;
 const CIVIC_KEYS = ["bronx-fire", "death-flights", "donors", "sow-et-al", "mexican-metro"] as const;
 
-const DIAMOND_KEYS = ["bronx-fire", "sow-et-al", "death-flights", "david-bowie-3d", "diary-ed-sheeran"];
+const DIAMOND_KEYS = ["bronx-fire", "sow-et-al", "death-flights", "david-bowie-3d", "diary-ed-sheeran"] as const;
+
+const sortByTitle = (a: Project, b: Project) => a.title.localeCompare(b.title);
+
+// Precomputed grouped lists (no hooks -> no deps warnings)
+const CULTURE_LIST = PROJECTS.filter((p) => (CULTURE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
+const SPORTS_LIST = PROJECTS.filter((p) => (SPORTS_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
+const SCIENCE_LIST = PROJECTS.filter((p) => (SCIENCE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
+const CIVIC_LIST = PROJECTS.filter((p) => (CIVIC_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle);
 
 /* ===================== Helpers ===================== */
 const getPct = (key: string) => MEDIA_PCT[key] ?? 100;
 
+/* ===================== Small helper for robust video loading ===================== */
 function SmartVideo({
   srcBase,
   className,
@@ -270,9 +280,10 @@ function LoopingCarousel({
 
 /* ===================== Width helper ===================== */
 function Sized({ pct, children }: { pct: number; children: React.ReactNode }) {
+  const style = { "--pct": `${pct}%` } as CSSProperties & Record<"--pct", string>;
   return (
     <div className="w-full flex justify-center">
-      <div className="pct-box" style={{ ["--pct" as any]: `${pct}%` }}>
+      <div className="pct-box" style={style}>
         {children}
       </div>
     </div>
@@ -288,6 +299,12 @@ export default function Home() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  // NEW: track last programmatic scroll timestamp (used by spy pause window)
+  const lastProgrammaticRef = useRef(0);
+
+  // Keys that actually render as sections (exclude CV here)
+  const VISIBLE_KEYS = useMemo(() => PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key), []);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
     checkMobile();
@@ -295,38 +312,112 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  /* ========= Smooth center-based scroll spy (edge overrides) ========= */
   useEffect(() => {
-    const root = scrollAreaRef.current;
-    if (!root) return;
+    const scroller = scrollAreaRef.current;
+    if (!scroller) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let bestKey = activeKey;
-        let bestRatio = 0;
-        for (const entry of entries) {
-          const key = (entry.target as HTMLElement).dataset.key!;
-          if (entry.intersectionRatio > bestRatio) {
-            bestRatio = entry.intersectionRatio;
-            bestKey = key;
-          }
+    const STABLE_MS = 70;
+    const MAX_LAG_MS = 180;
+    const IGNORE_MS_AFTER_PROGRAMMATIC = 280;
+    const EDGE_THRESHOLD = 8; // snap when within 8px of top/bottom
+
+    let raf = 0;
+    let candidateKey = activeKey;
+    let candidateSince = performance.now();
+    let lastUpdate = candidateSince;
+
+    const measure = (now: number) => {
+      raf = 0;
+
+      // briefly pause spy right after programmatic scrolls
+      if (now - lastProgrammaticRef.current < IGNORE_MS_AFTER_PROGRAMMATIC) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = scroller;
+
+      // --- Edge overrides so it never "sticks" on fling-to-ends ---
+      if (scrollTop <= EDGE_THRESHOLD) {
+        const firstKey = VISIBLE_KEYS[0];
+        if (activeKey !== firstKey) setActiveKey(firstKey);
+        candidateKey = firstKey;
+        candidateSince = now;
+        lastUpdate = now;
+        return;
+      }
+      const maxTop = scrollHeight - clientHeight;
+      if (maxTop - scrollTop <= EDGE_THRESHOLD) {
+        const lastKey = VISIBLE_KEYS[VISIBLE_KEYS.length - 1];
+        if (activeKey !== lastKey) setActiveKey(lastKey);
+        candidateKey = lastKey;
+        candidateSince = now;
+        lastUpdate = now;
+        return;
+      }
+      // -------------------------------------------------------------
+
+      const centerY = scrollTop + clientHeight / 2;
+
+      let bestKey = candidateKey;
+      let bestDist = Infinity;
+
+      for (const key of VISIBLE_KEYS) {
+        const el = itemRefs.current[key];
+        if (!el) continue;
+        const mid = el.offsetTop + el.offsetHeight / 2;
+        const dist = Math.abs(mid - centerY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestKey = key;
         }
-        if (bestKey !== activeKey) setActiveKey(bestKey);
-      },
-      { root, rootMargin: "-45% 0px -45% 0px", threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
-    );
+      }
 
-    PROJECTS.forEach(({ key }) => {
-      const el = itemRefs.current[key];
-      if (el) observer.observe(el);
-    });
+      // Eagerly accept new candidate
+      if (bestKey !== candidateKey) {
+        candidateKey = bestKey;
+        candidateSince = now;
+      }
 
-    return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [PROJECTS]);
+      const stableEnough = now - candidateSince >= STABLE_MS;
+      const lagging = now - lastUpdate >= MAX_LAG_MS;
 
+      if ((stableEnough || lagging) && activeKey !== candidateKey) {
+        setActiveKey(candidateKey);
+        lastUpdate = now;
+      }
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(measure);
+    };
+
+    // initial kick
+    onScroll();
+
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      scroller.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [activeKey, VISIBLE_KEYS]);
+
+  // Smooth programmatic scrolling + mark timestamp so spy pauses briefly
   const scrollToKey = useCallback((key: string) => {
     const el = itemRefs.current[key];
-    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    const scroller = scrollAreaRef.current;
+    if (!el || !scroller) return;
+
+    // mark a programmatic scroll (the spy pauses briefly)
+    lastProgrammaticRef.current = performance.now();
+
+    // Center the element inside the custom scroller
+    const target = el.offsetTop + el.offsetHeight / 2 - scroller.clientHeight / 2;
+    scroller.scrollTo({ top: target, behavior: "smooth" });
+    setActiveKey(key);
+
+    // small safety window if user interrupts mid-scroll
+    setTimeout(() => {
+      lastProgrammaticRef.current = 0;
+    }, 320);
   }, []);
 
   /* ===================== Slides ===================== */
@@ -377,34 +468,7 @@ export default function Home() {
       { src: "/mm_3.webp", alt: "Mexico City Metro – 3", width: 1600, height: 900 },
     ],
     []
-  );
-
-  /* ===================== Sidebar groups ===================== */
-  const sortByTitle = (a: Project, b: Project) => a.title.localeCompare(b.title);
-
-  const cultureList = useMemo(
-    () => PROJECTS.filter((p) => (CULTURE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle),
-    []
-  );
-  const sportsList = useMemo(
-    () => PROJECTS.filter((p) => (SPORTS_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle),
-    []
-  );
-  const scienceList = useMemo(
-    () => PROJECTS.filter((p) => (SCIENCE_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle),
-    []
-  );
-  const civicList = useMemo(
-    () => PROJECTS.filter((p) => (CIVIC_KEYS as readonly string[]).includes(p.key)).sort(sortByTitle),
-    []
-  );
-
-  const groupedSidebar = [
-    { label: "Civic", list: civicList },
-    { label: "Culture", list: cultureList },
-    { label: "Science", list: scienceList },
-    { label: "Sports", list: sportsList },
-  ];
+  )
 
   /* ===================== Render ===================== */
   return (
@@ -439,38 +503,39 @@ export default function Home() {
 
             <div className="px-3 mt-4">
               <ul className="space-y-[0.1rem] text-left">
-                {groupedSidebar.map(({ label, list }) =>
-                  list.length ? (
-                    <li key={label} className="w-full">
-                      <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs my-2">{label}</div>
-                      <ul className="space-y-[0.1rem]">
-                        {list.map(({ title, key }) => {
-                          const active = activeKey === key;
-                          const isDiamond = DIAMOND_KEYS.includes(key);
-                          const size = isDiamond ? "w-2 h-2" : "w-2.5 h-2.5";
-                          return (
-                            <li key={key} className="flex items-start gap-2">
-                              <span
-                                aria-hidden
-                                className={`${size} flex-none transition-transform duration-200 ease-out ${isDiamond ? "" : "rounded-full"}`}
-                                style={{
-                                  backgroundColor: active ? "rgb(220 38 38)" : "transparent",
-                                  transform: `${active ? "scale(1)" : "scale(0.8)"} ${isDiamond ? "rotate(45deg)" : ""}`,
-                                  marginTop: "calc((1.125rem - 0.625rem) / 2)",
-                                }}
-                              />
-                              <button
-                                onClick={() => scrollToKey(key)}
-                                className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
-                              >
-                                {title}
-                              </button>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </li>
-                  ) : null
+                {[{ label: "Civic", list: CIVIC_LIST }, { label: "Culture", list: CULTURE_LIST }, { label: "Science", list: SCIENCE_LIST }, { label: "Sports", list: SPORTS_LIST }].map(
+                  ({ label, list }) =>
+                    list.length ? (
+                      <li key={label} className="w-full">
+                        <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs my-2">{label}</div>
+                        <ul className="space-y-[0.1rem]">
+                          {list.map(({ title, key }) => {
+                            const active = activeKey === key;
+                            const isDiamond = (DIAMOND_KEYS as readonly string[]).includes(key);
+                            const size = isDiamond ? "w-2 h-2" : "w-2.5 h-2.5";
+                            return (
+                              <li key={key} className="flex items-start gap-2">
+                                <span
+                                  aria-hidden
+                                  className={`${size} flex-none transition-transform duration-200 ease-out ${isDiamond ? "" : "rounded-full"}`}
+                                  style={{
+                                    backgroundColor: active ? "rgb(220 38 38)" : "transparent",
+                                    transform: `${active ? "scale(1)" : "scale(0.8)"} ${isDiamond ? "rotate(45deg)" : ""}`,
+                                    marginTop: "calc((1.125rem - 0.625rem) / 2)",
+                                  }}
+                                />
+                                <button
+                                  onClick={() => scrollToKey(key)}
+                                  className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
+                                >
+                                  {title}
+                                </button>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </li>
+                    ) : null
                 )}
               </ul>
             </div>
