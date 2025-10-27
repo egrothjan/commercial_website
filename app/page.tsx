@@ -340,7 +340,7 @@ function CaseStudyBadgeHover() {
   );
 }
 
-/** Mobile-only clickable badge overlay (25% smaller, 25% more transparent) */
+/** Mobile-only clickable badge overlay (~35% smaller) */
 function CaseStudyBadgeMobile({ href, aria }: { href: string; aria: string }) {
   return (
     <Link
@@ -348,7 +348,15 @@ function CaseStudyBadgeMobile({ href, aria }: { href: string; aria: string }) {
       aria-label={aria}
       className="sm:hidden absolute bottom-3 left-3 z-10"
     >
-      <span className="bg-white/75 border border-[#4a1f14] text-[#4a1f14] px-3 py-1.5 rounded-sm lowercase leading-none shadow scale-[0.50] origin-bottom-left">
+      <span
+        className="
+          inline-block transform scale-124  /* ~25% smaller safely */
+          bg-white/75 border border-[#4a1f14] text-[#4a1f14]
+          px-2 py-1 text-[9px]              /* tighter padding & text to reach ~35% total */
+          rounded-sm lowercase leading-none shadow
+          origin-bottom-left
+        "
+      >
         case study
       </span>
     </Link>
