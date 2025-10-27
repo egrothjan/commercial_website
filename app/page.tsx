@@ -52,6 +52,7 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
   "sow-et-al": { src: "/protests_1.webp", alt: "Sow, et al. – Protests still", width: 800, height: 600 },
   "death-flights": { src: "/deathFlights_2.webp", alt: "The Death Flights Still", width: 800, height: 600 },
   "diary-ed-sheeran": { src: "/edsheeran_cover.webp", alt: "Diary of a Song: Shape of You", width: 800, height: 600 },
+
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
 
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
@@ -339,7 +340,7 @@ function CaseStudyBadgeHover() {
   );
 }
 
-/** Mobile-only clickable badge overlay */
+/** Mobile-only clickable badge overlay (25% smaller, 25% more transparent) */
 function CaseStudyBadgeMobile({ href, aria }: { href: string; aria: string }) {
   return (
     <Link
@@ -347,7 +348,7 @@ function CaseStudyBadgeMobile({ href, aria }: { href: string; aria: string }) {
       aria-label={aria}
       className="sm:hidden absolute bottom-3 left-3 z-10"
     >
-      <span className="bg-white border border-[#4a1f14] text-[#4a1f14] px-3 py-1.5 rounded-sm lowercase leading-none shadow">
+      <span className="bg-white/75 border border-[#4a1f14] text-[#4a1f14] px-3 py-1.5 rounded-sm lowercase leading-none shadow scale-[0.75] origin-bottom-left">
         case study
       </span>
     </Link>
