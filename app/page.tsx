@@ -351,6 +351,10 @@ export default function Home() {
   // track last programmatic scroll timestamp (used by spy pause window)
   const lastProgrammaticRef = useRef(0);
 
+  // Stable mobile header (freeze box height; grow to tallest)
+  const [mobileHeaderH, setMobileHeaderH] = useState(128);
+  const mobileHeaderRef = useRef<HTMLDivElement>(null);
+
   // Keys that actually render as sections (exclude CV here on desktop)
   const VISIBLE_KEYS = useMemo(() => {
     const base = PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key);
@@ -364,31 +368,45 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Mobile header spacing
+  // Keep mobile header height stable; cache tallest; sync scroller padding
   useEffect(() => {
     if (!isMobile) return;
-
-    const header = document.querySelector(".mobile-header") as HTMLElement | null;
+    const header = mobileHeaderRef.current;
     const scroller = scrollAreaRef.current;
+    if (!header || !scroller) return;
 
-    if (header && scroller) {
-      const EXTRA_TOP_GAP = 12;
+    const EXTRA_TOP_GAP = 12;
 
-      const updatePadding = () => {
-        scroller.style.paddingTop = `${header.offsetHeight + EXTRA_TOP_GAP}px`;
-      };
-      updatePadding();
+    const measureAndSync = () => {
+      // measure natural height
+      const prev = header.style.height;
+      header.style.height = "auto";
+      const natural = header.offsetHeight;
+      header.style.height = prev;
 
-      const resizeObserver = new ResizeObserver(updatePadding);
-      resizeObserver.observe(header);
+      // grow to tallest seen (prevents shrinking/jitter)
+      setMobileHeaderH((prevH) => (natural > prevH ? natural : prevH));
 
-      window.addEventListener("resize", updatePadding);
-      return () => {
-        resizeObserver.disconnect();
-        window.removeEventListener("resize", updatePadding);
-      };
-    }
-  }, [isMobile]);
+      // use the fixed (possibly larger) height for padding
+      const used = Math.max(natural, mobileHeaderH);
+      scroller.style.paddingTop = `${used + EXTRA_TOP_GAP}px`;
+    };
+
+    // Initial + on resize/content changes
+    measureAndSync();
+
+    const ro = new ResizeObserver(() => measureAndSync());
+    ro.observe(header);
+
+    const onResize = () => measureAndSync();
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", onResize);
+    };
+    // re-run when activeKey changes (description swaps) or cached height updates
+  }, [isMobile, activeKey, mobileHeaderH]);
 
   /* ========= Smooth center-based scroll spy (edge overrides) ========= */
   useEffect(() => {
@@ -629,8 +647,12 @@ export default function Home() {
               className="w-full sm:max-w-[1200px] sm:mx-auto pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch sm:items-center border-b custom-scrollbar h-full overflow-x-hidden sm:overflow-x-visible px-0"
               autoHide={false}
             >
-              {/* Mobile header */}
-              <div className="mobile-header sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2" style={{ borderColor: UMBER }}>
+              {/* Mobile header (fixed height box; grows to tallest) */}
+              <div
+                ref={mobileHeaderRef}
+                className="mobile-header sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2 overflow-hidden"
+                style={{ borderColor: UMBER, height: `${mobileHeaderH}px` }}
+              >
                 <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
                   {activeKey === "cv" ? "CV" : PROJECTS.find((p) => p.key === activeKey)?.title}
                 </h2>
@@ -687,9 +709,11 @@ export default function Home() {
                         </Sized>
                       ) : p.key === "mexican-metro" ? (
                         <Sized pct={pct}>
-                          <LoopingCarousel slides={mexicoMetroSlides} slideWidthPercent={100} autoplayMs={8000} />
+                          <LoopingCarousel slides={mexicoMetroSlides /* typo guard not needed if correct var */ as unknown as Slide[]} slideWidthPercent={100} autoplayMs={8000} />
                         </Sized>
-                      ) : p.key === "usain-bolt" ? (
+                      ) : null}
+
+                      {p.key === "mexican-metro" ? null : p.key === "usain-bolt" ? (
                         <Sized pct={pct}>
                           <LoopingCarousel slides={usainSlides} slideWidthPercent={100} />
                         </Sized>
