@@ -612,7 +612,7 @@ useEffect(() => {
 
             <div className="px-3 mt-3 mb-4">
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left">
-                Pulitzer-Finalist and Emmy Award-Winning Data Visualization and Information Design. <br />
+                Pulitzer-Finalist and Emmy Award-Winning design & animation. <br />
                 Contact:{" "}
                 <a href="mailto:evangrothjan@gmail.com" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-600">
                   evangrothjan@gmail.com
