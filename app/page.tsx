@@ -26,7 +26,6 @@ const PROJECTS: Project[] = [
   // Design (Editorial Design)
   { title: "PLAY Magazine", key: "play-magazine", href: "#" },
   { title: "Families Funding the Election", key: "donors", href: "#" },
-  { title: "Sow, et al. v. City of New York", key: "sow-et-al", href: "#" },
   { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
 
   // Interactive
@@ -45,7 +44,6 @@ const PROJECTS: Project[] = [
 
 const IMAGES: Record<string, { src: string; alt: string; width: number; height: number }> = {
   "bronx-fire": { src: "/bronx_cover.webp", alt: "Reconstructing the Bronx Fire", width: 800, height: 600 },
-  "sow-et-al": { src: "/protests_1.webp", alt: "Sow, et al. – Protests still", width: 800, height: 600 },
   "diary-ed-sheeran": { src: "/edsheeran_cover.webp", alt: "Diary of a Song: Shape of You", width: 800, height: 600 },
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
@@ -69,8 +67,6 @@ const DESCRIPTIONS: Record<string, string> = {
     "Client: PLAY Magazine | Print<br /><br />Visual identity for the inaugural issue of PLAY, a cookbook-magazine featuring recipes, essays, and artwork from a community of queer chefs and artists.<br /><br /><a href='https://play.metalabel.com/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "donors":
     "Client: The New York Times | Explainer<br /><br />How just 158 families supplied nearly half of the early money in the race for the 2016 White House.<br /><br /><a href='https://www.nytimes.com/interactive/2015/10/11/us/politics/2016-presidential-election-super-pac-donors.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "sow-et-al":
-    "Client: The National Lawyers Guild | Legal<br /><br />Graphic analysis uncovers widespread and pervasive constitutional violations by the NYPD during the 2020 George Floyd protests.<br /><br /><a href='https://situ.nyc/research/projects/sow-et-al-v-city-of-new-york-et-al' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "mexican-metro":
     "Client: The New York Times | Editorial<br /><br />The serious construction flaws behind a tragedy threatening two of Mexico’s most prominent figures.<br /><br /><a href='https://www.nytimes.com/interactive/2021/06/12/world/americas/mexico-city-train-crash.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "david-bowie-3d":
@@ -99,7 +95,6 @@ const ROLE_BY_KEY: Record<string, string> = {
 
   "play-magazine": "Art Direction, 3D Design",
   "donors": "Information Design",
-  "sow-et-al": "Visual Analysis, Data Visualization",
   "usain-bolt": "Data Visualization",
 
   "bronx-fire": "Architectural Reconstruction",
@@ -120,7 +115,6 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
 
   "play-magazine": 90,
   "donors": 90,
-  "sow-et-al": 90,
   "usain-bolt": 90,
 
   "bronx-fire": 90,
@@ -144,7 +138,6 @@ const TAGS_BY_KEY: Partial<Record<string, string[]>> = {
   "meta-ar": ["3D Graphics | Social"],
   "play-magazine": ["Art Direction | Print"],
   donors: ["Information Design | Editorial"],
-  "sow-et-al": ["Visual Evidence | Legal"],
   "usain-bolt": ["3D Design | Explainer"],
   "bronx-fire": ["3D Motion | Explainer"],
   "dixie-fire-weather": ["3D Motion | Explainer"],
@@ -165,7 +158,7 @@ const getTagsForKey = (key: string) => TAGS_BY_KEY[key] ?? DEFAULT_TAGS;
 
 /* ===================== Category lists (explicit order) ===================== */
 const MOTION_KEYS = ["diary-ed-sheeran", "olympics-ar", "zhiyun-xs", "pluto"] as const;
-const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "sow-et-al", "usain-bolt"] as const;
+const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
 const INTERACTIVE_KEYS = ["david-bowie-3d", "google-headsets", "meta-ar"] as const;
 const RECONSTRUCTION_KEYS = ["bronx-fire", "dixie-fire-weather", "mexican-metro"] as const;
 
@@ -1101,24 +1094,6 @@ if (p.key === "meta-ar") {
     );
   }
 
-  // SOW
-  if (p.key === "sow-et-al") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <Image
-              src="/protests_1.webp"
-              alt="Sow, et al. – George Floyd Protests"
-              width={1200}
-              height={900}
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
 
   // Fallback (single image)
   if (img) {
