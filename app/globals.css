@@ -60,3 +60,25 @@ body {
     max-width: 100% !important;
   }
 }
+
+.alpha-outline {
+  filter: none;
+}
+
+/* 2px “stroke” around non-transparent pixels (alpha-aware) */
+.group:hover .alpha-outline,
+.group:focus-visible .alpha-outline {
+  filter:
+    drop-shadow( 1px  0   0 rgb(239 68 68))
+    drop-shadow(-1px  0   0 rgb(239 68 68))
+    drop-shadow( 0    1px 0 rgb(239 68 68))
+    drop-shadow( 0   -1px 0 rgb(239 68 68))
+    drop-shadow( 2px  0   0 rgb(239 68 68))
+    drop-shadow(-2px  0   0 rgb(239 68 68))
+    drop-shadow( 0    2px 0 rgb(239 68 68))
+    drop-shadow( 0   -2px 0 rgb(239 68 68))
+    drop-shadow( 1px  1px 0 rgb(239 68 68))
+    drop-shadow(-1px  1px 0 rgb(239 68 68))
+    drop-shadow( 1px -1px 0 rgb(239 68 68))
+    drop-shadow(-1px -1px 0 rgb(239 68 68));
+}
