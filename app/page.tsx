@@ -109,23 +109,23 @@ const ROLE_BY_KEY: Record<string, string> = {
 };
 
 const MEDIA_PCT: Partial<Record<string, number>> = {
-  "diary-ed-sheeran": 75,
-  "zhiyun-xs": 75,
-  "pluto": 75,
-  "olympics-ar": 85,
+  "diary-ed-sheeran": 90,
+  "zhiyun-xs": 90,
+  "pluto": 90,
+  "olympics-ar": 90,
 
-  "david-bowie-3d": 85,
-  "google-headsets": 85,
-  "meta-ar": 85,
+  "david-bowie-3d": 90,
+  "google-headsets": 90,
+  "meta-ar": 90,
 
-  "play-magazine": 85,
+  "play-magazine": 90,
   "donors": 90,
-  "sow-et-al": 70,
-  "usain-bolt": 75,
+  "sow-et-al": 90,
+  "usain-bolt": 90,
 
   "bronx-fire": 90,
-  "dixie-fire-weather": 75,
-  "mexican-metro": 85,
+  "dixie-fire-weather": 90,
+  "mexican-metro": 90,
 
 };
 
@@ -479,10 +479,11 @@ useEffect(() => {
           width: 100%;
         }
         @media (min-width: 640px) {
-          .pct-box {
-            width: var(--pct);
-          }
-        }
+  .pct-box {
+    width: min(var(--pct), 96%);
+  }
+}
+
         .custom-scrollbar .simplebar-content-wrapper {
           overscroll-behavior-y: contain;
         }
@@ -663,11 +664,12 @@ useEffect(() => {
           {/* Middle */}
           <div className="flex-1 min-w-0 min-h-0 h-full">
             <SimpleBar
-              scrollableNodeProps={{ ref: scrollAreaRef }}
-              style={{ height: "100%" }}
-              className="w-full sm:max-w-[1200px] sm:mx-auto pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch sm:items-center border-b custom-scrollbar h-full overflow-x-hidden px-0"
-              autoHide={false}
-            >
+  scrollableNodeProps={{ ref: scrollAreaRef }}
+  style={{ height: "100%" }}
+  className="w-full pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch border-b custom-scrollbar h-full overflow-x-hidden px-0"
+  autoHide={false}
+>
+
               {/* Mobile header */}
               <div
                 ref={mobileHeaderRef}
@@ -895,7 +897,8 @@ const descHtml = linkHref
         <div className="w-full flex justify-center">
           <div className="flex w-full max-w-full items-center justify-center gap-12">
             <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-              <div className="w-full max-w-[320px] mx-auto">
+              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
+
                 <StrokeBox>
                   <div className="relative w-full aspect-[9/16]">
                     <video
@@ -913,7 +916,8 @@ const descHtml = linkHref
             </div>
 
             <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-              <div className="w-full max-w-[320px] mx-auto">
+              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
+
                 <StrokeBox>
                   <div className="relative w-full aspect-[9/16]">
                     <video
@@ -946,7 +950,8 @@ const descHtml = linkHref
         <div className="w-full flex justify-center">
           <div className="flex w-full max-w-full items-center justify-center gap-6">
             <div className="flex items-center bg-transparent p-0 basis-[30%] shrink min-w-0">
-  <div className="w-[75%] mx-auto">
+  <div className="mx-auto" style={{ width: "clamp(170px, 12vw, 320px)" }}>
+
     <StrokeBox>
       <video
         src="/bowie-mobile.mp4"
@@ -993,7 +998,11 @@ if (p.key === "meta-ar") {
         <div className="flex w-full max-w-full items-center justify-center gap-6">
           {/* left */}
           <div className="bg-transparent p-0 basis-[50%] shrink min-w-0 flex justify-center">
-            <div className="relative overflow-hidden rounded-lg w-full max-w-[320px] border-2 border-[rgba(128,128,128,0.65)]">
+            <div
+  className="relative overflow-hidden rounded-lg w-full border-2 border-[rgba(128,128,128,0.65)]"
+  style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}
+>
+
               <div className="w-full aspect-[9/16] flex items-center justify-center">
                 <video
                   src="/instaAR_1.webm"
@@ -1010,7 +1019,11 @@ if (p.key === "meta-ar") {
 
           {/* right */}
           <div className="bg-transparent p-0 basis-[50%] shrink min-w-0 flex justify-center">
-            <div className="relative overflow-hidden rounded-lg w-full max-w-[320px] border-2 border-[rgba(128,128,128,0.65)]">
+            <div
+  className="relative overflow-hidden rounded-lg w-full border-2 border-[rgba(128,128,128,0.65)]"
+  style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}
+>
+
               <div className="w-full aspect-[9/16] flex items-center justify-center">
                 <video
                   src="/instaAR_2.webm"
