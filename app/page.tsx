@@ -9,9 +9,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 /* ===================== Types ===================== */
 type Project = { title: string; key: string; href: string };
-type Slide =
-  | { type?: "image"; src: string; alt: string; width: number; height: number; className?: string }
-  | { type: "video"; src: string; alt: string; width: number; height: number; className?: string };
 
 /* ===================== Constants ===================== */
 const UMBER = "#4a1f14";
@@ -217,165 +214,6 @@ function SmartVideo({
   );
 }
 
-/* ===================== Carousel (Mexico Metro only) ===================== */
-function LoopingCarousel({
-  slides,
-  slideWidthPercent = 100,
-  autoplayMs,
-}: {
-  slides: Slide[];
-  slideWidthPercent?: number;
-  autoplayMs?: number;
-}) {
-  const [index, setIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const [locked, setLocked] = useState(false);
-  const [started, setStarted] = useState(false);
-
-  const timerRef = useRef<number | null>(null);
-
-  const stopTimer = useCallback(() => {
-    if (timerRef.current !== null) {
-      window.clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-
-  const startTimer = useCallback(() => {
-    if (!autoplayMs || !started) return;
-    stopTimer();
-    timerRef.current = window.setInterval(() => {
-      setLocked(true);
-      setIsTransitioning(true);
-      setIndex((p) => p + 1);
-    }, autoplayMs);
-  }, [autoplayMs, started, stopTimer]);
-
-  useEffect(() => {
-    if (!autoplayMs || !started) return;
-
-    const initialDelay = Math.random() * 3000;
-
-    const start = () => {
-      startTimer();
-      const onVis = () => (document.hidden ? stopTimer() : startTimer());
-      document.addEventListener("visibilitychange", onVis);
-      return () => {
-        stopTimer();
-        document.removeEventListener("visibilitychange", onVis);
-      };
-    };
-
-    const timeout = window.setTimeout(start, initialDelay);
-
-    return () => {
-      window.clearTimeout(timeout);
-      stopTimer();
-    };
-  }, [autoplayMs, started, startTimer, stopTimer]);
-
-  const total = slides.length;
-  const containerPct = (total + 2) * 100;
-  const slideStyle = { "--slide-pct": `${slideWidthPercent}%` } as Record<"--slide-pct", string> & CSSProperties;
-
-  const handlePrev = (e?: ReactMouseEvent) => {
-    e?.stopPropagation();
-    if (!started || locked) return;
-    stopTimer();
-    setLocked(true);
-    setIsTransitioning(true);
-    setIndex((p) => p - 1);
-    startTimer();
-  };
-
-  const handleNext = (e?: ReactMouseEvent) => {
-    e?.stopPropagation();
-    if (!started || locked) return;
-    stopTimer();
-    setLocked(true);
-    setIsTransitioning(true);
-    setIndex((p) => p + 1);
-    startTimer();
-  };
-
-  const handleActivate = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    if (!started) setStarted(true);
-  };
-
-  const SlideNode = (s: Slide, i: number) => {
-    return (
-      <div key={i} className="w-full flex justify-center flex-shrink-0">
-        <button type="button" onClick={handleActivate} className="group relative block bg-transparent p-0 cursor-pointer" aria-label={s.alt}>
-          {s.type === "video" ? (
-            <video
-              src={s.src}
-              autoPlay={started}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className={`object-contain h-auto max-w-none slide-inner ${s.className ?? ""}`}
-              style={slideStyle}
-            />
-          ) : (
-            <Image
-              src={s.src}
-              alt={s.alt}
-              width={s.width}
-              height={s.height}
-              className={`object-contain h-auto max-w-none slide-inner ${s.className ?? ""}`}
-              style={slideStyle}
-            />
-          )}
-
-          <span
-            aria-hidden
-            className="hover-ring-red pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
-            style={{ boxShadow: "inset 0 0 0 2px rgb(239 68 68)" }}
-          />
-        </button>
-      </div>
-    );
-  };
-
-  return (
-    <div className="relative w-full flex justify-center overflow-hidden">
-      <div
-        className={`flex ${isTransitioning ? "transition-transform duration-700 ease-in-out" : ""}`}
-        style={{ width: `${containerPct}%`, transform: `translateX(-${(index + 1) * 100}%)` }}
-        onTransitionEnd={() => {
-          setLocked(false);
-          if (index === -1) {
-            setIsTransitioning(false);
-            setIndex(total - 1);
-          } else if (index === total) {
-            setIsTransitioning(false);
-            setIndex(0);
-          } else {
-            setIsTransitioning(true);
-          }
-        }}
-      >
-        {SlideNode(slides[total - 1], -1)}
-        {slides.map((s, i) => SlideNode(s, i))}
-        {SlideNode(slides[0], total)}
-      </div>
-
-      {started && (
-        <>
-          <button type="button" onClick={(e) => handlePrev(e)} className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer" aria-label="Previous">
-            <ChevronLeft className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
-          </button>
-          <button type="button" onClick={(e) => handleNext(e)} className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer" aria-label="Next">
-            <ChevronRight className="w-20 h-20 text-red-500 dark:text-red-400 stroke-[0.55]" />
-          </button>
-        </>
-      )}
-    </div>
-  );
-}
-
 /* ===================== Width helper ===================== */
 function Sized({
   pct,
@@ -461,7 +299,6 @@ export default function Home() {
 
   const scrollEndTimerRef = useRef<number | null>(null);
   const scrollingRef = useRef(false);
-    const pendingActiveKeyRef = useRef<string>(activeKeyRef.current);
 
 
   const [mobileHeaderH, setMobileHeaderH] = useState(128);
@@ -1088,20 +925,15 @@ if (p.key === "olympics-ar") {
   );
 }
 
- // BOWIE (border hugs media; right stays vertically centered)
+ // BOWIE (border hugs media; right stays vertically centered) — NO HOOKS
 if (p.key === "david-bowie-3d") {
-  const desktopRef = useRef<HTMLVideoElement | null>(null);
-
-  const setDesktopRate = useCallback(() => {
-    const v = desktopRef.current;
-    if (!v) return;
-    v.playbackRate = 0.7;
-  }, []);
+  const setRate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    e.currentTarget.playbackRate = 0.7;
+  };
 
   return (
     <Sized pct={pct}>
       <div className="w-full flex justify-center">
-        {/* center the two columns against each other vertically */}
         <div className="flex w-full max-w-full items-center justify-center gap-6">
           {/* mobile (portrait-ish) */}
           <button
@@ -1133,10 +965,6 @@ if (p.key === "david-bowie-3d") {
           >
             <StrokeBox>
               <video
-                ref={(el) => {
-                  desktopRef.current = el;
-                  if (el) el.playbackRate = 0.7;
-                }}
                 src="/bowie-desktop.mp4"
                 autoPlay
                 muted
@@ -1144,8 +972,8 @@ if (p.key === "david-bowie-3d") {
                 playsInline
                 preload="auto"
                 disablePictureInPicture
-                onLoadedMetadata={setDesktopRate}
-                onPlay={setDesktopRate}
+                onLoadedMetadata={setRate}
+                onPlay={setRate}
                 className="pointer-events-none select-none w-full h-auto block object-contain"
               />
             </StrokeBox>
@@ -1155,6 +983,7 @@ if (p.key === "david-bowie-3d") {
     </Sized>
   );
 }
+
 
                   // META AR
                   if (p.key === "meta-ar") {
