@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
+import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import "simplebar-react/dist/simplebar.min.css";
@@ -58,56 +58,54 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
 
 const DESCRIPTIONS: Record<string, string> = {
   "diary-ed-sheeran":
-    "Client: The New York Times<br /><br />Animated data visualization deconstructing how Ed Sheeran, Johnny McDaid, and Steve Mac built the most-streamed track of 2017. Over 3.8 million views. <br /><br /><a href='https://www.youtube.com/watch?v=ZpMNJbt3QDE&t=349s' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times | Explainer<br /><br />Animated data visualization deconstructing how Ed Sheeran, Johnny McDaid, and Steve Mac built the most-streamed track of 2017. Over 3.8 million views. <br /><br /><a href='https://www.youtube.com/watch?v=ZpMNJbt3QDE&t=349s' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "olympics-ar":
-    "Client: The New York Times<br /><br />Breaking down the movements that make them great. Sunisa Lee is unmatched on the uneven bars, and there’s nothing Adam Ondra can’t climb.",
+    "Client: The New York Times | Social<br /><br />Breaking down the movements that make them great. Sunisa Lee is unmatched on the uneven bars and there’s nothing Adam Ondra can’t climb.",
   "zhiyun-xs":
-    "Client: Snakk Studio<br /><br />Product visualization and launch campaign for the Smooth-XS.<br /><br /><a href='https://www.youtube.com/watch?v=Ui87X-vDba0' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: Zhiyun | Commercial<br /><br />Product visualization and launch campaign for Zhiyun's Smooth-XS.<br /><br /><a href='https://www.youtube.com/watch?v=Ui87X-vDba0' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "pluto":
-    "Client: The New York Times<br /><br />Follow New Horizons glide through space and set foot on an alien world, three billion miles from the warmth of the sun.<br /><br /><a href='https://www.nytimes.com/video/science/100000004657443/seeking-plutos-frigid-heart.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-
+    "Client: The New York Times | Documentary<br /><br />Follow New Horizons through space and set foot on an alien world, three billion miles from the warmth of the sun.<br /><br /><a href='https://www.nytimes.com/video/science/100000004657443/seeking-plutos-frigid-heart.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "play-magazine":
-    "Client: PLAY Magazine<br /><br />Designed the visual identity for the inaugural issue of PLAY, a cookbook-magazine featuring recipes, essays, and artwork from a community of queer chefs, writers, and artists.<br /><br /><a href='https://play.metalabel.com/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: PLAY Magazine | Print<br /><br />Visual identity for the inaugural issue of PLAY, a cookbook-magazine featuring recipes, essays, and artwork from a community of queer chefs and artists.<br /><br /><a href='https://play.metalabel.com/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "donors":
-    "Client: The New York Times<br /><br />Data visualization revealing how just 158 families supplied nearly half of the early money in the race for the White House.<br /><br /><a href='https://www.nytimes.com/interactive/2015/10/11/us/politics/2016-presidential-election-super-pac-donors.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times | Explainer<br /><br />How just 158 families supplied nearly half of the early money in the race for the 2016 White House.<br /><br /><a href='https://www.nytimes.com/interactive/2015/10/11/us/politics/2016-presidential-election-super-pac-donors.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "sow-et-al":
-    "Client: National Lawyers Guild<br /><br />Graphic analysis uncovering widespread and pervasive constitutional violations by the NYPD during the 2020 George Floyd protests. The work was used as key evidence in a successful class-action lawsuit.<br /><br /><a href='https://situ.nyc/research/projects/sow-et-al-v-city-of-new-york-et-al' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The National Lawyers Guild | Legal<br /><br />Graphic analysis uncovers widespread and pervasive constitutional violations by the NYPD during the 2020 George Floyd protests.<br /><br /><a href='https://situ.nyc/research/projects/sow-et-al-v-city-of-new-york-et-al' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "mexican-metro":
-    "Client: The New York Times<br /><br />Data visualization showing the serious construction flaws behind a tragedy that threatened two of Mexico’s most prominent figures.<br /><br /><a href='https://www.nytimes.com/interactive/2021/06/12/world/americas/mexico-city-train-crash.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-
+    "Client: The New York Times | Editorial<br /><br />The serious construction flaws behind a tragedy threatening two of Mexico’s most prominent figures.<br /><br /><a href='https://www.nytimes.com/interactive/2021/06/12/world/americas/mexico-city-train-crash.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "david-bowie-3d":
-    "Client: The New York Times<br /><br />A closer look at Bowie’s meticulous eye for detail and the way he defied gender and social conventions in the blockbuster museum retrospective, <em>David Bowie Is.</em><br /><br /><a href='https://www.nytimes.com/interactive/2018/03/20/arts/design/bowie-costumes-ar-3d-ul.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "google-headsets": "Client: TK<br /><br />TK.",
-  "meta-ar": "Client: TK<br /><br />TK.",
-
+    "Client: The New York Times | Product<br /><br />Bowie’s meticulous eye for detail and flaunting of gender and social norms in the blockbuster museum retrospective, <em>David Bowie Is.</em><br /><br /><a href='https://www.nytimes.com/interactive/2018/03/20/arts/design/bowie-costumes-ar-3d-ul.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+  "google-headsets": "Client: Google | Product<br /><br />NYT and Google teamed up to mail over a million Google Cardboard headsets to subscribers, giving a platform to 360-degree documentary storytelling.",
+  "meta-ar": "Client: Meta | Product<br /><br />NYT partnered with Instagram to publish reporting directly inside the camera. Augmented Reality lets the reporting behave like an object in the world.",
   "bronx-fire":
-    "Client: The New York Times<br /><br />The main fire-safety system failed in a Bronx apartment building, and 17 residents lost their lives. Through smoke analysis and architectural reconstruction, viewers are stepped through how the tragedy unfolded.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times | News<br /><br />Smoke analysis and architectural reconstruction step viewers through how the main fire-safety system failed in a Bronx apartment building, killing 17 residents.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "dixie-fire-weather":
-    "Client: The New York Times<br /><br />High-resolution radar data, picking up ash particles and water droplets, is used to reconstruct a 3-D model of the Dixie Fire to visualize how it created its own weather.<br /><br /><a href='https://www.nytimes.com/interactive/2021/10/19/climate/dixie-fire-storm-clouds-weather.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times | News<br /><br />High-resolution radar data, picking up ash particles and water droplets, reconstructs how the Dixie Fire created its own weather.<br /><br /><a href='https://www.nytimes.com/interactive/2021/10/19/climate/dixie-fire-storm-clouds-weather.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "usain-bolt":
-    "Client: The New York Times<br /><br />How does Bolt compare to every Olympic medalist since 1896? To answer that, a massive track with 88 lanes shows every medal ever awarded in the 100-meter dash in the modern Olympics.<br /><br /><a href='https://www.nytimes.com/interactive/2016/08/15/sports/olympics/usain-bolt-and-120-years-of-sprinting-history.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times | Editorial<br /><br />How does Bolt compare to every Olympic medalist since 1896? A massive track shows every medal ever awarded in the 100-meter dash.<br /><br /><a href='https://www.nytimes.com/interactive/2016/08/15/sports/olympics/usain-bolt-and-120-years-of-sprinting-history.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
 
   cv: "",
 };
 
 const ROLE_BY_KEY: Record<string, string> = {
-  "diary-ed-sheeran": "TK",
-  "zhiyun-xs": "TK",
-  pluto: "TK",
-  "olympics-ar": "TK",
+  "diary-ed-sheeran": "Art Direction, 2D Motion Design",
+  "olympics-ar": "Art Direction, Multimedia Design",
+  "zhiyun-xs": "3D Motion Design",
+  "pluto": "3D Motion Design",
 
-  "play-magazine": "TK",
-  donors: "TK",
-  "sow-et-al": "TK",
-  "mexican-metro": "TK",
+  "david-bowie-3d": "R&D, 3D Production",
+  "google-headsets": "R&D, 3D Production",
+  "meta-ar": "R&D, Art Direction",
 
-  "david-bowie-3d": "TK",
-  "google-headsets": "TK",
-  "meta-ar": "TK",
+  "play-magazine": "Art Direction, 3D Design",
+  "donors": "Information Design",
+  "sow-et-al": "Visual Analysis, Data Visualization",
+  "usain-bolt": "Data Visualization",
 
-  "bronx-fire": "TK",
-  "dixie-fire-weather": "TK",
-  "usain-bolt": "TK",
+  "bronx-fire": "Architectural Reconstruction",
+  "dixie-fire-weather": "Data Analysis, Data Vizualization",
+  "mexican-metro": "Architectural Reconstruction",
+
 };
 
 const MEDIA_PCT: Partial<Record<string, number>> = {
@@ -123,7 +121,7 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
   "play-magazine": 85,
   "donors": 90,
   "sow-et-al": 70,
-  "usain-bolt": 90,
+  "usain-bolt": 75,
 
   "bronx-fire": 90,
   "dixie-fire-weather": 75,
@@ -138,9 +136,9 @@ const DEFAULT_TAGS: string[] = ["Data Viz"];
 
 const TAGS_BY_KEY: Partial<Record<string, string[]>> = {
   "diary-ed-sheeran": ["2D Motion | Explainer"],
-  "olympics-ar": ["Motion System | Social"],
+  "olympics-ar": ["Multimedia Design | Social"],
   "zhiyun-xs": ["3D Motion | Commercial"],
-  pluto: ["3D Motion | Explainer"],
+  "pluto": ["3D Motion | Explainer"],
   "david-bowie-3d": ["3D Graphics | Editorial"],
   "google-headsets": ["3D Graphics | Documentary"],
   "meta-ar": ["3D Graphics | Social"],
@@ -185,6 +183,19 @@ function stripLeadingClientLine(html: string): string {
   return html.replace(/^Client:\s*[^<]+<br\s*\/><br\s*\/>/i, "");
 }
 
+function extractFirstHref(html: string): string | null {
+  const m = html.match(/href=['"]([^'"]+)['"]/i);
+  return m?.[1] ?? null;
+}
+function stripAllLinks(html: string): string {
+  return html
+    .replace(/<a\b[^>]*>.*?<\/a>/gi, "")
+    // remove ALL trailing <br/> blocks and whitespace
+    .replace(/(\s*<br\s*\/?>\s*)+$/gi, "")
+    .trim();
+}
+
+
 /* ===================== Small helper for robust video loading ===================== */
 function SmartVideo({
   srcBase,
@@ -218,39 +229,21 @@ function SmartVideo({
 function Sized({
   pct,
   children,
-  onClick,
-  ariaLabel,
 }: {
   pct: number;
   children: React.ReactNode;
-  onClick?: () => void;
-  ariaLabel?: string;
 }) {
   const style = { "--pct": `${pct}%` } as Record<"--pct", string> & CSSProperties;
 
-  if (!onClick) {
-    return (
-      <div className="w-full flex justify-center">
-        <div className="pct-box" style={style}>
-          {children}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full flex justify-center">
-      <button type="button" onClick={onClick} aria-label={ariaLabel} className="group relative pct-box bg-transparent p-0 cursor-pointer" style={style}>
+      <div className="pct-box" style={style}>
         {children}
-        <span
-          aria-hidden
-          className="hover-ring-red pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
-          style={{ boxShadow: "inset 0 0 0 2px rgb(239 68 68)" }}
-        />
-      </button>
+      </div>
     </div>
   );
 }
+
 
 /* ===================== Stable stroke wrapper (prevents remount flicker) ===================== */
 const STROKE_RADIUS = "0.5rem";
@@ -263,17 +256,13 @@ function StrokeBox({ children }: { children: React.ReactNode }) {
       {children}
       <span
         aria-hidden
-        className="hover-stroke-gray pointer-events-none absolute inset-0 opacity-100 transition-opacity duration-150 group-hover:opacity-0 group-focus-visible:opacity-0"
+        className="pointer-events-none absolute inset-0"
         style={{ boxShadow: STROKE_SHADOW_GRAY, borderRadius: STROKE_RADIUS }}
-      />
-      <span
-        aria-hidden
-        className="hover-stroke-red pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
-        style={{ boxShadow: STROKE_SHADOW_RED, borderRadius: STROKE_RADIUS }}
       />
     </div>
   );
 }
+
 
 /* ===================== Page ===================== */
 export default function Home() {
@@ -283,7 +272,6 @@ export default function Home() {
     activeKeyRef.current = activeKey;
   }, [activeKey]);
 
-  const [detailsOpenKey, setDetailsOpenKey] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   /* ===================== CV panel collapse state (DESKTOP) ===================== */
@@ -304,9 +292,7 @@ export default function Home() {
   const [mobileHeaderH, setMobileHeaderH] = useState(128);
   const mobileHeaderRef = useRef<HTMLDivElement>(null);
 
-  const toggleDetails = useCallback((key: string) => {
-    setDetailsOpenKey((prev) => (prev === key ? null : key));
-  }, []);
+
 
   const VISIBLE_KEYS = useMemo(() => {
     const base = PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key);
@@ -531,6 +517,16 @@ useEffect(() => {
           border-color: rgba(128, 128, 128, 0.65) !important;
           transition: none !important;
         }
+
+        .desc-link {
+  color: rgb(59 130 246); /* tailwind blue-500 */
+  text-decoration: underline;
+}
+.desc-link:hover {
+  color: rgb(37 99 235); /* blue-600 */
+}
+  
+
       `}</style>
 
       <div className="relative z-10 w-full h-full">
@@ -619,9 +615,8 @@ useEffect(() => {
                               <button
                                 type="button"
                                 onClick={() => {
-                                  setDetailsOpenKey(null);
-                                  scrollToKey(key);
-                                }}
+  scrollToKey(key);
+}}
                                 className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
                               >
                                 {title}
@@ -695,421 +690,446 @@ useEffect(() => {
               {nonCVProjects.map((p, idx) => {
                 const img = IMAGES[p.key];
                 const pct = getPct(p.key);
-                const isExpanded = detailsOpenKey === p.key;
                 const extraTopMobileFirst = isMobile && idx === 0 ? 20 : 0;
+                const rawDesc = DESCRIPTIONS[p.key] ?? "";
+const client = extractClient(rawDesc);
 
-                const toggle = () => toggleDetails(p.key);
-                const client = extractClient(DESCRIPTIONS[p.key] ?? "");
-                const mediaAria = `Toggle details for ${p.title}`;
+const stripped = stripLeadingClientLine(rawDesc);
+const linkHref = extractFirstHref(stripped);
+const baseDesc = stripAllLinks(stripped);
+
+// LINK appended at the very end of the description
+const descHtml = linkHref
+  ? `${baseDesc} <a href="${linkHref}" target="_blank" rel="noopener noreferrer" class="desc-link">LINK</a>`
+  : baseDesc;
+
 
                 const Media = (() => {
-                  // PLAY
-                  if (p.key === "play-magazine") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-6">
-                            <button
-                              type="button"
-                              onClick={toggle}
-                              aria-label={mediaAria}
-                              className="group bg-transparent p-0 cursor-pointer basis-[70%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-                            >
-                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                                <Image src="/play_1.webp" alt="PLAY Magazine – 1" width={1600} height={1100} className="pointer-events-none select-none object-contain w-full h-auto block" />
-                              </div>
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={toggle}
-                              aria-label={mediaAria}
-                              className="group bg-transparent p-0 cursor-pointer basis-[30%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-                            >
-                              <div className="overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full max-w-[320px] aspect-square mx-auto">
-                                <Image src="/play_2.webp" alt="PLAY Magazine – 2" width={900} height={900} className="pointer-events-none select-none object-cover w-full h-full block" />
-                              </div>
-                            </button>
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // DONORS
-                  if (p.key === "donors") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-6">
-                            <button
-                              type="button"
-                              onClick={toggle}
-                              aria-label={mediaAria}
-                              className="group bg-transparent p-0 cursor-pointer basis-[40%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-                            >
-                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                                <video src="/monopoly.webm" autoPlay muted loop playsInline preload="metadata" className="pointer-events-none select-none object-contain w-full h-auto block" />
-                              </div>
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={toggle}
-                              aria-label={mediaAria}
-                              className="group bg-transparent p-0 cursor-pointer basis-[60%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-                            >
-                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                                <Image src="/election_2.webp" alt="Families Funding the 2016 Election" width={1600} height={1100} className="pointer-events-none select-none object-contain w-full h-auto block" />
-                              </div>
-                            </button>
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // MEXICO METRO (single video)
-if (p.key === "mexican-metro") {
-  return (
-    <Sized pct={pct}>
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={mediaAria}
-        className="group bg-transparent p-0 cursor-pointer w-full outline-none focus:outline-none focus-visible:outline-none"
-      >
-        <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-          <video
-            src="/metro.webm"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="pointer-events-none select-none object-contain w-full h-auto block"
-          />
-        </div>
-      </button>
-    </Sized>
-  );
-}
-
-
-                  // DIXIE
-                  if (p.key === "dixie-fire-weather") {
-                    return (
-                      <Sized pct={pct}>
-                        <button type="button" onClick={toggle} aria-label={mediaAria} className="group bg-transparent p-0 cursor-pointer w-full outline-none focus:outline-none focus-visible:outline-none">
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                            <SmartVideo srcBase="/dixie_final" className="pointer-events-none select-none object-contain w-full h-auto block" preload="metadata" />
-                          </div>
-                        </button>
-                      </Sized>
-                    );
-                  }
-
-                  // ED SHEERAN
-                  if (p.key === "diary-ed-sheeran") {
-                    return (
-                      <Sized pct={pct}>
-                        <button type="button" onClick={toggle} aria-label={mediaAria} className="group bg-transparent p-0 cursor-pointer w-full outline-none focus:outline-none focus-visible:outline-none">
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                            <SmartVideo srcBase="/edsheeran_final" className="pointer-events-none select-none object-contain w-full h-auto block" preload="metadata" />
-                          </div>
-                        </button>
-                      </Sized>
-                    );
-                  }
-
-                  // BRONX
-                  if (p.key === "bronx-fire") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-6">
-                            <button
-                              type="button"
-                              onClick={toggle}
-                              aria-label={mediaAria}
-                              className="group bg-transparent p-0 cursor-pointer basis-[38%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-                            >
-                              <div className="overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full aspect-square">
-                                <video src="/bronx_final.webm" autoPlay muted loop playsInline preload="metadata" className="pointer-events-none select-none object-cover w-full h-full block" />
-                              </div>
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={toggle}
-                              aria-label={mediaAria}
-                              className="group bg-transparent p-0 cursor-pointer basis-[62%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-                            >
-                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                                <Image src="/bronx_2.webp" alt="Reconstructing the Bronx Fire – still" width={1600} height={1100} className="pointer-events-none select-none object-contain w-full h-auto block" />
-                              </div>
-                            </button>
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // PLUTO
-                  if (p.key === "pluto") {
-                    return (
-                      <Sized pct={pct}>
-                        <button type="button" onClick={toggle} aria-label={mediaAria} className="group bg-transparent p-0 cursor-pointer w-full outline-none focus:outline-none focus-visible:outline-none">
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                            <SmartVideo srcBase="/pluto_final" className="pointer-events-none select-none object-contain w-full h-auto block" preload="metadata" />
-                          </div>
-                        </button>
-                      </Sized>
-                    );
-                  }
-
-                  // NYT SOCIAL (use top-level StrokeBox to avoid remount flicker)
-if (p.key === "olympics-ar") {
-  return (
-    <Sized pct={pct}>
-      <div className="w-full flex justify-center">
-        <div className="flex w-full max-w-full items-center justify-center gap-12">
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={mediaAria}
-            className="group bg-transparent p-0 cursor-pointer basis-[50%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-          >
-            <div className="w-full max-w-[320px] mx-auto">
-              <StrokeBox>
-                <div className="relative w-full aspect-[9/16]">
-                  <video
-                    src="/sunisa.webm"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                  />
-                </div>
-              </StrokeBox>
+  // PLAY
+  if (p.key === "play-magazine") {
+    return (
+      <Sized pct={pct}>
+        <div className="w-full flex justify-center">
+          <div className="flex w-full max-w-full items-center justify-center gap-6">
+            <div className="bg-transparent p-0 basis-[70%] shrink min-w-0">
+              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                <Image
+                  src="/play_1.webp"
+                  alt="PLAY Magazine – 1"
+                  width={1600}
+                  height={1100}
+                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                />
+              </div>
             </div>
-          </button>
 
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={mediaAria}
-            className="group bg-transparent p-0 cursor-pointer basis-[50%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-          >
-            <div className="w-full max-w-[320px] mx-auto">
-              <StrokeBox>
-                <div className="relative w-full aspect-[9/16]">
-                  <video
-                    src="/ondra.webm"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                  />
-                </div>
-              </StrokeBox>
+            <div className="bg-transparent p-0 basis-[30%] shrink min-w-0">
+              <div className="overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full max-w-[320px] aspect-square mx-auto">
+                <Image
+                  src="/play_2.webp"
+                  alt="PLAY Magazine – 2"
+                  width={900}
+                  height={900}
+                  className="pointer-events-none select-none object-cover w-full h-full block"
+                />
+              </div>
             </div>
-          </button>
+          </div>
         </div>
-      </div>
-    </Sized>
-  );
-}
+      </Sized>
+    );
+  }
 
- // BOWIE (border hugs media; right stays vertically centered) — NO HOOKS
-if (p.key === "david-bowie-3d") {
-  const setRate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    e.currentTarget.playbackRate = 0.7;
-  };
+  
 
-  return (
-    <Sized pct={pct}>
-      <div className="w-full flex justify-center">
-        <div className="flex w-full max-w-full items-center justify-center gap-6">
-          {/* mobile (portrait-ish) */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={mediaAria}
-            className="group flex items-center bg-transparent p-0 cursor-pointer basis-[30%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-          >
-            <StrokeBox>
-              <video
-                src="/bowie-mobile.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                disablePictureInPicture
-                className="pointer-events-none select-none w-full h-auto block object-contain"
-              />
-            </StrokeBox>
-          </button>
-
-          {/* desktop (wider) */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={mediaAria}
-            className="group flex items-center bg-transparent p-0 cursor-pointer basis-[70%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-          >
-            <StrokeBox>
-              <video
-                src="/bowie-desktop.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                disablePictureInPicture
-                onLoadedMetadata={setRate}
-                onPlay={setRate}
-                className="pointer-events-none select-none w-full h-auto block object-contain"
-              />
-            </StrokeBox>
-          </button>
-        </div>
-      </div>
-    </Sized>
-  );
-}
-
-
-                  // META AR
-                  if (p.key === "meta-ar") {
-                    const RADIUS = "0.5rem";
-                    const SHADOW_GRAY = "inset 0 0 0 2px rgba(128,128,128,0.65)";
-                    const SHADOW_RED = "inset 0 0 0 2px rgb(239 68 68)";
-
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-6">
-                            <button type="button" onClick={toggle} aria-label={mediaAria} className="group bg-transparent p-0 cursor-pointer basis-[50%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none">
-                              <div className="relative inline-block overflow-hidden rounded-lg w-full max-w-[320px] mx-auto">
-                                <div className="w-full aspect-[9/16]">
-                                  <video src="/instaAR_1.webm" autoPlay muted loop playsInline preload="metadata" className="pointer-events-none select-none w-full h-full object-contain block" />
-                                </div>
-                                <span aria-hidden className="hover-stroke-gray pointer-events-none absolute inset-0 opacity-100 transition-opacity duration-150 group-hover:opacity-0 group-focus-visible:opacity-0" style={{ boxShadow: SHADOW_GRAY, borderRadius: RADIUS }} />
-                                <span aria-hidden className="hover-stroke-red pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100" style={{ boxShadow: SHADOW_RED, borderRadius: RADIUS }} />
-                              </div>
-                            </button>
-
-                            <button type="button" onClick={toggle} aria-label={mediaAria} className="group bg-transparent p-0 cursor-pointer basis-[50%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none">
-                              <div className="relative inline-block overflow-hidden rounded-lg w-full max-w-[320px] mx-auto">
-                                <div className="w-full aspect-[9/16]">
-                                  <video src="/instaAR_2.webm" autoPlay muted loop playsInline preload="metadata" className="pointer-events-none select-none w-full h-full object-contain block" />
-                                </div>
-                                <span aria-hidden className="hover-stroke-gray pointer-events-none absolute inset-0 opacity-100 transition-opacity duration-150 group-hover:opacity-0 group-focus-visible:opacity-0" style={{ boxShadow: SHADOW_GRAY, borderRadius: RADIUS }} />
-                                <span aria-hidden className="hover-stroke-red pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100" style={{ boxShadow: SHADOW_RED, borderRadius: RADIUS }} />
-                              </div>
-                            </button>
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // GOOGLE VR (make the border wrap the IMAGE box, not the aspect container)
-if (p.key === "google-headsets") {
-  return (
-    <Sized pct={pct}>
-      <div className="w-full flex justify-center">
-        <div className="flex w-full max-w-full items-center justify-center gap-6">
-          {/* left image (Cardboard) */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={mediaAria}
-            className="group bg-transparent p-0 cursor-pointer basis-[34%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-          >
-            <div className="hover-border inline-block w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500">
-              <Image
-                src="/cardboard.jpg"
-                alt="Google VR – Cardboard"
-                width={1200}
-                height={800}
-                sizes="(min-width: 640px) 34vw, 90vw"
-                className="pointer-events-none select-none object-contain w-full h-auto block"
-              />
-            </div>
-          </button>
-          {/* right video (unchanged layout lock) */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={mediaAria}
-            className="group bg-transparent p-0 cursor-pointer basis-[66%] shrink min-w-0 outline-none focus:outline-none focus-visible:outline-none"
-          >
-            <div className="w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500">
-              <div className="relative w-full aspect-[16/9]">
+  // DONORS
+  if (p.key === "donors") {
+    return (
+      <Sized pct={pct}>
+        <div className="w-full flex justify-center">
+          <div className="flex w-full max-w-full items-center justify-center gap-6">
+            <div className="bg-transparent p-0 basis-[40%] shrink min-w-0">
+              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
                 <video
-                  src="/antarctica_final.webm"
+                  src="/monopoly.webm"
                   autoPlay
                   muted
                   loop
                   playsInline
                   preload="metadata"
-                  className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                  className="pointer-events-none select-none object-contain w-full h-auto block"
                 />
               </div>
             </div>
-          </button>
+
+            <div className="bg-transparent p-0 basis-[60%] shrink min-w-0">
+              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                <Image
+                  src="/election_2.webp"
+                  alt="Families Funding the 2016 Election"
+                  width={1600}
+                  height={1100}
+                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // MEXICO METRO (single video)
+  if (p.key === "mexican-metro") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <video
+              src="/metro.webm"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+            />
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // DIXIE
+  if (p.key === "dixie-fire-weather") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <SmartVideo
+              srcBase="/dixie_final"
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+              preload="metadata"
+            />
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // ED SHEERAN
+  if (p.key === "diary-ed-sheeran") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <SmartVideo
+              srcBase="/edsheeran_final"
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+              preload="metadata"
+            />
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // BRONX
+  if (p.key === "bronx-fire") {
+    return (
+      <Sized pct={pct}>
+        <div className="w-full flex justify-center">
+          <div className="flex w-full max-w-full items-center justify-center gap-6">
+            <div className="bg-transparent p-0 basis-[38%] shrink min-w-0">
+              <div className="overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full aspect-square">
+                <video
+                  src="/bronx_final.webm"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="pointer-events-none select-none object-cover w-full h-full block"
+                />
+              </div>
+            </div>
+
+            <div className="bg-transparent p-0 basis-[62%] shrink min-w-0">
+              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                <Image
+                  src="/bronx_2.webp"
+                  alt="Reconstructing the Bronx Fire – still"
+                  width={1600}
+                  height={1100}
+                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // PLUTO
+  if (p.key === "pluto") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <SmartVideo
+              srcBase="/pluto_final"
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+              preload="metadata"
+            />
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // NYT SOCIAL
+  if (p.key === "olympics-ar") {
+    return (
+      <Sized pct={pct}>
+        <div className="w-full flex justify-center">
+          <div className="flex w-full max-w-full items-center justify-center gap-12">
+            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
+              <div className="w-full max-w-[320px] mx-auto">
+                <StrokeBox>
+                  <div className="relative w-full aspect-[9/16]">
+                    <video
+                      src="/sunisa.webm"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                    />
+                  </div>
+                </StrokeBox>
+              </div>
+            </div>
+
+            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
+              <div className="w-full max-w-[320px] mx-auto">
+                <StrokeBox>
+                  <div className="relative w-full aspect-[9/16]">
+                    <video
+                      src="/ondra.webm"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                    />
+                  </div>
+                </StrokeBox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // BOWIE (NO hooks)
+  if (p.key === "david-bowie-3d") {
+    const setRate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+      e.currentTarget.playbackRate = 0.7;
+    };
+
+    return (
+      <Sized pct={pct}>
+        <div className="w-full flex justify-center">
+          <div className="flex w-full max-w-full items-center justify-center gap-6">
+            <div className="flex items-center bg-transparent p-0 basis-[30%] shrink min-w-0">
+  <div className="w-[75%] mx-auto">
+    <StrokeBox>
+      <video
+        src="/bowie-mobile.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        className="pointer-events-none select-none w-full h-auto block object-contain"
+      />
+    </StrokeBox>
+  </div>
+</div>
+
+
+            <div className="flex items-center bg-transparent p-0 basis-[70%] shrink min-w-0">
+              <StrokeBox>
+                <video
+                  src="/bowie-desktop.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  disablePictureInPicture
+                  onLoadedMetadata={setRate}
+                  onPlay={setRate}
+                  className="pointer-events-none select-none w-full h-auto block object-contain"
+                />
+              </StrokeBox>
+            </div>
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // META AR
+if (p.key === "meta-ar") {
+  return (
+    <Sized pct={pct}>
+      <div className="w-full flex justify-center">
+        <div className="flex w-full max-w-full items-center justify-center gap-6">
+          {/* left */}
+          <div className="bg-transparent p-0 basis-[50%] shrink min-w-0 flex justify-center">
+            <div className="relative overflow-hidden rounded-lg w-full max-w-[320px] border-2 border-[rgba(128,128,128,0.65)]">
+              <div className="w-full aspect-[9/16] flex items-center justify-center">
+                <video
+                  src="/instaAR_1.webm"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="pointer-events-none select-none block w-full h-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* right */}
+          <div className="bg-transparent p-0 basis-[50%] shrink min-w-0 flex justify-center">
+            <div className="relative overflow-hidden rounded-lg w-full max-w-[320px] border-2 border-[rgba(128,128,128,0.65)]">
+              <div className="w-full aspect-[9/16] flex items-center justify-center">
+                <video
+                  src="/instaAR_2.webm"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="pointer-events-none select-none block w-full h-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Sized>
   );
 }
 
-                  // ZHIYUN
-                  if (p.key === "zhiyun-xs") {
-                    return (
-                      <Sized pct={pct}>
-                        <button type="button" onClick={toggle} aria-label={mediaAria} className="group bg-transparent p-0 cursor-pointer w-full outline-none focus:outline-none focus-visible:outline-none">
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                            <SmartVideo srcBase="/zhiyun_final" className="pointer-events-none select-none object-contain w-full h-auto block" preload="metadata" />
-                          </div>
-                        </button>
-                      </Sized>
-                    );
-                  }
 
-                  // SOW
-                  if (p.key === "sow-et-al") {
-                    return (
-                      <Sized pct={pct}>
-                        <button type="button" onClick={toggle} aria-label={mediaAria} className="group bg-transparent p-0 cursor-pointer w-full outline-none focus:outline-none focus-visible:outline-none">
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] transition-colors duration-150 group-hover:border-red-500 group-focus-visible:border-red-500 w-full">
-                            <Image src="/protests_1.webp" alt="Sow, et al. – George Floyd Protests" width={1200} height={900} className="pointer-events-none select-none object-contain w-full h-auto block" />
-                          </div>
-                        </button>
-                      </Sized>
-                    );
-                  }
-                  // Fallback (single image)
-                  if (img) {
-                    return (
-                      <Sized pct={pct} onClick={toggle} ariaLabel={mediaAria}>
-                        <Image src={img.src} alt={img.alt} width={img.width} height={img.height} className="object-contain w-full" priority={idx === 0} />
-                      </Sized>
-                    );
-                  }
-                  return (
-                    <Sized pct={pct} onClick={toggle} ariaLabel={mediaAria}>
-                      <Image src="/dixie_placeholder.webp" alt="Placeholder" width={800} height={600} className="object-contain w-full h-auto" />
-                    </Sized>
-                  );
-                })();
+  // GOOGLE VR
+  if (p.key === "google-headsets") {
+    return (
+      <Sized pct={pct}>
+        <div className="w-full flex justify-center">
+          <div className="flex w-full max-w-full items-center justify-center gap-6">
+            <div className="bg-transparent p-0 basis-[34%] shrink min-w-0">
+              <div className="inline-block w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)]">
+                <Image
+                  src="/cardboard.jpg"
+                  alt="Google VR – Cardboard"
+                  width={1200}
+                  height={800}
+                  sizes="(min-width: 640px) 34vw, 90vw"
+                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                />
+              </div>
+            </div>
+
+            <div className="bg-transparent p-0 basis-[66%] shrink min-w-0">
+              <div className="w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)]">
+                <div className="relative w-full aspect-[16/9]">
+                  <video
+                    src="/antarctica_final.webm"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // ZHIYUN
+  if (p.key === "zhiyun-xs") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <SmartVideo
+              srcBase="/zhiyun_final"
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+              preload="metadata"
+            />
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // SOW
+  if (p.key === "sow-et-al") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <Image
+              src="/protests_1.webp"
+              alt="Sow, et al. – George Floyd Protests"
+              width={1200}
+              height={900}
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+            />
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
+  // Fallback (single image)
+  if (img) {
+    return (
+      <Sized pct={pct}>
+        <Image
+          src={img.src}
+          alt={img.alt}
+          width={img.width}
+          height={img.height}
+          className="object-contain w-full"
+          priority={idx === 0}
+        />
+      </Sized>
+    );
+  }
+
+  return (
+    <Sized pct={pct}>
+      <Image src="/dixie_placeholder.webp" alt="Placeholder" width={800} height={600} className="object-contain w-full h-auto" />
+    </Sized>
+  );
+})();
+
                 return (
                   <div
                     key={p.key}
@@ -1123,42 +1143,33 @@ if (p.key === "google-headsets") {
 
                     <div className="w-full outline-none">{Media}</div>
 
-                    {/* Always-visible summary */}
-                    <Sized pct={pct}>
-                      <button type="button" onClick={toggle} className="w-full bg-transparent p-0 text-left cursor-pointer" aria-expanded={isExpanded} aria-controls={`details-${p.key}`}>
-                        <div className="pt-4 px-3 sm:px-0 text-[10px] leading-relaxed text-red-500 dark:text-red-400">
-                          <div className="text-left" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                            <div>
-                              <span className="opacity-80">Role:</span> {ROLE_BY_KEY[p.key] ?? "TK"}
-                            </div>
-                            <div className="mt-1">
-                              <span className="opacity-80">Client:</span> {client}
-                            </div>
-                          </div>
-                        </div>
-                      </button>
-                    </Sized>
+{/* Role/Client + Description (always visible) */}
+<Sized pct={pct}>
+  <div className="pt-4 px-3 sm:px-0 text-[10px] leading-relaxed text-red-500 dark:text-red-400">
+    <div className="w-full flex justify-center">
+  <div className="inline-flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10">
 
-                    {/* Animated expand/collapse details */}
-                    <div
-                      id={`details-${p.key}`}
-                      className={["w-full overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out", isExpanded ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"].join(" ")}
-                    >
-                      <Sized pct={pct}>
-                        <div className="pt-6 px-3 sm:px-0 text-[10px] leading-relaxed text-red-500 dark:text-red-400">
-                          <div className="text-left" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                            <div className="h-4" />
-                            <div dangerouslySetInnerHTML={{ __html: stripLeadingClientLine(DESCRIPTIONS[p.key] ?? "") }} />
+    {/* left: role/client */}
+    <div className="shrink-0 sm:w-[12.5rem]">
+      <div>
+        <span className="opacity-80">Role:</span>{" "}
+        <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
+      </div>
+      <div className="mt-0">
+        <span className="opacity-80">Client:</span>{" "}
+        <span className="font-semibold">{client}</span>
+      </div>
+    </div>
 
-                            {p.key === "pluto" && isExpanded && (
-                              <div className="mt-6">
-                                <video src="/deathFlights_final.webm" autoPlay muted loop playsInline preload="metadata" className="object-contain w-full h-auto" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </Sized>
-                    </div>
+    {/* right: description */}
+    <div className="min-w-0 sm:w-[24rem] sm:max-w-[24rem] text-red-500 dark:text-red-400">
+      <div dangerouslySetInnerHTML={{ __html: descHtml }} />
+    </div>
+  </div>
+</div>
+  </div>
+</Sized>
+
 
                     {/* Separator */}
                     <div className="flex flex-col items-center w-full">
@@ -1169,9 +1180,6 @@ if (p.key === "google-headsets") {
     backgroundColor: UMBER,
     marginLeft: RULE_INSET_PX,
     marginRight: RULE_INSET_PX,
-    transform: `translateY(${isExpanded ? 8 : 0}px)`,
-    transition: "transform 180ms ease-in-out",
-    willChange: "transform",
   }}
 />
 
