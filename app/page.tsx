@@ -533,7 +533,7 @@ useEffect(() => {
         <div className="flex flex-col sm:flex-row items-start gap-0 h-full min-h-0">
           {/* Left */}
           <aside className="w-[245px] shrink-0 sticky top-0 self-start pr-1 hidden sm:block">
-            <div className="mb-10 pl-[2px]">
+            <div className="mb-10 pl-[12px]">
               <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">Grothjan Studio</h2>
             </div>
 
@@ -681,7 +681,7 @@ useEffect(() => {
 
               {/* Desktop header */}
               <div className="hidden sm:block w-full text-left">
-                <div className="mb-10 pl-[2px]">
+                <div className="mb-10 pl-[12px]">
                   <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">Select Projects</h2>
                 </div>
                 <div className="w-full h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
