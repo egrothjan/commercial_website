@@ -13,12 +13,18 @@ type Project = { title: string; key: string; href: string };
 /* ===================== Constants ===================== */
 const UMBER = "#4a1f14";
 const GAP = 65;
-const MID_GAP = Math.round(GAP * 0.5);
-const RULE_INSET_PX = 0; // <-- add this
+const MID_GAP = Math.round(GAP * 0.9);
+
+const DESC_TOP_PAD = 16; // matches old pt-4 (16px)
+const DESC_BAND_HALF = Math.round((DESC_TOP_PAD + MID_GAP) / 2);
+
+const RULE_INSET_PX = 0;
+
 
 const PROJECTS: Project[] = [
   // Motion
   { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#" },
+  { title: "Documentary: The Death Flights", key: "death-flights", href: "#" },
   { title: "NYT Social Content", key: "olympics-ar", href: "#" },
   { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
   { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#" },
@@ -49,14 +55,14 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
   pluto: { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
   "olympics-ar": { src: "/olympics_cover.webp", alt: "NYT Social Content", width: 800, height: 600 },
-  "usain-bolt": { src: "/sprint_2.webp", alt: "Usain Bolt and the Fastest Men in the World", width: 700, height: 500 },
   "google-headsets": { src: "/dixie_placeholder.webp", alt: "Google Headsets (placeholder)", width: 800, height: 600 },
-  "meta-ar": { src: "/dixie_placeholder.webp", alt: "Meta AR (placeholder)", width: 800, height: 600 },
 };
 
 const DESCRIPTIONS: Record<string, string> = {
   "diary-ed-sheeran":
     "Client: The New York Times | Explainer<br /><br />Animated data visualization deconstructing how Ed Sheeran, Johnny McDaid, and Steve Mac built the most-streamed track of 2017. Over 3.8 million views. <br /><br /><a href='https://www.youtube.com/watch?v=ZpMNJbt3QDE&t=349s' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "death-flights":
+  "Client: Centro Prodh | Documentary<br /><br />Revealing a state program of enforced disappearances through its widespread use of death flights.<br /><br /><a href='https://www.youtube.com/watch?v=nfGLrxIJcPQ' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "olympics-ar":
     "Client: The New York Times | Social<br /><br />Breaking down the movements that make them great. Sunisa Lee is unmatched on the uneven bars and there’s nothing Adam Ondra can’t climb.",
   "zhiyun-xs":
@@ -72,7 +78,8 @@ const DESCRIPTIONS: Record<string, string> = {
   "david-bowie-3d":
     "Client: The New York Times | Product<br /><br />Bowie’s meticulous eye for detail and flaunting of gender and social norms in the blockbuster museum retrospective, <em>David Bowie Is.</em><br /><br /><a href='https://www.nytimes.com/interactive/2018/03/20/arts/design/bowie-costumes-ar-3d-ul.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "google-headsets": "Client: Google | Product<br /><br />NYT and Google teamed up to mail over a million Google Cardboard headsets to subscribers, giving a platform to 360-degree documentary storytelling.",
-  "meta-ar": "Client: Meta | Product<br /><br />NYT partnered with Instagram to publish reporting directly inside the camera. Augmented Reality lets the reporting behave like an object in the world.",
+  "meta-ar":
+  "Client: Meta | Product<br /><br />NYT partnered with Instagram to publish reporting directly inside the camera. Augmented Reality lets the reporting behave like an object in the world.<br /><br /><a href='https://rd.nytimes.com/projects/augmented-reality-storytelling/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "bronx-fire":
     "Client: The New York Times | News<br /><br />Smoke analysis and architectural reconstruction step viewers through how the main fire-safety system failed in a Bronx apartment building, killing 17 residents.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "dixie-fire-weather":
@@ -85,13 +92,14 @@ const DESCRIPTIONS: Record<string, string> = {
 
 const ROLE_BY_KEY: Record<string, string> = {
   "diary-ed-sheeran": "Art Direction, 2D Motion Design",
+  "death-flights": "Motion Designer, Creative Director, Editor",
   "olympics-ar": "Art Direction, Multimedia Design",
   "zhiyun-xs": "3D Motion Design",
   "pluto": "3D Motion Design",
 
-  "david-bowie-3d": "R&D, 3D Production",
-  "google-headsets": "R&D, 3D Production",
-  "meta-ar": "R&D, Art Direction",
+  "david-bowie-3d": "Technical Supervisor, 3D Production",
+  "google-headsets": "Technical Supervisor, 3D Production",
+  "meta-ar": "Art Direction, Production",
 
   "play-magazine": "Art Direction, 3D Design",
   "donors": "Information Design",
@@ -105,6 +113,7 @@ const ROLE_BY_KEY: Record<string, string> = {
 
 const MEDIA_PCT: Partial<Record<string, number>> = {
   "diary-ed-sheeran": 90,
+  "death-flights": 90,
   "zhiyun-xs": 90,
   "pluto": 90,
   "olympics-ar": 90,
@@ -131,6 +140,7 @@ const DEFAULT_TAGS: string[] = ["Data Viz"];
 const TAGS_BY_KEY: Partial<Record<string, string[]>> = {
   "diary-ed-sheeran": ["2D Motion | Explainer"],
   "olympics-ar": ["Multimedia Design | Social"],
+  "death-flights": ["Creative Direction | Documentary"],
   "zhiyun-xs": ["3D Motion | Commercial"],
   "pluto": ["3D Motion | Explainer"],
   "david-bowie-3d": ["3D Graphics | Editorial"],
@@ -157,7 +167,7 @@ const TAG_UI = {
 const getTagsForKey = (key: string) => TAGS_BY_KEY[key] ?? DEFAULT_TAGS;
 
 /* ===================== Category lists (explicit order) ===================== */
-const MOTION_KEYS = ["diary-ed-sheeran", "olympics-ar", "zhiyun-xs", "pluto"] as const;
+const MOTION_KEYS = ["diary-ed-sheeran", "death-flights", "olympics-ar", "zhiyun-xs", "pluto"] as const;
 const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
 const INTERACTIVE_KEYS = ["david-bowie-3d", "google-headsets", "meta-ar"] as const;
 const RECONSTRUCTION_KEYS = ["bronx-fire", "dixie-fire-weather", "mexican-metro"] as const;
@@ -735,7 +745,27 @@ const descHtml = linkHref
     );
   }
 
-  
+    // DEATH FLIGHTS
+  if (p.key === "death-flights") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <video
+              src="/deathflights_clip.webm"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+            />
+          </div>
+        </div>
+      </Sized>
+    );
+  }
+
 
   // DONORS
   if (p.key === "donors") {
@@ -773,6 +803,44 @@ const descHtml = linkHref
       </Sized>
     );
   }
+
+// USAIN BOLT (two stills side-by-side)
+if (p.key === "usain-bolt") {
+  return (
+    <Sized pct={pct}>
+      <div className="w-full flex justify-center">
+        <div className="flex w-full items-center justify-center gap-3 sm:gap-4">
+          {/* LEFT: smaller */}
+          <div className="bg-transparent p-0 basis-[42%] shrink min-w-0">
+            <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+              <Image
+                src="/sprint_2.webp"
+                alt="Usain Bolt – sprint still 2"
+                width={1400}
+                height={900}
+                className="pointer-events-none select-none object-contain w-full h-auto block"
+              />
+            </div>
+          </div>
+
+          {/* RIGHT: bigger */}
+          <div className="bg-transparent p-0 basis-[58%] shrink min-w-0 flex justify-center">
+            <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+              <Image
+                src="/sprint_final.webp"
+                alt="Usain Bolt – sprint final"
+                width={1400}
+                height={900}
+                className="pointer-events-none select-none block w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </Sized>
+  );
+}
+
 
   // MEXICO METRO (single video)
   if (p.key === "mexican-metro") {
@@ -983,58 +1051,28 @@ const descHtml = linkHref
     );
   }
 
-  // META AR
-if (p.key === "meta-ar") {
-  return (
-    <Sized pct={pct}>
-      <div className="w-full flex justify-center">
-        <div className="flex w-full max-w-full items-center justify-center gap-6">
-          {/* left */}
-          <div className="bg-transparent p-0 basis-[50%] shrink min-w-0 flex justify-center">
-            <div
-  className="relative overflow-hidden rounded-lg w-full border-2 border-[rgba(128,128,128,0.65)]"
-  style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}
->
-
-              <div className="w-full aspect-[9/16] flex items-center justify-center">
-                <video
-                  src="/instaAR_1.webm"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="pointer-events-none select-none block w-full h-full object-contain"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* right */}
-          <div className="bg-transparent p-0 basis-[50%] shrink min-w-0 flex justify-center">
-            <div
-  className="relative overflow-hidden rounded-lg w-full border-2 border-[rgba(128,128,128,0.65)]"
-  style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}
->
-
-              <div className="w-full aspect-[9/16] flex items-center justify-center">
-                <video
-                  src="/instaAR_2.webm"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="pointer-events-none select-none block w-full h-full object-contain"
-                />
-              </div>
-            </div>
+  // INSTAGRAM AR
+  if (p.key === "meta-ar") {
+    return (
+      <Sized pct={pct}>
+        <div className="bg-transparent p-0 w-full">
+          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+            <video
+              src="/instaAR_3.webm"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="pointer-events-none select-none object-contain w-full h-auto block"
+            />
           </div>
         </div>
-      </div>
-    </Sized>
-  );
-}
+      </Sized>
+    );
+  }
+
+
 
 
   // GOOGLE VR
@@ -1131,37 +1169,40 @@ if (p.key === "meta-ar") {
 
                     <div className="w-full outline-none">{Media}</div>
 
-{/* Role/Client + Description (always visible) */}
+{/* Role/Client + Description (vertically centered in the white band) */}
 <Sized pct={pct}>
-  <div className="pt-4 px-3 sm:px-0 text-[10px] leading-relaxed text-red-500 dark:text-red-400">
+  <div className="px-3 sm:px-0 text-[12px] leading-relaxed text-red-500 dark:text-red-400">
+    <div style={{ height: DESC_BAND_HALF }} />
+
     <div className="w-full flex justify-center">
-  <div className="inline-flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10">
+      <div className="inline-flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-14">
+        {/* left: role/client */}
+        <div className="shrink-0 sm:w-[16rem] whitespace-nowrap">
+          <div>
+            <span className="opacity-80">Role:</span>{" "}
+            <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
+          </div>
+          <div className="mt-0">
+            <span className="opacity-80">Client:</span>{" "}
+            <span className="font-semibold">{client}</span>
+          </div>
+        </div>
 
-    {/* left: role/client */}
-    <div className="shrink-0 sm:w-[12.5rem]">
-      <div>
-        <span className="opacity-80">Role:</span>{" "}
-        <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
-      </div>
-      <div className="mt-0">
-        <span className="opacity-80">Client:</span>{" "}
-        <span className="font-semibold">{client}</span>
+        {/* right: description */}
+        <div className="min-w-0 sm:w-[32rem] sm:max-w-[32rem] text-red-500 dark:text-red-400">
+          <div dangerouslySetInnerHTML={{ __html: descHtml }} />
+        </div>
       </div>
     </div>
 
-    {/* right: description */}
-    <div className="min-w-0 sm:w-[24rem] sm:max-w-[24rem] text-red-500 dark:text-red-400">
-      <div dangerouslySetInnerHTML={{ __html: descHtml }} />
-    </div>
-  </div>
-</div>
+    <div style={{ height: DESC_BAND_HALF }} />
   </div>
 </Sized>
 
 
+
                     {/* Separator */}
                     <div className="flex flex-col items-center w-full">
-                      <div style={{ height: MID_GAP }} />
                       <div
   className="h-px w-full"
   style={{
@@ -1242,7 +1283,9 @@ if (p.key === "meta-ar") {
           <div className="w-px h-full hidden sm:block" style={{ backgroundColor: UMBER }} />
 
           {/* Right (CV) */}
-          <div className="hidden sm:block sticky top-0 self-start shrink-0 h-full relative transition-[width] duration-300 ease-in-out" style={{ width: cvOpen ? CV_OPEN_W : CV_CLOSED_W }}>
+          <div className="hidden sm:block sticky top-0 self-start shrink-0 h-full relative transition-[width] duration-300 ease-in-out group" style={{ width: cvOpen ? CV_OPEN_W : CV_CLOSED_W }}>
+
+
             <button type="button" aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"} onClick={() => setCvOpen((p) => !p)} className="absolute inset-0 z-30 bg-transparent cursor-pointer" />
 
             <aside className="relative h-full overflow-hidden text-[10px] leading-relaxed px-1" style={{ width: CV_OPEN_W }}>
@@ -1256,8 +1299,16 @@ if (p.key === "meta-ar") {
                 aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"}
                 aria-expanded={cvOpen}
               >
-                {cvOpen ? <ChevronLeft className="w-4 h-4 text-black dark:text-white stroke-[1.25]" /> : <ChevronRight className="w-4 h-4 text-black dark:text-white stroke-[1.25]" />}
-                <span className="text-[14px] tracking-wide text-black dark:text-white opacity-80">CV</span>
+                {cvOpen ? (
+  <ChevronLeft className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
+) : (
+  <ChevronRight className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
+)}
+
+                <span className="text-[14px] tracking-wide text-black dark:text-white opacity-80 group-hover:text-red-500 dark:group-hover:text-red-400">
+  CV
+</span>
+
               </button>
 
               {/* ... unchanged CV panel content ... */}
