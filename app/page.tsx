@@ -550,7 +550,7 @@ useEffect(() => {
             <div className="px-3 mt-3 mb-4">
               <p className="text-[18px] leading-[1.2] text-foreground/80 text-left">
                 Emmy Award-Winning <br />
-                Creative Director, <br /> Motion Designer, <br /> &amp; Journalist
+                Filmmaker, <br /> Motion Designer, <br /> &amp; Journalist
               </p>
 
               <p className="text-[12px] leading-relaxed text-foreground/80 text-left mt-3">
