@@ -20,11 +20,9 @@ const DESC_BAND_HALF = Math.round((DESC_TOP_PAD + MID_GAP) / 2);
 
 const RULE_INSET_PX = 0;
 
-
 const PROJECTS: Project[] = [
   // Motion
   { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#" },
-  { title: "Documentary: The Death Flights", key: "death-flights", href: "#" },
   { title: "NYT Social Content", key: "olympics-ar", href: "#" },
   { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
   { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#" },
@@ -38,11 +36,6 @@ const PROJECTS: Project[] = [
   { title: "David Bowie in Three Dimensions", key: "david-bowie-3d", href: "#" },
   { title: "Google: Virtual Reality", key: "google-headsets", href: "#" },
   { title: "Instagram: Augmented Reality", key: "meta-ar", href: "#" },
-
-  // Infographics / Reconstruction
-  { title: "Reconstructing the Bronx Fire", key: "bronx-fire", href: "/work/bronx-fire" },
-  { title: "How the Dixie Fire Created Its Own Weather", key: "dixie-fire-weather", href: "#" },
-  { title: "Why the Mexico City Metro Collapsed", key: "mexican-metro", href: "#" },
 
   // CV
   { title: "CV", key: "cv", href: "#" },
@@ -61,8 +54,6 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
 const DESCRIPTIONS: Record<string, string> = {
   "diary-ed-sheeran":
     "Client: The New York Times | Explainer<br /><br />Animated data visualization deconstructing how Ed Sheeran, Johnny McDaid, and Steve Mac built the most-streamed track of 2017. Over 3.8 million views. <br /><br /><a href='https://www.youtube.com/watch?v=ZpMNJbt3QDE&t=349s' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-    "death-flights":
-  "Client: Centro Prodh | Documentary<br /><br />Revealing a state program of enforced disappearances through its widespread use of death flights.<br /><br /><a href='https://www.youtube.com/watch?v=nfGLrxIJcPQ' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "olympics-ar":
     "Client: The New York Times | Social<br /><br />Breaking down the movements that make them great. Sunisa Lee is unmatched on the uneven bars and there’s nothing Adam Ondra can’t climb.",
   "zhiyun-xs":
@@ -73,17 +64,12 @@ const DESCRIPTIONS: Record<string, string> = {
     "Client: PLAY Magazine | Print<br /><br />Visual identity for the inaugural issue of PLAY, a cookbook-magazine featuring recipes, essays, and artwork from a community of queer chefs and artists.<br /><br /><a href='https://play.metalabel.com/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "donors":
     "Client: The New York Times | Explainer<br /><br />How just 158 families supplied nearly half of the early money in the race for the 2016 White House.<br /><br /><a href='https://www.nytimes.com/interactive/2015/10/11/us/politics/2016-presidential-election-super-pac-donors.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "mexican-metro":
-    "Client: The New York Times | Editorial<br /><br />The serious construction flaws behind a tragedy threatening two of Mexico’s most prominent figures.<br /><br /><a href='https://www.nytimes.com/interactive/2021/06/12/world/americas/mexico-city-train-crash.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "david-bowie-3d":
     "Client: The New York Times | Product<br /><br />Bowie’s meticulous eye for detail and flaunting of gender and social norms in the blockbuster museum retrospective, <em>David Bowie Is.</em><br /><br /><a href='https://www.nytimes.com/interactive/2018/03/20/arts/design/bowie-costumes-ar-3d-ul.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "google-headsets": "Client: Google | Product<br /><br />NYT and Google teamed up to mail over a million Google Cardboard headsets to subscribers, giving a platform to 360-degree documentary storytelling.",
+  "google-headsets":
+    "Client: Google | Product<br /><br />NYT and Google teamed up to mail over a million Google Cardboard headsets to subscribers, giving a platform to 360-degree documentary storytelling.",
   "meta-ar":
-  "Client: Meta | Product<br /><br />NYT partnered with Instagram to publish reporting directly inside the camera. Augmented Reality lets the reporting behave like an object in the world.<br /><br /><a href='https://rd.nytimes.com/projects/augmented-reality-storytelling/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "bronx-fire":
-    "Client: The New York Times | News<br /><br />Smoke analysis and architectural reconstruction step viewers through how the main fire-safety system failed in a Bronx apartment building, killing 17 residents.<br /><br /><a href='https://www.nytimes.com/interactive/2022/07/08/nyregion/bronx-fire-nyc.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "dixie-fire-weather":
-    "Client: The New York Times | News<br /><br />High-resolution radar data, picking up ash particles and water droplets, reconstructs how the Dixie Fire created its own weather.<br /><br /><a href='https://www.nytimes.com/interactive/2021/10/19/climate/dixie-fire-storm-clouds-weather.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: Meta | Product<br /><br />NYT partnered with Instagram to publish reporting directly inside the camera. Augmented Reality lets the reporting behave like an object in the world.<br /><br /><a href='https://rd.nytimes.com/projects/augmented-reality-storytelling/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "usain-bolt":
     "Client: The New York Times | Editorial<br /><br />How does Bolt compare to every Olympic medalist since 1896? A massive track shows every medal ever awarded in the 100-meter dash.<br /><br /><a href='https://www.nytimes.com/interactive/2016/08/15/sports/olympics/usain-bolt-and-120-years-of-sprinting-history.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
 
@@ -92,7 +78,6 @@ const DESCRIPTIONS: Record<string, string> = {
 
 const ROLE_BY_KEY: Record<string, string> = {
   "diary-ed-sheeran": "Art Direction, 2D Motion Design",
-  "death-flights": "Motion Designer, Creative Director, Editor",
   "olympics-ar": "Art Direction, Multimedia Design",
   "zhiyun-xs": "3D Motion Design",
   "pluto": "3D Motion Design",
@@ -104,16 +89,10 @@ const ROLE_BY_KEY: Record<string, string> = {
   "play-magazine": "Art Direction, 3D Design",
   "donors": "Information Design",
   "usain-bolt": "Data Visualization",
-
-  "bronx-fire": "Architectural Reconstruction",
-  "dixie-fire-weather": "Data Analysis, Data Vizualization",
-  "mexican-metro": "Architectural Reconstruction",
-
 };
 
 const MEDIA_PCT: Partial<Record<string, number>> = {
   "diary-ed-sheeran": 90,
-  "death-flights": 90,
   "zhiyun-xs": 90,
   "pluto": 90,
   "olympics-ar": 90,
@@ -125,11 +104,6 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
   "play-magazine": 90,
   "donors": 90,
   "usain-bolt": 90,
-
-  "bronx-fire": 90,
-  "dixie-fire-weather": 90,
-  "mexican-metro": 90,
-
 };
 
 const getPct = (key: string) => MEDIA_PCT[key] ?? 100;
@@ -140,7 +114,6 @@ const DEFAULT_TAGS: string[] = ["Data Viz"];
 const TAGS_BY_KEY: Partial<Record<string, string[]>> = {
   "diary-ed-sheeran": ["2D Motion | Explainer"],
   "olympics-ar": ["Multimedia Design | Social"],
-  "death-flights": ["Creative Direction | Documentary"],
   "zhiyun-xs": ["3D Motion | Commercial"],
   "pluto": ["3D Motion | Explainer"],
   "david-bowie-3d": ["3D Graphics | Editorial"],
@@ -149,9 +122,6 @@ const TAGS_BY_KEY: Partial<Record<string, string[]>> = {
   "play-magazine": ["Art Direction | Print"],
   donors: ["Information Design | Editorial"],
   "usain-bolt": ["3D Design | Explainer"],
-  "bronx-fire": ["3D Motion | Explainer"],
-  "dixie-fire-weather": ["3D Motion | Explainer"],
-  "mexican-metro": ["3D Graphics | Editorial"],
 };
 
 const TAG_UI = {
@@ -167,15 +137,13 @@ const TAG_UI = {
 const getTagsForKey = (key: string) => TAGS_BY_KEY[key] ?? DEFAULT_TAGS;
 
 /* ===================== Category lists (explicit order) ===================== */
-const MOTION_KEYS = ["diary-ed-sheeran", "death-flights", "olympics-ar", "zhiyun-xs", "pluto"] as const;
+const MOTION_KEYS = ["diary-ed-sheeran", "olympics-ar", "zhiyun-xs", "pluto"] as const;
 const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
 const INTERACTIVE_KEYS = ["david-bowie-3d", "google-headsets", "meta-ar"] as const;
-const RECONSTRUCTION_KEYS = ["bronx-fire", "dixie-fire-weather", "mexican-metro"] as const;
 
 const MOTION_LIST = PROJECTS.filter((p) => (MOTION_KEYS as readonly string[]).includes(p.key));
 const EDITORIAL_DESIGN_LIST = PROJECTS.filter((p) => (EDITORIAL_DESIGN_KEYS as readonly string[]).includes(p.key));
 const INTERACTIVE_LIST = PROJECTS.filter((p) => (INTERACTIVE_KEYS as readonly string[]).includes(p.key));
-const RECONSTRUCTION_LIST = PROJECTS.filter((p) => (RECONSTRUCTION_KEYS as readonly string[]).includes(p.key));
 
 /* ===================== Helpers ===================== */
 function extractClient(html: string): string {
@@ -193,11 +161,9 @@ function extractFirstHref(html: string): string | null {
 function stripAllLinks(html: string): string {
   return html
     .replace(/<a\b[^>]*>.*?<\/a>/gi, "")
-    // remove ALL trailing <br/> blocks and whitespace
     .replace(/(\s*<br\s*\/?>\s*)+$/gi, "")
     .trim();
 }
-
 
 /* ===================== Small helper for robust video loading ===================== */
 function SmartVideo({
@@ -247,7 +213,6 @@ function Sized({
   );
 }
 
-
 /* ===================== Stable stroke wrapper (prevents remount flicker) ===================== */
 const STROKE_RADIUS = "0.5rem";
 const STROKE_SHADOW_GRAY = "inset 0 0 0 2px rgba(128,128,128,0.65)";
@@ -265,7 +230,6 @@ function StrokeBox({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
 
 /* ===================== Page ===================== */
 export default function Home() {
@@ -291,16 +255,17 @@ export default function Home() {
   const scrollEndTimerRef = useRef<number | null>(null);
   const scrollingRef = useRef(false);
 
-
   const [mobileHeaderH, setMobileHeaderH] = useState(128);
   const mobileHeaderRef = useRef<HTMLDivElement>(null);
 
-
-
-  const VISIBLE_KEYS = useMemo(() => {
-    const base = PROJECTS.filter((p) => p.key !== "cv").map((p) => p.key);
-    return isMobile ? [...base, "cv"] : base;
-  }, [isMobile]);
+const VISIBLE_KEYS = useMemo(() => {
+  const base = [
+    ...(MOTION_KEYS as readonly string[]),
+    ...(INTERACTIVE_KEYS as readonly string[]),
+    ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
+  ];
+  return isMobile ? [...base, "cv"] : base;
+}, [isMobile]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -346,99 +311,92 @@ export default function Home() {
     };
   }, [isMobile, activeKey]);
 
-   /* ========= Scroll spy: update activeKey LIVE while scrolling ========= */
-useEffect(() => {
-  const scroller = scrollAreaRef.current;
-  if (!scroller) return;
+  /* ========= Scroll spy: update activeKey LIVE while scrolling ========= */
+  useEffect(() => {
+    const scroller = scrollAreaRef.current;
+    if (!scroller) return;
 
-  const EDGE_THRESHOLD = 8;
-  const IGNORE_MS_AFTER_PROGRAMMATIC = 280;
+    const EDGE_THRESHOLD = 8;
+    const IGNORE_MS_AFTER_PROGRAMMATIC = 280;
 
-  let raf = 0;
+    let raf = 0;
 
-  const setScrollingFlag = (on: boolean) => {
-    const node = mainRef.current;
-    if (!node) return;
-    node.dataset.scrolling = on ? "1" : "0";
-  };
+    const setScrollingFlag = (on: boolean) => {
+      const node = mainRef.current;
+      if (!node) return;
+      node.dataset.scrolling = on ? "1" : "0";
+    };
 
-  const computeAndCommitKey = () => {
-    const now = performance.now();
-    if (now - lastProgrammaticRef.current < IGNORE_MS_AFTER_PROGRAMMATIC) return;
+    const computeAndCommitKey = () => {
+      const now = performance.now();
+      if (now - lastProgrammaticRef.current < IGNORE_MS_AFTER_PROGRAMMATIC) return;
 
-    const { scrollTop, scrollHeight, clientHeight } = scroller;
+      const { scrollTop, scrollHeight, clientHeight } = scroller;
 
-    // edges
-    let nextKey: string | undefined;
-    if (scrollTop <= EDGE_THRESHOLD) {
-      nextKey = VISIBLE_KEYS[0];
-    } else {
-      const maxTop = scrollHeight - clientHeight;
-      if (maxTop - scrollTop <= EDGE_THRESHOLD) {
-        nextKey = VISIBLE_KEYS[VISIBLE_KEYS.length - 1];
+      let nextKey: string | undefined;
+      if (scrollTop <= EDGE_THRESHOLD) {
+        nextKey = VISIBLE_KEYS[0];
       } else {
-        const centerY = scrollTop + clientHeight / 2;
+        const maxTop = scrollHeight - clientHeight;
+        if (maxTop - scrollTop <= EDGE_THRESHOLD) {
+          nextKey = VISIBLE_KEYS[VISIBLE_KEYS.length - 1];
+        } else {
+          const centerY = scrollTop + clientHeight / 2;
 
-        let bestKey = activeKeyRef.current || VISIBLE_KEYS[0];
-        let bestDist = Infinity;
+          let bestKey = activeKeyRef.current || VISIBLE_KEYS[0];
+          let bestDist = Infinity;
 
-        for (const key of VISIBLE_KEYS) {
-          const el = itemRefs.current[key];
-          if (!el) continue;
-          const mid = el.offsetTop + el.offsetHeight / 2;
-          const dist = Math.abs(mid - centerY);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestKey = key;
+          for (const key of VISIBLE_KEYS) {
+            const el = itemRefs.current[key];
+            if (!el) continue;
+            const mid = el.offsetTop + el.offsetHeight / 2;
+            const dist = Math.abs(mid - centerY);
+            if (dist < bestDist) {
+              bestDist = dist;
+              bestKey = key;
+            }
           }
+
+          nextKey = bestKey;
         }
-
-        nextKey = bestKey;
       }
-    }
 
-    if (nextKey && activeKeyRef.current !== nextKey) {
-      activeKeyRef.current = nextKey;
-      setActiveKey(nextKey);
-    }
-  };
+      if (nextKey && activeKeyRef.current !== nextKey) {
+        activeKeyRef.current = nextKey;
+        setActiveKey(nextKey);
+      }
+    };
 
-  const onScroll = () => {
-    // update active key during scroll (throttled to rAF)
-    if (!raf) {
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        computeAndCommitKey();
-      });
-    }
+    const onScroll = () => {
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          computeAndCommitKey();
+        });
+      }
 
-    // flag scrolling (CSS hover suppression)
-    if (!scrollingRef.current) {
-      scrollingRef.current = true;
-      setScrollingFlag(true);
-    }
+      if (!scrollingRef.current) {
+        scrollingRef.current = true;
+        setScrollingFlag(true);
+      }
 
-    // end-of-scroll flag reset (does NOT gate activeKey anymore)
-    if (scrollEndTimerRef.current) window.clearTimeout(scrollEndTimerRef.current);
-    scrollEndTimerRef.current = window.setTimeout(() => {
-      scrollingRef.current = false;
-      setScrollingFlag(false);
-    }, 140);
-  };
+      if (scrollEndTimerRef.current) window.clearTimeout(scrollEndTimerRef.current);
+      scrollEndTimerRef.current = window.setTimeout(() => {
+        scrollingRef.current = false;
+        setScrollingFlag(false);
+      }, 140);
+    };
 
-  // init
-  setScrollingFlag(false);
-  computeAndCommitKey();
+    setScrollingFlag(false);
+    computeAndCommitKey();
 
-  scroller.addEventListener("scroll", onScroll, { passive: true });
-  return () => {
-    scroller.removeEventListener("scroll", onScroll);
-    if (raf) cancelAnimationFrame(raf);
-    if (scrollEndTimerRef.current) window.clearTimeout(scrollEndTimerRef.current);
-  };
-}, [VISIBLE_KEYS]);
-
-
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      scroller.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      if (scrollEndTimerRef.current) window.clearTimeout(scrollEndTimerRef.current);
+    };
+  }, [VISIBLE_KEYS]);
 
   const scrollToKey = useCallback((key: string) => {
     const el = itemRefs.current[key];
@@ -457,14 +415,11 @@ useEffect(() => {
     }, 320);
   }, []);
 
-
-
   const nonCVProjects = useMemo(() => {
     const order = [
       ...(MOTION_KEYS as readonly string[]),
       ...(INTERACTIVE_KEYS as readonly string[]),
       ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
-      ...(RECONSTRUCTION_KEYS as readonly string[]),
     ];
 
     const byKey = new Map(PROJECTS.map((p) => [p.key, p] as const));
@@ -482,10 +437,10 @@ useEffect(() => {
           width: 100%;
         }
         @media (min-width: 640px) {
-  .pct-box {
-    width: min(var(--pct), 96%);
-  }
-}
+          .pct-box {
+            width: min(var(--pct), 96%);
+          }
+        }
 
         .custom-scrollbar .simplebar-content-wrapper {
           overscroll-behavior-y: contain;
@@ -523,14 +478,12 @@ useEffect(() => {
         }
 
         .desc-link {
-  color: rgb(59 130 246); /* tailwind blue-500 */
-  text-decoration: underline;
-}
-.desc-link:hover {
-  color: rgb(37 99 235); /* blue-600 */
-}
-  
-
+          color: rgb(59 130 246);
+          text-decoration: underline;
+        }
+        .desc-link:hover {
+          color: rgb(37 99 235);
+        }
       `}</style>
 
       <div className="relative z-10 w-full h-full">
@@ -541,16 +494,12 @@ useEffect(() => {
               <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">Grothjan Studio</h2>
             </div>
 
-            <div
-  className="h-px"
-  style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }}
-/>
-
+            <div className="h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
 
             <div className="px-3 mt-3 mb-4">
               <p className="text-[18px] leading-[1.2] text-foreground/80 text-left">
                 Emmy Award-Winning <br />
-                Filmmaker, <br /> Motion Designer, <br /> &amp; Journalist
+                Filmmaker &amp; Journalist
               </p>
 
               <p className="text-[12px] leading-relaxed text-foreground/80 text-left mt-3">
@@ -561,19 +510,16 @@ useEffect(() => {
               </p>
 
               <div className="-mx-3 mt-3">
-  <div
-    className="h-px"
-    style={{
-      backgroundColor: UMBER,
-      width: `calc(100% - ${RULE_INSET_PX * 2}px)`,
-      marginLeft: "auto",
-      marginRight: "auto",
-    }}
-  />
-</div>
-
-
-
+                <div
+                  className="h-px"
+                  style={{
+                    backgroundColor: UMBER,
+                    width: `calc(100% - ${RULE_INSET_PX * 2}px)`,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                />
+              </div>
 
               <div className="mt-3">
                 <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Clients</div>
@@ -583,11 +529,7 @@ useEffect(() => {
               </div>
             </div>
 
-            <div
-  className="h-px"
-  style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }}
-/>
-
+            <div className="h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
 
             <div className="px-3 mt-4">
               <ul className="space-y-4 text-left">
@@ -595,7 +537,6 @@ useEffect(() => {
                   { label: "Motion", list: MOTION_LIST },
                   { label: "Interactive", list: INTERACTIVE_LIST },
                   { label: "Editorial Design", list: EDITORIAL_DESIGN_LIST },
-                  { label: "Reconstruction", list: RECONSTRUCTION_LIST },
                 ].map(({ label, list }) => (
                   <li key={label} className="w-full">
                     <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">{label}</div>
@@ -619,8 +560,8 @@ useEffect(() => {
                               <button
                                 type="button"
                                 onClick={() => {
-  scrollToKey(key);
-}}
+                                  scrollToKey(key);
+                                }}
                                 className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
                               >
                                 {title}
@@ -667,12 +608,11 @@ useEffect(() => {
           {/* Middle */}
           <div className="flex-1 min-w-0 min-h-0 h-full">
             <SimpleBar
-  scrollableNodeProps={{ ref: scrollAreaRef }}
-  style={{ height: "100%" }}
-  className="w-full pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch border-b custom-scrollbar h-full overflow-x-hidden px-0"
-  autoHide={false}
->
-
+              scrollableNodeProps={{ ref: scrollAreaRef }}
+              style={{ height: "100%" }}
+              className="w-full pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch border-b custom-scrollbar h-full overflow-x-hidden px-0"
+              autoHide={false}
+            >
               {/* Mobile header */}
               <div
                 ref={mobileHeaderRef}
@@ -697,464 +637,356 @@ useEffect(() => {
                 const pct = getPct(p.key);
                 const extraTopMobileFirst = isMobile && idx === 0 ? 20 : 0;
                 const rawDesc = DESCRIPTIONS[p.key] ?? "";
-const client = extractClient(rawDesc);
+                const client = extractClient(rawDesc);
 
-const stripped = stripLeadingClientLine(rawDesc);
-const linkHref = extractFirstHref(stripped);
-const baseDesc = stripAllLinks(stripped);
+                const stripped = stripLeadingClientLine(rawDesc);
+                const linkHref = extractFirstHref(stripped);
+                const baseDesc = stripAllLinks(stripped);
 
-// LINK appended at the very end of the description
-const descHtml = linkHref
-  ? `${baseDesc} <a href="${linkHref}" target="_blank" rel="noopener noreferrer" class="desc-link">LINK</a>`
-  : baseDesc;
-
+                const descHtml = linkHref
+                  ? `${baseDesc} <a href="${linkHref}" target="_blank" rel="noopener noreferrer" class="desc-link">LINK</a>`
+                  : baseDesc;
 
                 const Media = (() => {
-  // PLAY
-  if (p.key === "play-magazine") {
-    return (
-      <Sized pct={pct}>
-        <div className="w-full flex justify-center">
-          <div className="flex w-full max-w-full items-center justify-center gap-6">
-            <div className="bg-transparent p-0 basis-[70%] shrink min-w-0">
-              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                <Image
-                  src="/play_1.webp"
-                  alt="PLAY Magazine – 1"
-                  width={1600}
-                  height={1100}
-                  className="pointer-events-none select-none object-contain w-full h-auto block"
-                />
-              </div>
-            </div>
+                  // PLAY
+                  if (p.key === "play-magazine") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="w-full flex justify-center">
+                          <div className="flex w-full max-w-full items-center justify-center gap-6">
+                            <div className="bg-transparent p-0 basis-[70%] shrink min-w-0">
+                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                                <Image
+                                  src="/play_1.webp"
+                                  alt="PLAY Magazine – 1"
+                                  width={1600}
+                                  height={1100}
+                                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                                />
+                              </div>
+                            </div>
 
-            <div className="bg-transparent p-0 basis-[30%] shrink min-w-0">
-              <div className="overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full max-w-[320px] aspect-square mx-auto">
-                <Image
-                  src="/play_2.webp"
-                  alt="PLAY Magazine – 2"
-                  width={900}
-                  height={900}
-                  className="pointer-events-none select-none object-cover w-full h-full block"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                            <div className="bg-transparent p-0 basis-[30%] shrink min-w-0">
+                              <div className="overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full max-w-[320px] aspect-square mx-auto">
+                                <Image
+                                  src="/play_2.webp"
+                                  alt="PLAY Magazine – 2"
+                                  width={900}
+                                  height={900}
+                                  className="pointer-events-none select-none object-cover w-full h-full block"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-    // DEATH FLIGHTS
-  if (p.key === "death-flights") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <video
-              src="/deathflights_clip.webm"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                  // DONORS
+                  if (p.key === "donors") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="w-full flex justify-center">
+                          <div className="flex w-full max-w-full items-center justify-center gap-6">
+                            <div className="bg-transparent p-0 basis-[40%] shrink min-w-0">
+                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                                <video
+                                  src="/monopoly.webm"
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="metadata"
+                                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                                />
+                              </div>
+                            </div>
 
+                            <div className="bg-transparent p-0 basis-[60%] shrink min-w-0">
+                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                                <Image
+                                  src="/election_2.webp"
+                                  alt="Families Funding the 2016 Election"
+                                  width={1600}
+                                  height={1100}
+                                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-  // DONORS
-  if (p.key === "donors") {
-    return (
-      <Sized pct={pct}>
-        <div className="w-full flex justify-center">
-          <div className="flex w-full max-w-full items-center justify-center gap-6">
-            <div className="bg-transparent p-0 basis-[40%] shrink min-w-0">
-              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                <video
-                  src="/monopoly.webm"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="pointer-events-none select-none object-contain w-full h-auto block"
-                />
-              </div>
-            </div>
+                  // USAIN BOLT (two stills side-by-side)
+                  if (p.key === "usain-bolt") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="w-full flex justify-center">
+                          <div className="flex w-full items-center justify-center gap-3 sm:gap-4">
+                            {/* LEFT: smaller */}
+                            <div className="bg-transparent p-0 basis-[42%] shrink min-w-0">
+                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                                <Image
+                                  src="/sprint_2.webp"
+                                  alt="Usain Bolt – sprint still 2"
+                                  width={1400}
+                                  height={900}
+                                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                                />
+                              </div>
+                            </div>
 
-            <div className="bg-transparent p-0 basis-[60%] shrink min-w-0">
-              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                <Image
-                  src="/election_2.webp"
-                  alt="Families Funding the 2016 Election"
-                  width={1600}
-                  height={1100}
-                  className="pointer-events-none select-none object-contain w-full h-auto block"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                            {/* RIGHT: bigger */}
+                            <div className="bg-transparent p-0 basis-[58%] shrink min-w-0 flex justify-center">
+                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                                <Image
+                                  src="/sprint_final.webp"
+                                  alt="Usain Bolt – sprint final"
+                                  width={1400}
+                                  height={900}
+                                  className="pointer-events-none select-none block w-full h-auto"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-// USAIN BOLT (two stills side-by-side)
-if (p.key === "usain-bolt") {
-  return (
-    <Sized pct={pct}>
-      <div className="w-full flex justify-center">
-        <div className="flex w-full items-center justify-center gap-3 sm:gap-4">
-          {/* LEFT: smaller */}
-          <div className="bg-transparent p-0 basis-[42%] shrink min-w-0">
-            <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-              <Image
-                src="/sprint_2.webp"
-                alt="Usain Bolt – sprint still 2"
-                width={1400}
-                height={900}
-                className="pointer-events-none select-none object-contain w-full h-auto block"
-              />
-            </div>
-          </div>
+                  // ED SHEERAN
+                  if (p.key === "diary-ed-sheeran") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="bg-transparent p-0 w-full">
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <SmartVideo
+                              srcBase="/edsheeran_final"
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
+                              preload="metadata"
+                            />
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-          {/* RIGHT: bigger */}
-          <div className="bg-transparent p-0 basis-[58%] shrink min-w-0 flex justify-center">
-            <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-              <Image
-                src="/sprint_final.webp"
-                alt="Usain Bolt – sprint final"
-                width={1400}
-                height={900}
-                className="pointer-events-none select-none block w-full h-auto"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </Sized>
-  );
-}
+                  // PLUTO
+                  if (p.key === "pluto") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="bg-transparent p-0 w-full">
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <SmartVideo
+                              srcBase="/pluto_final"
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
+                              preload="metadata"
+                            />
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
+                  // NYT SOCIAL
+                  if (p.key === "olympics-ar") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="w-full flex justify-center">
+                          <div className="flex w-full max-w-full items-center justify-center gap-12">
+                            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
+                              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
+                                <StrokeBox>
+                                  <div className="relative w-full aspect-[9/16]">
+                                    <video
+                                      src="/sunisa.webm"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      preload="metadata"
+                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                                    />
+                                  </div>
+                                </StrokeBox>
+                              </div>
+                            </div>
 
-  // MEXICO METRO (single video)
-  if (p.key === "mexican-metro") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <video
-              src="/metro.webm"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
+                              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
+                                <StrokeBox>
+                                  <div className="relative w-full aspect-[9/16]">
+                                    <video
+                                      src="/ondra.webm"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      preload="metadata"
+                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                                    />
+                                  </div>
+                                </StrokeBox>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-  // DIXIE
-  if (p.key === "dixie-fire-weather") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <SmartVideo
-              srcBase="/dixie_final"
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-              preload="metadata"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                  // BOWIE (NO hooks)
+                  if (p.key === "david-bowie-3d") {
+                    const setRate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+                      e.currentTarget.playbackRate = 0.7;
+                    };
 
-  // ED SHEERAN
-  if (p.key === "diary-ed-sheeran") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <SmartVideo
-              srcBase="/edsheeran_final"
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-              preload="metadata"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                    return (
+                      <Sized pct={pct}>
+                        <div className="w-full flex justify-center">
+                          <div className="flex w-full max-w-full items-center justify-center gap-6">
+                            <div className="flex items-center bg-transparent p-0 basis-[30%] shrink min-w-0">
+                              <div className="mx-auto" style={{ width: "clamp(170px, 12vw, 320px)" }}>
+                                <StrokeBox>
+                                  <video
+                                    src="/bowie-mobile.mp4"
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                    preload="auto"
+                                    disablePictureInPicture
+                                    className="pointer-events-none select-none w-full h-auto block object-contain"
+                                  />
+                                </StrokeBox>
+                              </div>
+                            </div>
 
-  // BRONX
-  if (p.key === "bronx-fire") {
-    return (
-      <Sized pct={pct}>
-        <div className="w-full flex justify-center">
-          <div className="flex w-full max-w-full items-center justify-center gap-6">
-            <div className="bg-transparent p-0 basis-[38%] shrink min-w-0">
-              <div className="overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full aspect-square">
-                <video
-                  src="/bronx_final.webm"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="pointer-events-none select-none object-cover w-full h-full block"
-                />
-              </div>
-            </div>
+                            <div className="flex items-center bg-transparent p-0 basis-[70%] shrink min-w-0">
+                              <StrokeBox>
+                                <video
+                                  src="/bowie-desktop.mp4"
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="auto"
+                                  disablePictureInPicture
+                                  onLoadedMetadata={setRate}
+                                  onPlay={setRate}
+                                  className="pointer-events-none select-none w-full h-auto block object-contain"
+                                />
+                              </StrokeBox>
+                            </div>
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-            <div className="bg-transparent p-0 basis-[62%] shrink min-w-0">
-              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                <Image
-                  src="/bronx_2.webp"
-                  alt="Reconstructing the Bronx Fire – still"
-                  width={1600}
-                  height={1100}
-                  className="pointer-events-none select-none object-contain w-full h-auto block"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                  // INSTAGRAM AR
+                  if (p.key === "meta-ar") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="bg-transparent p-0 w-full">
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <video
+                              src="/instaAR_3.webm"
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              preload="metadata"
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
+                            />
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-  // PLUTO
-  if (p.key === "pluto") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <SmartVideo
-              srcBase="/pluto_final"
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-              preload="metadata"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
+                  // GOOGLE VR
+                  if (p.key === "google-headsets") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="w-full flex justify-center">
+                          <div className="flex w-full max-w-full items-center justify-center gap-6">
+                            <div className="bg-transparent p-0 basis-[34%] shrink min-w-0">
+                              <div className="inline-block w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)]">
+                                <Image
+                                  src="/cardboard.jpg"
+                                  alt="Google VR – Cardboard"
+                                  width={1200}
+                                  height={800}
+                                  sizes="(min-width: 640px) 34vw, 90vw"
+                                  className="pointer-events-none select-none object-contain w-full h-auto block"
+                                />
+                              </div>
+                            </div>
 
-  // NYT SOCIAL
-  if (p.key === "olympics-ar") {
-    return (
-      <Sized pct={pct}>
-        <div className="w-full flex justify-center">
-          <div className="flex w-full max-w-full items-center justify-center gap-12">
-            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
+                            <div className="bg-transparent p-0 basis-[66%] shrink min-w-0">
+                              <div className="w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)]">
+                                <div className="relative w-full aspect-[16/9]">
+                                  <video
+                                    src="/antarctica_final.webm"
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                    preload="metadata"
+                                    className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-                <StrokeBox>
-                  <div className="relative w-full aspect-[9/16]">
-                    <video
-                      src="/sunisa.webm"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                    />
-                  </div>
-                </StrokeBox>
-              </div>
-            </div>
+                  // ZHIYUN
+                  if (p.key === "zhiyun-xs") {
+                    return (
+                      <Sized pct={pct}>
+                        <div className="bg-transparent p-0 w-full">
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <SmartVideo
+                              srcBase="/zhiyun_final"
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
+                              preload="metadata"
+                            />
+                          </div>
+                        </div>
+                      </Sized>
+                    );
+                  }
 
-            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
+                  // Fallback (single image)
+                  if (img) {
+                    return (
+                      <Sized pct={pct}>
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          width={img.width}
+                          height={img.height}
+                          className="object-contain w-full"
+                          priority={idx === 0}
+                        />
+                      </Sized>
+                    );
+                  }
 
-                <StrokeBox>
-                  <div className="relative w-full aspect-[9/16]">
-                    <video
-                      src="/ondra.webm"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                    />
-                  </div>
-                </StrokeBox>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Sized>
-    );
-  }
-
-  // BOWIE (NO hooks)
-  if (p.key === "david-bowie-3d") {
-    const setRate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-      e.currentTarget.playbackRate = 0.7;
-    };
-
-    return (
-      <Sized pct={pct}>
-        <div className="w-full flex justify-center">
-          <div className="flex w-full max-w-full items-center justify-center gap-6">
-            <div className="flex items-center bg-transparent p-0 basis-[30%] shrink min-w-0">
-  <div className="mx-auto" style={{ width: "clamp(170px, 12vw, 320px)" }}>
-
-    <StrokeBox>
-      <video
-        src="/bowie-mobile.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        disablePictureInPicture
-        className="pointer-events-none select-none w-full h-auto block object-contain"
-      />
-    </StrokeBox>
-  </div>
-</div>
-
-
-            <div className="flex items-center bg-transparent p-0 basis-[70%] shrink min-w-0">
-              <StrokeBox>
-                <video
-                  src="/bowie-desktop.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  disablePictureInPicture
-                  onLoadedMetadata={setRate}
-                  onPlay={setRate}
-                  className="pointer-events-none select-none w-full h-auto block object-contain"
-                />
-              </StrokeBox>
-            </div>
-          </div>
-        </div>
-      </Sized>
-    );
-  }
-
-  // INSTAGRAM AR
-  if (p.key === "meta-ar") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <video
-              src="/instaAR_3.webm"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
-
-
-
-
-  // GOOGLE VR
-  if (p.key === "google-headsets") {
-    return (
-      <Sized pct={pct}>
-        <div className="w-full flex justify-center">
-          <div className="flex w-full max-w-full items-center justify-center gap-6">
-            <div className="bg-transparent p-0 basis-[34%] shrink min-w-0">
-              <div className="inline-block w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)]">
-                <Image
-                  src="/cardboard.jpg"
-                  alt="Google VR – Cardboard"
-                  width={1200}
-                  height={800}
-                  sizes="(min-width: 640px) 34vw, 90vw"
-                  className="pointer-events-none select-none object-contain w-full h-auto block"
-                />
-              </div>
-            </div>
-
-            <div className="bg-transparent p-0 basis-[66%] shrink min-w-0">
-              <div className="w-full overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)]">
-                <div className="relative w-full aspect-[16/9]">
-                  <video
-                    src="/antarctica_final.webm"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Sized>
-    );
-  }
-
-  // ZHIYUN
-  if (p.key === "zhiyun-xs") {
-    return (
-      <Sized pct={pct}>
-        <div className="bg-transparent p-0 w-full">
-          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-            <SmartVideo
-              srcBase="/zhiyun_final"
-              className="pointer-events-none select-none object-contain w-full h-auto block"
-              preload="metadata"
-            />
-          </div>
-        </div>
-      </Sized>
-    );
-  }
-
-
-  // Fallback (single image)
-  if (img) {
-    return (
-      <Sized pct={pct}>
-        <Image
-          src={img.src}
-          alt={img.alt}
-          width={img.width}
-          height={img.height}
-          className="object-contain w-full"
-          priority={idx === 0}
-        />
-      </Sized>
-    );
-  }
-
-  return (
-    <Sized pct={pct}>
-      <Image src="/dixie_placeholder.webp" alt="Placeholder" width={800} height={600} className="object-contain w-full h-auto" />
-    </Sized>
-  );
-})();
+                  return (
+                    <Sized pct={pct}>
+                      <Image src="/dixie_placeholder.webp" alt="Placeholder" width={800} height={600} className="object-contain w-full h-auto" />
+                    </Sized>
+                  );
+                })();
 
                 return (
                   <div
@@ -1169,48 +1001,45 @@ if (p.key === "usain-bolt") {
 
                     <div className="w-full outline-none">{Media}</div>
 
-{/* Role/Client + Description (vertically centered in the white band) */}
-<Sized pct={pct}>
-  <div className="px-3 sm:px-0 text-[12px] leading-relaxed text-red-500 dark:text-red-400">
-    <div style={{ height: DESC_BAND_HALF }} />
+                    <Sized pct={pct}>
+                      <div className="px-3 sm:px-0 text-[12px] leading-relaxed text-red-500 dark:text-red-400">
+                        <div style={{ height: DESC_BAND_HALF }} />
 
-    <div className="w-full flex justify-center">
-      <div className="inline-flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-14">
-        {/* left: role/client */}
-        <div className="shrink-0 sm:w-[16rem] whitespace-nowrap">
-          <div>
-            <span className="opacity-80">Role:</span>{" "}
-            <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
-          </div>
-          <div className="mt-0">
-            <span className="opacity-80">Client:</span>{" "}
-            <span className="font-semibold">{client}</span>
-          </div>
-        </div>
+                        <div className="w-full flex justify-center">
+                          <div className="inline-flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-14">
+                            {/* left: role/client */}
+                            <div className="shrink-0 sm:w-[16rem] whitespace-nowrap">
+                              <div>
+                                <span className="opacity-80">Role:</span>{" "}
+                                <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
+                              </div>
+                              <div className="mt-0">
+                                <span className="opacity-80">Client:</span>{" "}
+                                <span className="font-semibold">{client}</span>
+                              </div>
+                            </div>
 
-        {/* right: description */}
-        <div className="min-w-0 sm:w-[32rem] sm:max-w-[32rem] text-red-500 dark:text-red-400">
-          <div dangerouslySetInnerHTML={{ __html: descHtml }} />
-        </div>
-      </div>
-    </div>
+                            {/* right: description */}
+                            <div className="min-w-0 sm:w-[32rem] sm:max-w-[32rem] text-red-500 dark:text-red-400">
+                              <div dangerouslySetInnerHTML={{ __html: descHtml }} />
+                            </div>
+                          </div>
+                        </div>
 
-    <div style={{ height: DESC_BAND_HALF }} />
-  </div>
-</Sized>
-
-
+                        <div style={{ height: DESC_BAND_HALF }} />
+                      </div>
+                    </Sized>
 
                     {/* Separator */}
                     <div className="flex flex-col items-center w-full">
                       <div
-  className="h-px w-full"
-  style={{
-    backgroundColor: UMBER,
-    marginLeft: RULE_INSET_PX,
-    marginRight: RULE_INSET_PX,
-  }}
-/>
+                        className="h-px w-full"
+                        style={{
+                          backgroundColor: UMBER,
+                          marginLeft: RULE_INSET_PX,
+                          marginRight: RULE_INSET_PX,
+                        }}
+                      />
 
                       <div style={{ height: MID_GAP }} />
                     </div>
@@ -1225,7 +1054,6 @@ if (p.key === "usain-bolt") {
                 }}
                 className="sm:hidden w-full px-3 pt-4 pb-16 text-[10px] leading-relaxed"
               >
-                {/* ... unchanged CV content ... */}
                 <div className="mb-0">
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
                   <ul className="space-y-[0.2rem] text-[10px]">
@@ -1239,7 +1067,6 @@ if (p.key === "usain-bolt") {
                 </div>
 
                 <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
 
                 <div className="mt-0">
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
@@ -1283,10 +1110,16 @@ if (p.key === "usain-bolt") {
           <div className="w-px h-full hidden sm:block" style={{ backgroundColor: UMBER }} />
 
           {/* Right (CV) */}
-          <div className="hidden sm:block sticky top-0 self-start shrink-0 h-full relative transition-[width] duration-300 ease-in-out group" style={{ width: cvOpen ? CV_OPEN_W : CV_CLOSED_W }}>
-
-
-            <button type="button" aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"} onClick={() => setCvOpen((p) => !p)} className="absolute inset-0 z-30 bg-transparent cursor-pointer" />
+          <div
+            className="hidden sm:block sticky top-0 self-start shrink-0 h-full relative transition-[width] duration-300 ease-in-out group"
+            style={{ width: cvOpen ? CV_OPEN_W : CV_CLOSED_W }}
+          >
+            <button
+              type="button"
+              aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"}
+              onClick={() => setCvOpen((p) => !p)}
+              className="absolute inset-0 z-30 bg-transparent cursor-pointer"
+            />
 
             <aside className="relative h-full overflow-hidden text-[10px] leading-relaxed px-1" style={{ width: CV_OPEN_W }}>
               <button
@@ -1300,26 +1133,20 @@ if (p.key === "usain-bolt") {
                 aria-expanded={cvOpen}
               >
                 {cvOpen ? (
-  <ChevronLeft className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
-) : (
-  <ChevronRight className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
-)}
+                  <ChevronLeft className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
+                ) : (
+                  <ChevronRight className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
+                )}
 
                 <span className="text-[14px] tracking-wide text-black dark:text-white opacity-80 group-hover:text-red-500 dark:group-hover:text-red-400">
-  CV
-</span>
-
+                  CV
+                </span>
               </button>
 
-              {/* ... unchanged CV panel content ... */}
               <div className="relative overflow-hidden" style={{ width: CV_OPEN_W }}>
                 <div className={["transition-opacity duration-200", cvOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"].join(" ")}>
                   <div className="h-8" />
-                  <div
-  className="h-[1px] mb-4 -mt-[2px]"
-  style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }}
-/>
-
+                  <div className="h-[1px] mb-4 -mt-[2px]" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
 
                   <div className={["transition-transform duration-300 ease-in-out", cvOpen ? "translate-x-0" : "translate-x-full"].join(" ")}>
                     <div className="translate-y-[-2px]">
@@ -1338,7 +1165,6 @@ if (p.key === "usain-bolt") {
                       </div>
 
                       <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
 
                       <div className="w-full mt-4 mb-4">
                         <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
@@ -1367,8 +1193,7 @@ if (p.key === "usain-bolt") {
                       </div>
                     </div>
                     <div className="w-full mt-4 mb-4">
-                      <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                      </div>
+                      <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}></div>
                     </div>
                   </div>
                 </div>
