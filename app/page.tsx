@@ -828,6 +828,21 @@ const VISIBLE_KEYS = useMemo(() => {
 
                   // USAIN BOLT (two stills side-by-side)
                   if (p.key === "usain-bolt") {
+                    if (isMobile) {
+                      return (
+                        <Sized pct={pct}>
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <Image
+                              src="/sprint_final.webp"
+                              alt="Usain Bolt – sprint final"
+                              width={1400}
+                              height={900}
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
+                            />
+                          </div>
+                        </Sized>
+                      );
+                    }
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
@@ -899,27 +914,6 @@ const VISIBLE_KEYS = useMemo(() => {
 
                   // NYT SOCIAL
                   if (p.key === "olympics-ar") {
-                    if (isMobile) {
-                      return (
-                        <Sized pct={pct}>
-                          <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 70vw, 420px)" }}>
-                            <StrokeBox>
-                              <div className="relative w-full aspect-[9/16]">
-                                <video
-                                  src="/ondra.webm"
-                                  autoPlay
-                                  muted
-                                  loop
-                                  playsInline
-                                  preload="metadata"
-                                  className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                                />
-                              </div>
-                            </StrokeBox>
-                          </div>
-                        </Sized>
-                      );
-                    }
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
@@ -1201,50 +1195,8 @@ const VISIBLE_KEYS = useMemo(() => {
                 ref={(el) => {
                   itemRefs.current["cv"] = el;
                 }}
-                className="sm:hidden w-full px-3 pt-4 pb-16 text-[10px] leading-relaxed"
+                className="sm:hidden w-full px-3 pt-5 pb-5 text-[10px] leading-relaxed"
               >
-                <div className="mb-0">
-                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
-                  <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>
-                      Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em> <br /> 2025
-                    </li>
-                    <li>
-                      Architekturmuseum der TUM, <em>Visual Investigations</em> <br /> 2024
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
-                <div className="mt-0">
-                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
-                  <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>
-                      Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
-                    </li>
-                    <li>
-                      SND Bronze, <em>Bronx Fire</em> <br /> 2023
-                    </li>
-                    <li>
-                      SND Silver, <em>Dixie Fire</em> <br /> 2022
-                    </li>
-                    <li>
-                      Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
-                    </li>
-                    <li>
-                      SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
-                    </li>
-                    <li>
-                      World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="-mx-3">
-                  <div className="h-px my-4 w-full sm:my-3" style={{ backgroundColor: UMBER }} />
-                </div>
-
                 <div className="mt-0">
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Clients</h3>
                   <p className="text-[10px]">
