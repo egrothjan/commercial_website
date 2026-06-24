@@ -250,9 +250,6 @@ export default function Home() {
   const scrollEndTimerRef = useRef<number | null>(null);
   const scrollingRef = useRef(false);
 
-  const [mobileHeaderH, setMobileHeaderH] = useState(128);
-  const mobileHeaderRef = useRef<HTMLDivElement>(null);
-
 const VISIBLE_KEYS = useMemo(() => {
   const base = [
     ...(MOTION_KEYS as readonly string[]),
@@ -268,43 +265,6 @@ const VISIBLE_KEYS = useMemo(() => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const EXTRA_TOP_GAP = 12;
-
-    const measureAndSync = () => {
-      const header = mobileHeaderRef.current;
-      const scroller = scrollAreaRef.current;
-      if (!header || !scroller) return;
-
-      const prev = header.style.height;
-      header.style.height = "auto";
-      const natural = header.getBoundingClientRect().height;
-      header.style.height = prev;
-
-      setMobileHeaderH((prevH) => {
-        const next = Math.max(prevH, natural);
-        scroller.style.paddingTop = `${next + EXTRA_TOP_GAP}px`;
-        header.style.height = `${next}px`;
-        return next;
-      });
-    };
-
-    const raf = requestAnimationFrame(measureAndSync);
-    const ro = new ResizeObserver(() => measureAndSync());
-    if (mobileHeaderRef.current) ro.observe(mobileHeaderRef.current);
-
-    const onResize = () => measureAndSync();
-    window.addEventListener("resize", onResize, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(raf);
-      ro.disconnect();
-      window.removeEventListener("resize", onResize);
-    };
-  }, [isMobile, activeKey]);
 
   /* ========= Scroll spy: update activeKey LIVE while scrolling ========= */
   useEffect(() => {
@@ -665,19 +625,74 @@ const VISIBLE_KEYS = useMemo(() => {
             <SimpleBar
               scrollableNodeProps={{ ref: scrollAreaRef }}
               style={{ height: "100%" }}
-              className="w-full pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch border-b custom-scrollbar h-full overflow-x-hidden px-0"
+              className="w-full pb-20 sm:pb-3 flex flex-col items-stretch border-b custom-scrollbar h-full overflow-x-hidden px-0"
               autoHide={false}
             >
               {/* Mobile header */}
-              <div
-                ref={mobileHeaderRef}
-                className="mobile-header sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2 overflow-hidden"
-                style={{ borderColor: UMBER, height: `${mobileHeaderH}px` }}
-              >
-                <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
-                  {activeKey === "cv" ? "CV" : PROJECTS.find((pp) => pp.key === activeKey)?.title}
+              <div className="sm:hidden w-full px-4 pt-7 pb-5">
+                <h2
+                  className="text-[11px] tracking-[0.18em] uppercase text-foreground/55"
+                  style={{ fontFamily: '"proxima-nova", sans-serif' }}
+                >
+                  grothjan studio
                 </h2>
+
+                <h1
+                  className="mt-3 text-[27px] leading-[1.1] text-foreground"
+                  style={{ fontFamily: '"proxima-nova-thin", sans-serif', fontWeight: 100 }}
+                >
+                  Emmy Award-Winning
+                  <br />
+                  Filmmaker &amp; Journalist
+                </h1>
+
+                <p className="mt-4 text-[13px] leading-[1.55] text-foreground/80">
+                  Grothjan Studio is an art direction, animation, and design practice led by Evan Grothjan, an Emmy-winning filmmaker with seven years at the New York Times.
+                  <br />
+                  <br />
+                  The studio builds motion, editorial, and interactive work that turns complex ideas into clear, striking visual stories.
+                </p>
+
+                <div className="mt-5 flex items-center gap-4">
+                  <a
+                    href="https://www.linkedin.com/in/evan-g-09772b57/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                  >
+                    <Icon
+                      icon="mdi:linkedin"
+                      className="w-5 h-5 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                    />
+                  </a>
+                  <a
+                    href="https://x.com/EvanGrothjan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Twitter/X"
+                  >
+                    <Icon
+                      icon="ri:twitter-x-fill"
+                      className="w-5 h-5 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                    />
+                  </a>
+                  <a
+                    href="mailto:evangrothjan@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Email"
+                  >
+                    <Icon
+                      icon="ic:outline-email"
+                      className="w-5 h-5 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                    />
+                  </a>
+                </div>
               </div>
+
+              <div className="sm:hidden w-full h-px" style={{ backgroundColor: UMBER }} />
+
+              <div className="sm:hidden h-5" />
 
               {/* Desktop header */}
               <div className="hidden sm:block w-full text-left">
@@ -695,7 +710,6 @@ const VISIBLE_KEYS = useMemo(() => {
               {nonCVProjects.map((p, idx) => {
                 const img = IMAGES[p.key];
                 const pct = getPct(p.key);
-                const extraTopMobileFirst = isMobile && idx === 0 ? 20 : 0;
                 const rawDesc = DESCRIPTIONS[p.key] ?? "";
                 const client = extractClient(rawDesc);
 
@@ -1057,7 +1071,7 @@ const VISIBLE_KEYS = useMemo(() => {
                     }}
                     className="w-full flex flex-col items-center relative"
                   >
-                    {idx === 0 && <div style={{ height: MID_GAP + extraTopMobileFirst }} />}
+                    {idx === 0 && <div style={{ height: isMobile ? 0 : MID_GAP }} />}
 
                     <div className="w-full outline-none">{Media}</div>
 
@@ -1101,7 +1115,7 @@ const VISIBLE_KEYS = useMemo(() => {
                         }}
                       />
 
-                      <div style={{ height: MID_GAP }} />
+                      <div style={{ height: isMobile ? 20 : MID_GAP }} />
                     </div>
                   </div>
                 );
@@ -1162,6 +1176,27 @@ const VISIBLE_KEYS = useMemo(() => {
                     Bloomberg, DMA United, Google, Human Rights Watch, HAVAS, Meta, Microsoft, MTV, National Lawyers Guild, The New York Times, Vogue, Vox
                   </p>
                 </div>
+              </div>
+
+              {/* Mobile-only cross-link footer */}
+              <div className="sm:hidden w-full px-3 pb-8">
+                <div className="-mx-3 mb-5">
+                  <div className="h-px w-full" style={{ backgroundColor: UMBER }} />
+                </div>
+                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
+                  Reporting &amp; Investigative Work
+                </h3>
+                <p className="text-[13px] leading-relaxed text-foreground/80">
+                  For reporting &amp; investigative work, visit{" "}
+                  <a
+                    href="https://www.grothjan.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                  >
+                    grothjan &rarr;
+                  </a>
+                </p>
               </div>
             </SimpleBar>
           </div>
