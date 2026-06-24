@@ -501,10 +501,7 @@ const VISIBLE_KEYS = useMemo(() => {
               </p>
 
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left mt-2">
-                Evan Grothjan&apos;s work reconstructs events that are obscured, disputed, or denied. He spent seven years at the New York Times, where his reporting earned two Pulitzer Prize finalist citations, an Emmy, and recognition from World Press Photo and the Society of News Design.
-                <br />
-                <br />
-                His work is held in the permanent collection of the Museum of Modern Art and has been exhibited at the Venice Architecture Biennale.
+                Grothjan Studio is an art direction, animation, and design practice led by Evan Grothjan, an Emmy-winning filmmaker with seven years at the New York Times. The studio builds motion, editorial, and interactive work that turns complex ideas into clear, striking visual stories.
               </p>
 
               <div className="flex gap-1 items-center mt-2">
