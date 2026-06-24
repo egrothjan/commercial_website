@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import "simplebar-react/dist/simplebar.min.css";
 import SimpleBar from "simplebar-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 /* ===================== Types ===================== */
 type Project = { title: string; key: string; href: string };
@@ -240,11 +240,6 @@ export default function Home() {
   }, [activeKey]);
 
   const [isMobile, setIsMobile] = useState(false);
-
-  /* ===================== CV panel collapse state (DESKTOP) ===================== */
-  const [cvOpen, setCvOpen] = useState(false);
-  const CV_OPEN_W = "clamp(13rem,17vw,19rem)";
-  const CV_CLOSED_W = "3.5rem";
 
   const mainRef = useRef<HTMLElement | null>(null);
 
@@ -490,24 +485,65 @@ const VISIBLE_KEYS = useMemo(() => {
         <div className="flex flex-col sm:flex-row items-start gap-0 h-full min-h-0">
           {/* Left */}
           <aside className="w-[245px] shrink-0 sticky top-0 self-start pr-1 hidden sm:block">
-            <div className="mb-10 pl-[12px]">
-              <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">Grothjan Studio</h2>
+            <div className="mb-5 pl-[12px]">
+              <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">grothjan studio</h2>
             </div>
 
             <div className="h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
 
             <div className="px-3 mt-3 mb-4">
-              <p className="text-[18px] leading-[1.2] text-foreground/80 text-left">
+              <p
+                className="text-[18px] leading-[1.2] text-foreground/80 text-left"
+                style={{ fontFamily: '"proxima-nova-thin", sans-serif', fontWeight: 100 }}
+              >
                 Emmy Award-Winning <br />
                 Filmmaker &amp; Journalist
               </p>
 
-              <p className="text-[12px] leading-relaxed text-foreground/80 text-left mt-3">
-                Reach Out:{" "}
-                <a href="mailto:evangrothjan@gmail.com" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-600">
-                  evangrothjan@gmail.com
-                </a>
+              <p className="text-[10px] leading-relaxed text-foreground/80 text-left mt-2">
+                Evan Grothjan&apos;s work reconstructs events that are obscured, disputed, or denied. He spent seven years at the New York Times, where his reporting earned two Pulitzer Prize finalist citations, an Emmy, and recognition from World Press Photo and the Society of News Design.
+                <br />
+                <br />
+                His work is held in the permanent collection of the Museum of Modern Art and has been exhibited at the Venice Architecture Biennale.
               </p>
+
+              <div className="flex gap-1 items-center mt-2">
+                <a
+                  href="https://www.linkedin.com/in/evan-g-09772b57/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <Icon
+                    icon="mdi:linkedin"
+                    className="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                  />
+                </a>
+
+                <a
+                  href="https://x.com/EvanGrothjan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Twitter/X"
+                >
+                  <Icon
+                    icon="ri:twitter-x-fill"
+                    className="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                  />
+                </a>
+
+                <a
+                  href="mailto:evangrothjan@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Email"
+                >
+                  <Icon
+                    icon="ic:outline-email"
+                    className="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                  />
+                </a>
+              </div>
 
               <div className="-mx-3 mt-3">
                 <div
@@ -626,8 +662,8 @@ const VISIBLE_KEYS = useMemo(() => {
 
               {/* Desktop header */}
               <div className="hidden sm:block w-full text-left">
-                <div className="mb-10 pl-[12px]">
-                  <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">Select Projects</h2>
+                <div className="mb-5 pl-[12px]">
+                  <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">select work</h2>
                 </div>
                 <div className="w-full h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
               </div>
@@ -1104,101 +1140,6 @@ const VISIBLE_KEYS = useMemo(() => {
                 </div>
               </div>
             </SimpleBar>
-          </div>
-
-          {/* Vertical divider */}
-          <div className="w-px h-full hidden sm:block" style={{ backgroundColor: UMBER }} />
-
-          {/* Right (CV) */}
-          <div
-            className="hidden sm:block sticky top-0 self-start shrink-0 h-full relative transition-[width] duration-300 ease-in-out group"
-            style={{ width: cvOpen ? CV_OPEN_W : CV_CLOSED_W }}
-          >
-            <button
-              type="button"
-              aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"}
-              onClick={() => setCvOpen((p) => !p)}
-              className="absolute inset-0 z-30 bg-transparent cursor-pointer"
-            />
-
-            <aside className="relative h-full overflow-hidden text-[10px] leading-relaxed px-1" style={{ width: CV_OPEN_W }}>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCvOpen((p) => !p);
-                }}
-                className="w-full flex items-center gap-[1.75px] pl-[2px] mb-2 select-none"
-                aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"}
-                aria-expanded={cvOpen}
-              >
-                {cvOpen ? (
-                  <ChevronLeft className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
-                )}
-
-                <span className="text-[14px] tracking-wide text-black dark:text-white opacity-80 group-hover:text-red-500 dark:group-hover:text-red-400">
-                  CV
-                </span>
-              </button>
-
-              <div className="relative overflow-hidden" style={{ width: CV_OPEN_W }}>
-                <div className={["transition-opacity duration-200", cvOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"].join(" ")}>
-                  <div className="h-8" />
-                  <div className="h-[1px] mb-4 -mt-[2px]" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
-                  <div className={["transition-transform duration-300 ease-in-out", cvOpen ? "translate-x-0" : "translate-x-full"].join(" ")}>
-                    <div className="translate-y-[-2px]">
-                      <div className="w-full mt-4 mb-4">
-                        <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                          <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
-                          <ul className="space-y-[0.2rem] text-[10px]">
-                            <li>
-                              Prada Foundation, Venice Biennali, <em>Diagrams</em> <br /> 2025
-                            </li>
-                            <li>
-                              Architekturmuseum TUM, <em>Visual Investigations</em> <br /> 2024
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
-                      <div className="w-full mt-4 mb-4">
-                        <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                          <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
-                          <ul className="space-y-[0.2rem] text-[10px]">
-                            <li>
-                              Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
-                            </li>
-                            <li>
-                              SND Bronze, <em>Bronx Fire</em> <br /> 2023
-                            </li>
-                            <li>
-                              SND Silver, <em>Dixie Fire</em> <br /> 2022
-                            </li>
-                            <li>
-                              Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
-                            </li>
-                            <li>
-                              SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
-                            </li>
-                            <li>
-                              World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-full mt-4 mb-4">
-                      <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </aside>
           </div>
         </div>
       </div>
