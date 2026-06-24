@@ -741,8 +741,35 @@ const VISIBLE_KEYS = useMemo(() => {
                   : baseDesc;
 
                 const Media = (() => {
-                  // Mobile: square crop (matches personal_website); olympics keeps its layout
+                  // Mobile: square crop (matches personal_website)
                   if (isMobile) {
+                    // Olympics: both vertical videos side-by-side in one square
+                    if (p.key === "olympics-ar") {
+                      return (
+                        <div className="w-full px-3">
+                          <StrokeBox>
+                            <div className="relative aspect-square w-full overflow-hidden">
+                              <div className="absolute inset-0 flex gap-[2px] bg-[rgba(128,128,128,0.65)]">
+                                {["/sunisa.webm", "/ondra.webm"].map((src) => (
+                                  <div key={src} className="relative w-1/2 h-full overflow-hidden">
+                                    <video
+                                      src={src}
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                      preload="metadata"
+                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </StrokeBox>
+                        </div>
+                      );
+                    }
+
                     const sq = MOBILE_SQUARE[p.key];
                     if (sq) {
                       return (
@@ -1221,12 +1248,6 @@ const VISIBLE_KEYS = useMemo(() => {
 
               {/* Mobile-only cross-link footer */}
               <div className="sm:hidden w-full px-3 pb-8">
-                <div className="-mx-3 mb-5">
-                  <div className="h-px w-full" style={{ backgroundColor: UMBER }} />
-                </div>
-                <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">
-                  Reporting &amp; Investigative Work
-                </h3>
                 <p className="text-[13px] leading-relaxed text-foreground/80">
                   For reporting &amp; investigative work, visit{" "}
                   <a
