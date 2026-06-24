@@ -1082,8 +1082,10 @@ const VISIBLE_KEYS = useMemo(() => {
                         <div className="w-full flex justify-center">
                           <div className="inline-flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-14">
                             {/* left: role/client */}
-                            <div className="shrink-0 sm:w-[16rem] whitespace-nowrap">
-                              <div>
+                            <div className="shrink-0 sm:w-[16rem] sm:whitespace-nowrap">
+                              {/* Mobile-only project title */}
+                              <div className="sm:hidden font-semibold mb-1">{p.title}</div>
+                              <div className="hidden sm:block">
                                 <span className="opacity-80">Role:</span>{" "}
                                 <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
                               </div>
@@ -1104,10 +1106,10 @@ const VISIBLE_KEYS = useMemo(() => {
                       </div>
                     </Sized>
 
-                    {/* Separator */}
+                    {/* Separator (desktop only between projects) */}
                     <div className="flex flex-col items-center w-full">
                       <div
-                        className="h-px w-full"
+                        className="hidden sm:block h-px w-full"
                         style={{
                           backgroundColor: UMBER,
                           marginLeft: RULE_INSET_PX,
@@ -1120,6 +1122,9 @@ const VISIBLE_KEYS = useMemo(() => {
                   </div>
                 );
               })}
+
+              {/* Mobile-only line after the last project */}
+              <div className="sm:hidden w-full h-px" style={{ backgroundColor: UMBER }} />
 
               {/* Mobile-only CV */}
               <div
