@@ -486,7 +486,12 @@ const VISIBLE_KEYS = useMemo(() => {
           {/* Left */}
           <aside className="w-[245px] shrink-0 sticky top-0 self-start pr-1 hidden sm:block">
             <div className="mb-5 pl-[12px]">
-              <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">grothjan studio</h2>
+              <h2
+                className="text-[14px] tracking-wide text-black dark:text-white opacity-80"
+                style={{ fontFamily: '"proxima-nova", sans-serif' }}
+              >
+                grothjan studio
+              </h2>
             </div>
 
             <div className="h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
@@ -677,7 +682,12 @@ const VISIBLE_KEYS = useMemo(() => {
               {/* Desktop header */}
               <div className="hidden sm:block w-full text-left">
                 <div className="mb-5 pl-[12px]">
-                  <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">select work</h2>
+                  <h2
+                    className="text-[14px] tracking-wide text-black dark:text-white opacity-80"
+                    style={{ fontFamily: '"proxima-nova", sans-serif' }}
+                  >
+                    select work
+                  </h2>
                 </div>
                 <div className="w-full h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
               </div>
