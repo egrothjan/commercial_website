@@ -520,7 +520,7 @@ const VISIBLE_KEYS = useMemo(() => {
                   href="https://www.grothjan.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                  className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
                 >
                   grothjan &rarr;
                 </a>
