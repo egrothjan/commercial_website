@@ -127,34 +127,6 @@ const MOBILE_SQUARE: Record<string, SquareMedia> = {
   "meta-ar": { kind: "video", src: "/instaAR_3.webm" },
 };
 
-/* ===================== Tags (left nav) ===================== */
-const DEFAULT_TAGS: string[] = ["Data Viz"];
-
-const TAGS_BY_KEY: Partial<Record<string, string[]>> = {
-  "diary-ed-sheeran": ["2D Motion | Explainer"],
-  "olympics-ar": ["Multimedia Design | Social"],
-  "zhiyun-xs": ["3D Motion | Commercial"],
-  "pluto": ["3D Motion | Explainer"],
-  "david-bowie-3d": ["3D Graphics | Editorial"],
-  "google-headsets": ["3D Graphics | Documentary"],
-  "meta-ar": ["3D Graphics | Social"],
-  "play-magazine": ["Art Direction | Print"],
-  donors: ["Information Design | Editorial"],
-  "usain-bolt": ["3D Design | Explainer"],
-};
-
-const TAG_UI = {
-  indentPx: 22,
-  activeTopGapPx: 1,
-  rowGapPx: 6,
-  fontSizePx: 9,
-  lineHeight: 1,
-  maxHeightPx: 24,
-  textClass: "text-red-500 dark:text-red-400",
-};
-
-const getTagsForKey = (key: string) => TAGS_BY_KEY[key] ?? DEFAULT_TAGS;
-
 /* ===================== Category lists (explicit order) ===================== */
 const MOTION_KEYS = ["diary-ed-sheeran", "olympics-ar", "zhiyun-xs", "pluto"] as const;
 const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
@@ -577,7 +549,6 @@ const VISIBLE_KEYS = useMemo(() => {
                     <ul className="space-y-[0.1rem]">
                       {list.map(({ title, key }) => {
                         const active = activeKey === key;
-                        const tags = getTagsForKey(key);
 
                         return (
                           <li key={key} className="flex flex-col">
@@ -600,31 +571,6 @@ const VISIBLE_KEYS = useMemo(() => {
                               >
                                 {title}
                               </button>
-                            </div>
-
-                            <div
-                              className="overflow-hidden transition-[max-height,opacity] duration-200 ease-out"
-                              style={{
-                                maxHeight: active ? TAG_UI.maxHeightPx : 0,
-                                opacity: active ? 1 : 0,
-                                marginTop: active ? TAG_UI.activeTopGapPx : 0,
-                              }}
-                            >
-                              <div
-                                style={{
-                                  paddingLeft: TAG_UI.indentPx,
-                                  display: "flex",
-                                  flexWrap: "wrap",
-                                  columnGap: TAG_UI.rowGapPx,
-                                  rowGap: 2,
-                                }}
-                              >
-                                {tags.map((t) => (
-                                  <span key={t} className={TAG_UI.textClass} style={{ fontSize: TAG_UI.fontSizePx, lineHeight: TAG_UI.lineHeight }}>
-                                    {t}
-                                  </span>
-                                ))}
-                              </div>
                             </div>
                           </li>
                         );
