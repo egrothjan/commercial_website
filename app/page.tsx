@@ -108,6 +108,25 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
 
 const getPct = (key: string) => MEDIA_PCT[key] ?? 100;
 
+/* ===================== Mobile square media (one asset per project) ===================== */
+type SquareMedia =
+  | { kind: "image"; src: string; alt: string }
+  | { kind: "video"; src: string }
+  | { kind: "smartvideo"; base: string };
+
+// olympics-ar is intentionally omitted — it keeps its two-video layout on mobile.
+const MOBILE_SQUARE: Record<string, SquareMedia> = {
+  "diary-ed-sheeran": { kind: "smartvideo", base: "/edsheeran_final" },
+  "zhiyun-xs": { kind: "smartvideo", base: "/zhiyun_final" },
+  pluto: { kind: "smartvideo", base: "/pluto_final" },
+  "play-magazine": { kind: "image", src: "/play_1.webp", alt: "PLAY Magazine" },
+  donors: { kind: "video", src: "/monopoly.webm" },
+  "usain-bolt": { kind: "image", src: "/sprint_final.webp", alt: "Usain Bolt and the Fastest Men in the World" },
+  "david-bowie-3d": { kind: "video", src: "/bowie-desktop.mp4" },
+  "google-headsets": { kind: "video", src: "/antarctica_final.webm" },
+  "meta-ar": { kind: "video", src: "/instaAR_3.webm" },
+};
+
 /* ===================== Tags (left nav) ===================== */
 const DEFAULT_TAGS: string[] = ["Data Viz"];
 
@@ -722,23 +741,50 @@ const VISIBLE_KEYS = useMemo(() => {
                   : baseDesc;
 
                 const Media = (() => {
-                  // PLAY
-                  if (p.key === "play-magazine") {
-                    if (isMobile) {
+                  // Mobile: square crop (matches personal_website); olympics keeps its layout
+                  if (isMobile) {
+                    const sq = MOBILE_SQUARE[p.key];
+                    if (sq) {
                       return (
-                        <Sized pct={pct}>
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                            <Image
-                              src="/play_1.webp"
-                              alt="PLAY Magazine"
-                              width={1600}
-                              height={1100}
-                              className="pointer-events-none select-none object-contain w-full h-auto block"
-                            />
-                          </div>
-                        </Sized>
+                        <div className="w-full px-3">
+                          <StrokeBox>
+                            <div className="relative aspect-square w-full overflow-hidden">
+                              {sq.kind === "image" ? (
+                                <Image
+                                  src={sq.src}
+                                  alt={sq.alt}
+                                  fill
+                                  quality={100}
+                                  sizes="100vw"
+                                  className="pointer-events-none select-none object-cover"
+                                  priority={idx === 0}
+                                />
+                              ) : sq.kind === "smartvideo" ? (
+                                <SmartVideo
+                                  srcBase={sq.base}
+                                  className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                                  preload="metadata"
+                                />
+                              ) : (
+                                <video
+                                  src={sq.src}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="metadata"
+                                  className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                                />
+                              )}
+                            </div>
+                          </StrokeBox>
+                        </div>
                       );
                     }
+                  }
+
+                  // PLAY
+                  if (p.key === "play-magazine") {
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
@@ -774,23 +820,6 @@ const VISIBLE_KEYS = useMemo(() => {
 
                   // DONORS
                   if (p.key === "donors") {
-                    if (isMobile) {
-                      return (
-                        <Sized pct={pct}>
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                            <video
-                              src="/monopoly.webm"
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              preload="metadata"
-                              className="pointer-events-none select-none object-contain w-full h-auto block"
-                            />
-                          </div>
-                        </Sized>
-                      );
-                    }
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
@@ -828,21 +857,6 @@ const VISIBLE_KEYS = useMemo(() => {
 
                   // USAIN BOLT (two stills side-by-side)
                   if (p.key === "usain-bolt") {
-                    if (isMobile) {
-                      return (
-                        <Sized pct={pct}>
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                            <Image
-                              src="/sprint_final.webp"
-                              alt="Usain Bolt – sprint final"
-                              width={1400}
-                              height={900}
-                              className="pointer-events-none select-none object-contain w-full h-auto block"
-                            />
-                          </div>
-                        </Sized>
-                      );
-                    }
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
