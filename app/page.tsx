@@ -526,7 +526,7 @@ const VISIBLE_KEYS = useMemo(() => {
                 </a>
               </p>
 
-              <div className="flex gap-1 items-center mt-2">
+              <div className="flex gap-1 items-center mt-3">
                 <a
                   href="https://www.linkedin.com/in/evan-g-09772b57/"
                   target="_blank"
