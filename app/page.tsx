@@ -501,7 +501,24 @@ const VISIBLE_KEYS = useMemo(() => {
               </p>
 
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left mt-2">
-                Grothjan Studio is an art direction, animation, and design practice led by Evan Grothjan, an Emmy-winning filmmaker with seven years at the New York Times. The studio builds motion, editorial, and interactive work that turns complex ideas into clear, striking visual stories.
+                Grothjan Studio is an art direction, animation, and design practice led by Evan Grothjan, an Emmy-winning filmmaker with seven years at the New York Times.
+                <br />
+                <br />
+                The studio builds motion, editorial, and interactive work that turns complex ideas into clear, striking visual stories.
+              </p>
+
+              <p className="text-[10px] leading-relaxed text-foreground/80 text-left mt-3">
+                For personal &amp; documentary work,
+                <br />
+                visit{" "}
+                <a
+                  href="https://www.grothjan.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                >
+                  grothjan &rarr;
+                </a>
               </p>
 
               <div className="flex gap-1 items-center mt-2">
@@ -583,11 +600,11 @@ const VISIBLE_KEYS = useMemo(() => {
                             <div className="flex items-start gap-2">
                               <span
                                 aria-hidden
-                                className="w-2.5 h-2.5 flex-none rounded-full transition-transform duration-200 ease-out"
+                                className="w-[5px] h-[5px] flex-none rounded-full transition-transform duration-200 ease-out"
                                 style={{
                                   backgroundColor: active ? "rgb(220 38 38)" : "transparent",
                                   transform: active ? "scale(1)" : "scale(0.8)",
-                                  marginTop: "calc((1.125rem - 0.625rem) / 2)",
+                                  marginTop: "calc((1.125rem - 0.3125rem) / 2)",
                                 }}
                               />
                               <button
