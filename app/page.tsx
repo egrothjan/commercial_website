@@ -724,6 +724,21 @@ const VISIBLE_KEYS = useMemo(() => {
                 const Media = (() => {
                   // PLAY
                   if (p.key === "play-magazine") {
+                    if (isMobile) {
+                      return (
+                        <Sized pct={pct}>
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <Image
+                              src="/play_1.webp"
+                              alt="PLAY Magazine"
+                              width={1600}
+                              height={1100}
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
+                            />
+                          </div>
+                        </Sized>
+                      );
+                    }
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
@@ -759,6 +774,23 @@ const VISIBLE_KEYS = useMemo(() => {
 
                   // DONORS
                   if (p.key === "donors") {
+                    if (isMobile) {
+                      return (
+                        <Sized pct={pct}>
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <video
+                              src="/monopoly.webm"
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              preload="metadata"
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
+                            />
+                          </div>
+                        </Sized>
+                      );
+                    }
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
@@ -867,6 +899,27 @@ const VISIBLE_KEYS = useMemo(() => {
 
                   // NYT SOCIAL
                   if (p.key === "olympics-ar") {
+                    if (isMobile) {
+                      return (
+                        <Sized pct={pct}>
+                          <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 70vw, 420px)" }}>
+                            <StrokeBox>
+                              <div className="relative w-full aspect-[9/16]">
+                                <video
+                                  src="/ondra.webm"
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="metadata"
+                                  className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
+                                />
+                              </div>
+                            </StrokeBox>
+                          </div>
+                        </Sized>
+                      );
+                    }
                     return (
                       <Sized pct={pct}>
                         <div className="w-full flex justify-center">
@@ -1076,16 +1129,33 @@ const VISIBLE_KEYS = useMemo(() => {
                     <div className="w-full outline-none">{Media}</div>
 
                     <Sized pct={pct}>
-                      <div className="px-3 sm:px-0 text-[12px] leading-relaxed text-red-500 dark:text-red-400">
+                      {/* Mobile (matches personal_website styling) */}
+                      <div className="sm:hidden px-3 pt-3 pb-4 text-black dark:text-white">
+                        <div className="text-[18px] leading-[1.08]" style={{ fontWeight: 400 }}>
+                          {p.title}
+                        </div>
+
+                        <div
+                          className="mt-2 text-[14px] leading-[1.3] text-black/85 dark:text-white/85"
+                          style={{ fontWeight: 400 }}
+                          dangerouslySetInnerHTML={{ __html: descHtml }}
+                        />
+
+                        <div className="mt-2 text-[11px] leading-[1.3] text-black/65 dark:text-white/65" style={{ fontWeight: 400 }}>
+                          <span className="text-black dark:text-white">Client:</span>{" "}
+                          <span>{client}</span>
+                        </div>
+                      </div>
+
+                      {/* Desktop */}
+                      <div className="hidden sm:block sm:px-0 text-[12px] leading-relaxed text-red-500 dark:text-red-400">
                         <div style={{ height: DESC_BAND_HALF }} />
 
                         <div className="w-full flex justify-center">
-                          <div className="inline-flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-14">
+                          <div className="inline-flex flex-row items-center gap-14">
                             {/* left: role/client */}
-                            <div className="shrink-0 sm:w-[16rem] sm:whitespace-nowrap">
-                              {/* Mobile-only project title */}
-                              <div className="sm:hidden font-semibold mb-1">{p.title}</div>
-                              <div className="hidden sm:block">
+                            <div className="shrink-0 w-[16rem] whitespace-nowrap">
+                              <div>
                                 <span className="opacity-80">Role:</span>{" "}
                                 <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
                               </div>
@@ -1096,7 +1166,7 @@ const VISIBLE_KEYS = useMemo(() => {
                             </div>
 
                             {/* right: description */}
-                            <div className="min-w-0 sm:w-[32rem] sm:max-w-[32rem] text-red-500 dark:text-red-400">
+                            <div className="min-w-0 w-[32rem] max-w-[32rem] text-red-500 dark:text-red-400">
                               <div dangerouslySetInnerHTML={{ __html: descHtml }} />
                             </div>
                           </div>
