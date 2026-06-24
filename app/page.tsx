@@ -508,7 +508,7 @@ const VISIBLE_KEYS = useMemo(() => {
               </p>
 
               <p className="text-[10px] leading-relaxed text-foreground/80 text-left mt-3">
-                For journalistic &amp; editorial work,
+                For reporting &amp; investigative work,
                 <br />
                 visit{" "}
                 <a
