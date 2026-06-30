@@ -23,7 +23,6 @@ const RULE_INSET_PX = 0;
 const PROJECTS: Project[] = [
   // Motion
   { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#" },
-  { title: "NYT Social Content", key: "olympics-ar", href: "#" },
   { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
   { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#" },
 
@@ -47,15 +46,12 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
   pluto: { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
-  "olympics-ar": { src: "/olympics_cover.webp", alt: "NYT Social Content", width: 800, height: 600 },
   "google-headsets": { src: "/dixie_placeholder.webp", alt: "Google Headsets (placeholder)", width: 800, height: 600 },
 };
 
 const DESCRIPTIONS: Record<string, string> = {
   "diary-ed-sheeran":
     "Client: The New York Times | Explainer<br /><br />Animated data visualization deconstructing how Ed Sheeran, Johnny McDaid, and Steve Mac built the most-streamed track of 2017. Over 3.8 million views. <br /><br /><a href='https://www.youtube.com/watch?v=ZpMNJbt3QDE&t=349s' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "olympics-ar":
-    "Client: The New York Times | Social<br /><br />Breaking down the movements that make them great. Sunisa Lee is unmatched on the uneven bars and there’s nothing Adam Ondra can’t climb.",
   "zhiyun-xs":
     "Client: Zhiyun | Commercial<br /><br />Product visualization and launch campaign for Zhiyun's Smooth-XS.<br /><br /><a href='https://www.youtube.com/watch?v=Ui87X-vDba0' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "pluto":
@@ -78,7 +74,6 @@ const DESCRIPTIONS: Record<string, string> = {
 
 const ROLE_BY_KEY: Record<string, string> = {
   "diary-ed-sheeran": "Art Direction, 2D Motion Design",
-  "olympics-ar": "Art Direction, Multimedia Design",
   "zhiyun-xs": "3D Motion Design",
   "pluto": "3D Motion Design",
 
@@ -95,7 +90,6 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
   "diary-ed-sheeran": 90,
   "zhiyun-xs": 90,
   "pluto": 90,
-  "olympics-ar": 90,
 
   "david-bowie-3d": 90,
   "google-headsets": 90,
@@ -114,7 +108,6 @@ type SquareMedia =
   | { kind: "video"; src: string }
   | { kind: "smartvideo"; base: string };
 
-// olympics-ar is intentionally omitted — it keeps its two-video layout on mobile.
 const MOBILE_SQUARE: Record<string, SquareMedia> = {
   "diary-ed-sheeran": { kind: "smartvideo", base: "/edsheeran_final" },
   "zhiyun-xs": { kind: "smartvideo", base: "/zhiyun_final" },
@@ -128,7 +121,7 @@ const MOBILE_SQUARE: Record<string, SquareMedia> = {
 };
 
 /* ===================== Category lists (explicit order) ===================== */
-const MOTION_KEYS = ["diary-ed-sheeran", "olympics-ar", "zhiyun-xs", "pluto"] as const;
+const MOTION_KEYS = ["diary-ed-sheeran", "zhiyun-xs", "pluto"] as const;
 const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
 const INTERACTIVE_KEYS = ["david-bowie-3d", "google-headsets", "meta-ar"] as const;
 
@@ -689,33 +682,6 @@ const VISIBLE_KEYS = useMemo(() => {
                 const Media = (() => {
                   // Mobile: square crop (matches personal_website)
                   if (isMobile) {
-                    // Olympics: both vertical videos side-by-side in one square
-                    if (p.key === "olympics-ar") {
-                      return (
-                        <div className="w-full px-3">
-                          <StrokeBox>
-                            <div className="relative aspect-square w-full overflow-hidden">
-                              <div className="absolute inset-0 flex gap-[2px] bg-[rgba(128,128,128,0.65)]">
-                                {["/sunisa.webm", "/ondra.webm"].map((src) => (
-                                  <div key={src} className="relative w-1/2 h-full overflow-hidden">
-                                    <video
-                                      src={src}
-                                      autoPlay
-                                      muted
-                                      loop
-                                      playsInline
-                                      preload="metadata"
-                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
-                                    />
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          </StrokeBox>
-                        </div>
-                      );
-                    }
-
                     const sq = MOBILE_SQUARE[p.key];
                     if (sq) {
                       return (
@@ -893,53 +859,6 @@ const VISIBLE_KEYS = useMemo(() => {
                               className="pointer-events-none select-none object-contain w-full h-auto block"
                               preload="metadata"
                             />
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // NYT SOCIAL
-                  if (p.key === "olympics-ar") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-12">
-                            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-                              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
-                                <StrokeBox>
-                                  <div className="relative w-full aspect-[9/16]">
-                                    <video
-                                      src="/sunisa.webm"
-                                      autoPlay
-                                      muted
-                                      loop
-                                      playsInline
-                                      preload="metadata"
-                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                                    />
-                                  </div>
-                                </StrokeBox>
-                              </div>
-                            </div>
-
-                            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-                              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
-                                <StrokeBox>
-                                  <div className="relative w-full aspect-[9/16]">
-                                    <video
-                                      src="/ondra.webm"
-                                      autoPlay
-                                      muted
-                                      loop
-                                      playsInline
-                                      preload="metadata"
-                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                                    />
-                                  </div>
-                                </StrokeBox>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </Sized>
