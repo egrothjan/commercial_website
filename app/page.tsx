@@ -237,8 +237,8 @@ export default function Home() {
 const VISIBLE_KEYS = useMemo(() => {
   const base = [
     ...(MOTION_KEYS as readonly string[]),
-    ...(INTERACTIVE_KEYS as readonly string[]),
     ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
+    ...(INTERACTIVE_KEYS as readonly string[]),
   ];
   return isMobile ? [...base, "cv"] : base;
 }, [isMobile]);
@@ -357,8 +357,8 @@ const VISIBLE_KEYS = useMemo(() => {
   const nonCVProjects = useMemo(() => {
     const order = [
       ...(MOTION_KEYS as readonly string[]),
-      ...(INTERACTIVE_KEYS as readonly string[]),
       ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
+      ...(INTERACTIVE_KEYS as readonly string[]),
     ];
 
     const byKey = new Map(PROJECTS.map((p) => [p.key, p] as const));
@@ -534,8 +534,8 @@ const VISIBLE_KEYS = useMemo(() => {
               <ul className="space-y-4 text-left">
                 {[
                   { label: "Motion", list: MOTION_LIST },
-                  { label: "Interactive", list: INTERACTIVE_LIST },
                   { label: "Editorial Design", list: EDITORIAL_DESIGN_LIST },
+                  { label: "Interactive", list: INTERACTIVE_LIST },
                 ].map(({ label, list }) => (
                   <li key={label} className="w-full">
                     <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">{label}</div>
