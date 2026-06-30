@@ -120,14 +120,10 @@ const MOBILE_SQUARE: Record<string, SquareMedia> = {
   "meta-ar": { kind: "video", src: "/instaAR_3.webm" },
 };
 
-/* ===================== Category lists (explicit order) ===================== */
+/* ===================== Project order ===================== */
 const MOTION_KEYS = ["diary-ed-sheeran", "zhiyun-xs", "pluto"] as const;
 const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
 const INTERACTIVE_KEYS = ["david-bowie-3d", "google-headsets", "meta-ar"] as const;
-
-const MOTION_LIST = PROJECTS.filter((p) => (MOTION_KEYS as readonly string[]).includes(p.key));
-const EDITORIAL_DESIGN_LIST = PROJECTS.filter((p) => (EDITORIAL_DESIGN_KEYS as readonly string[]).includes(p.key));
-const INTERACTIVE_LIST = PROJECTS.filter((p) => (INTERACTIVE_KEYS as readonly string[]).includes(p.key));
 
 /* ===================== Helpers ===================== */
 function extractClient(html: string): string {
@@ -531,46 +527,36 @@ const VISIBLE_KEYS = useMemo(() => {
             <div className="h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
 
             <div className="px-3 mt-4">
-              <ul className="space-y-4 text-left">
-                {[
-                  { label: "Motion", list: MOTION_LIST },
-                  { label: "Editorial Design", list: EDITORIAL_DESIGN_LIST },
-                  { label: "Interactive", list: INTERACTIVE_LIST },
-                ].map(({ label, list }) => (
-                  <li key={label} className="w-full">
-                    <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">{label}</div>
-                    <ul className="space-y-[0.1rem]">
-                      {list.map(({ title, key }) => {
-                        const active = activeKey === key;
+              <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Work</div>
+              <ul className="space-y-[0.1rem] text-left">
+                {nonCVProjects.map(({ title, key }) => {
+                  const active = activeKey === key;
 
-                        return (
-                          <li key={key} className="flex flex-col">
-                            <div className="flex items-start gap-2">
-                              <span
-                                aria-hidden
-                                className="w-[5px] h-[5px] flex-none rounded-full transition-transform duration-200 ease-out"
-                                style={{
-                                  backgroundColor: active ? "rgb(220 38 38)" : "transparent",
-                                  transform: active ? "scale(1)" : "scale(0.8)",
-                                  marginTop: "calc((1.125rem - 0.3125rem) / 2)",
-                                }}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  scrollToKey(key);
-                                }}
-                                className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
-                              >
-                                {title}
-                              </button>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                ))}
+                  return (
+                    <li key={key} className="flex flex-col">
+                      <div className="flex items-start gap-2">
+                        <span
+                          aria-hidden
+                          className="w-[5px] h-[5px] flex-none rounded-full transition-transform duration-200 ease-out"
+                          style={{
+                            backgroundColor: active ? "rgb(220 38 38)" : "transparent",
+                            transform: active ? "scale(1)" : "scale(0.8)",
+                            marginTop: "calc((1.125rem - 0.3125rem) / 2)",
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            scrollToKey(key);
+                          }}
+                          className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
+                        >
+                          {title}
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </aside>
