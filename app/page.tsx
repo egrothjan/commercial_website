@@ -120,10 +120,18 @@ const MOBILE_SQUARE: Record<string, SquareMedia> = {
   "meta-ar": { kind: "video", src: "/instaAR_3.webm" },
 };
 
-/* ===================== Project order ===================== */
-const MOTION_KEYS = ["diary-ed-sheeran", "zhiyun-xs", "pluto"] as const;
-const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
-const INTERACTIVE_KEYS = ["david-bowie-3d", "google-headsets", "meta-ar"] as const;
+/* ===================== Project order (impact-first) ===================== */
+const PROJECT_ORDER = [
+  "diary-ed-sheeran",
+  "zhiyun-xs",
+  "david-bowie-3d",
+  "pluto",
+  "play-magazine",
+  "google-headsets",
+  "meta-ar",
+  "donors",
+  "usain-bolt",
+] as const;
 
 /* ===================== Helpers ===================== */
 function extractClient(html: string): string {
@@ -231,11 +239,7 @@ export default function Home() {
   const scrollingRef = useRef(false);
 
 const VISIBLE_KEYS = useMemo(() => {
-  const base = [
-    ...(MOTION_KEYS as readonly string[]),
-    ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
-    ...(INTERACTIVE_KEYS as readonly string[]),
-  ];
+  const base = [...(PROJECT_ORDER as readonly string[])];
   return isMobile ? [...base, "cv"] : base;
 }, [isMobile]);
 
@@ -351,11 +355,7 @@ const VISIBLE_KEYS = useMemo(() => {
   }, []);
 
   const nonCVProjects = useMemo(() => {
-    const order = [
-      ...(MOTION_KEYS as readonly string[]),
-      ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
-      ...(INTERACTIVE_KEYS as readonly string[]),
-    ];
+    const order = [...(PROJECT_ORDER as readonly string[])];
 
     const byKey = new Map(PROJECTS.map((p) => [p.key, p] as const));
     return order.map((k) => byKey.get(k)).filter(Boolean) as Project[];
