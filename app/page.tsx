@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import "simplebar-react/dist/simplebar.min.css";
 import SimpleBar from "simplebar-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 /* ===================== Types ===================== */
 type Project = { title: string; key: string; href: string };
@@ -23,19 +23,17 @@ const RULE_INSET_PX = 0;
 const PROJECTS: Project[] = [
   // Motion
   { title: "Diary of a Song: Ed Sheeran’s ‘Shape of You’", key: "diary-ed-sheeran", href: "#" },
-  { title: "NYT Social Content", key: "olympics-ar", href: "#" },
   { title: "Zhiyun XS", key: "zhiyun-xs", href: "#" },
   { title: "Seeking Pluto's Frigid Heart", key: "pluto", href: "#" },
 
   // Design (Editorial Design)
   { title: "PLAY Magazine", key: "play-magazine", href: "#" },
-  { title: "Families Funding the Election", key: "donors", href: "#" },
-  { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
+  // "donors" key retained; now a combined NYT information-design project.
+  { title: "NYT Information Design", key: "donors", href: "#" },
 
   // Interactive
-  { title: "David Bowie in Three Dimensions", key: "david-bowie-3d", href: "#" },
+  { title: "Vogue Arabia", key: "vogue-arabia", href: "#" },
   { title: "Google: Virtual Reality", key: "google-headsets", href: "#" },
-  { title: "Instagram: Augmented Reality", key: "meta-ar", href: "#" },
 
   // CV
   { title: "CV", key: "cv", href: "#" },
@@ -47,15 +45,12 @@ const IMAGES: Record<string, { src: string; alt: string; width: number; height: 
   "zhiyun-xs": { src: "/zhiyun_cover.webp", alt: "Zhiyun XS", width: 800, height: 600 },
   "dixie-fire-weather": { src: "/dixie_placeholder.webp", alt: "Dixie Fire Weather", width: 800, height: 600 },
   pluto: { src: "/pluto_2.webp", alt: "Seeking Pluto's Frigid Heart", width: 600, height: 600 },
-  "olympics-ar": { src: "/olympics_cover.webp", alt: "NYT Social Content", width: 800, height: 600 },
   "google-headsets": { src: "/dixie_placeholder.webp", alt: "Google Headsets (placeholder)", width: 800, height: 600 },
 };
 
 const DESCRIPTIONS: Record<string, string> = {
   "diary-ed-sheeran":
     "Client: The New York Times | Explainer<br /><br />Animated data visualization deconstructing how Ed Sheeran, Johnny McDaid, and Steve Mac built the most-streamed track of 2017. Over 3.8 million views. <br /><br /><a href='https://www.youtube.com/watch?v=ZpMNJbt3QDE&t=349s' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "olympics-ar":
-    "Client: The New York Times | Social<br /><br />Breaking down the movements that make them great. Sunisa Lee is unmatched on the uneven bars and there’s nothing Adam Ondra can’t climb.",
   "zhiyun-xs":
     "Client: Zhiyun | Commercial<br /><br />Product visualization and launch campaign for Zhiyun's Smooth-XS.<br /><br /><a href='https://www.youtube.com/watch?v=Ui87X-vDba0' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "pluto":
@@ -63,87 +58,69 @@ const DESCRIPTIONS: Record<string, string> = {
   "play-magazine":
     "Client: PLAY Magazine | Print<br /><br />Visual identity for the inaugural issue of PLAY, a cookbook-magazine featuring recipes, essays, and artwork from a community of queer chefs and artists.<br /><br /><a href='https://play.metalabel.com/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "donors":
-    "Client: The New York Times | Explainer<br /><br />How just 158 families supplied nearly half of the early money in the race for the 2016 White House.<br /><br /><a href='https://www.nytimes.com/interactive/2015/10/11/us/politics/2016-presidential-election-super-pac-donors.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "david-bowie-3d":
-    "Client: The New York Times | Product<br /><br />Bowie’s meticulous eye for detail and flaunting of gender and social norms in the blockbuster museum retrospective, <em>David Bowie Is.</em><br /><br /><a href='https://www.nytimes.com/interactive/2018/03/20/arts/design/bowie-costumes-ar-3d-ul.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times | Information Design<br /><br />Data-driven graphics for The New York Times — from the 158 families funding the 2016 White House race to every Olympic 100-meter medal awarded since 1896.",
+  "vogue-arabia":
+    "Client: Vogue Arabia | Commercial<br /><br />A commission for Vogue Arabia — a study in smoothness, dissolving every seam and line into a single, flawless surface.",
   "google-headsets":
     "Client: Google | Product<br /><br />NYT and Google teamed up to mail over a million Google Cardboard headsets to subscribers, giving a platform to 360-degree documentary storytelling.",
-  "meta-ar":
-    "Client: Meta | Product<br /><br />NYT partnered with Instagram to publish reporting directly inside the camera. Augmented Reality lets the reporting behave like an object in the world.<br /><br /><a href='https://rd.nytimes.com/projects/augmented-reality-storytelling/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "usain-bolt":
-    "Client: The New York Times | Editorial<br /><br />How does Bolt compare to every Olympic medalist since 1896? A massive track shows every medal ever awarded in the 100-meter dash.<br /><br /><a href='https://www.nytimes.com/interactive/2016/08/15/sports/olympics/usain-bolt-and-120-years-of-sprinting-history.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
 
   cv: "",
 };
 
 const ROLE_BY_KEY: Record<string, string> = {
   "diary-ed-sheeran": "Art Direction, 2D Motion Design",
-  "olympics-ar": "Art Direction, Multimedia Design",
   "zhiyun-xs": "3D Motion Design",
   "pluto": "3D Motion Design",
 
-  "david-bowie-3d": "Technical Supervisor, 3D Production",
+  "vogue-arabia": "VFX",
   "google-headsets": "Technical Supervisor, 3D Production",
-  "meta-ar": "Art Direction, Production",
 
   "play-magazine": "Art Direction, 3D Design",
   "donors": "Information Design",
-  "usain-bolt": "Data Visualization",
 };
 
 const MEDIA_PCT: Partial<Record<string, number>> = {
   "diary-ed-sheeran": 90,
   "zhiyun-xs": 90,
   "pluto": 90,
-  "olympics-ar": 90,
 
-  "david-bowie-3d": 90,
+  "vogue-arabia": 90,
   "google-headsets": 90,
-  "meta-ar": 90,
 
   "play-magazine": 90,
   "donors": 90,
-  "usain-bolt": 90,
 };
 
 const getPct = (key: string) => MEDIA_PCT[key] ?? 100;
 
-/* ===================== Tags (left nav) ===================== */
-const DEFAULT_TAGS: string[] = ["Data Viz"];
+/* ===================== Mobile square media (one asset per project) ===================== */
+type SquareMedia =
+  | { kind: "image"; src: string; alt: string }
+  | { kind: "video"; src: string }
+  | { kind: "smartvideo"; base: string };
 
-const TAGS_BY_KEY: Partial<Record<string, string[]>> = {
-  "diary-ed-sheeran": ["2D Motion | Explainer"],
-  "olympics-ar": ["Multimedia Design | Social"],
-  "zhiyun-xs": ["3D Motion | Commercial"],
-  "pluto": ["3D Motion | Explainer"],
-  "david-bowie-3d": ["3D Graphics | Editorial"],
-  "google-headsets": ["3D Graphics | Documentary"],
-  "meta-ar": ["3D Graphics | Social"],
-  "play-magazine": ["Art Direction | Print"],
-  donors: ["Information Design | Editorial"],
-  "usain-bolt": ["3D Design | Explainer"],
+const MOBILE_SQUARE: Record<string, SquareMedia> = {
+  "diary-ed-sheeran": { kind: "smartvideo", base: "/edsheeran_final" },
+  "zhiyun-xs": { kind: "smartvideo", base: "/zhiyun_final" },
+  pluto: { kind: "smartvideo", base: "/pluto_final" },
+  "play-magazine": { kind: "image", src: "/play_1.webp", alt: "PLAY Magazine" },
+  "google-headsets": { kind: "video", src: "/antarctica_final.webm" },
+  // vogue-arabia and donors use dedicated media branches below.
 };
 
-const TAG_UI = {
-  indentPx: 22,
-  activeTopGapPx: 1,
-  rowGapPx: 6,
-  fontSizePx: 9,
-  lineHeight: 1,
-  maxHeightPx: 24,
-  textClass: "text-red-500 dark:text-red-400",
-};
+// Self-hosted, autoplaying, muted, looped, chromeless video for Vogue Arabia.
+const VOGUE_ARABIA_VIDEO = "/Vogue.mp4";
 
-const getTagsForKey = (key: string) => TAGS_BY_KEY[key] ?? DEFAULT_TAGS;
-
-/* ===================== Category lists (explicit order) ===================== */
-const MOTION_KEYS = ["diary-ed-sheeran", "olympics-ar", "zhiyun-xs", "pluto"] as const;
-const EDITORIAL_DESIGN_KEYS = ["play-magazine", "donors", "usain-bolt"] as const;
-const INTERACTIVE_KEYS = ["david-bowie-3d", "google-headsets", "meta-ar"] as const;
-
-const MOTION_LIST = PROJECTS.filter((p) => (MOTION_KEYS as readonly string[]).includes(p.key));
-const EDITORIAL_DESIGN_LIST = PROJECTS.filter((p) => (EDITORIAL_DESIGN_KEYS as readonly string[]).includes(p.key));
-const INTERACTIVE_LIST = PROJECTS.filter((p) => (INTERACTIVE_KEYS as readonly string[]).includes(p.key));
+/* ===================== Project order (impact-first) ===================== */
+const PROJECT_ORDER = [
+  "diary-ed-sheeran",
+  "zhiyun-xs",
+  "vogue-arabia",
+  "pluto",
+  "play-magazine",
+  "google-headsets",
+  "donors",
+] as const;
 
 /* ===================== Helpers ===================== */
 function extractClient(html: string): string {
@@ -241,11 +218,6 @@ export default function Home() {
 
   const [isMobile, setIsMobile] = useState(false);
 
-  /* ===================== CV panel collapse state (DESKTOP) ===================== */
-  const [cvOpen, setCvOpen] = useState(false);
-  const CV_OPEN_W = "clamp(13rem,17vw,19rem)";
-  const CV_CLOSED_W = "3.5rem";
-
   const mainRef = useRef<HTMLElement | null>(null);
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -255,15 +227,8 @@ export default function Home() {
   const scrollEndTimerRef = useRef<number | null>(null);
   const scrollingRef = useRef(false);
 
-  const [mobileHeaderH, setMobileHeaderH] = useState(128);
-  const mobileHeaderRef = useRef<HTMLDivElement>(null);
-
 const VISIBLE_KEYS = useMemo(() => {
-  const base = [
-    ...(MOTION_KEYS as readonly string[]),
-    ...(INTERACTIVE_KEYS as readonly string[]),
-    ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
-  ];
+  const base = [...(PROJECT_ORDER as readonly string[])];
   return isMobile ? [...base, "cv"] : base;
 }, [isMobile]);
 
@@ -273,43 +238,6 @@ const VISIBLE_KEYS = useMemo(() => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const EXTRA_TOP_GAP = 12;
-
-    const measureAndSync = () => {
-      const header = mobileHeaderRef.current;
-      const scroller = scrollAreaRef.current;
-      if (!header || !scroller) return;
-
-      const prev = header.style.height;
-      header.style.height = "auto";
-      const natural = header.getBoundingClientRect().height;
-      header.style.height = prev;
-
-      setMobileHeaderH((prevH) => {
-        const next = Math.max(prevH, natural);
-        scroller.style.paddingTop = `${next + EXTRA_TOP_GAP}px`;
-        header.style.height = `${next}px`;
-        return next;
-      });
-    };
-
-    const raf = requestAnimationFrame(measureAndSync);
-    const ro = new ResizeObserver(() => measureAndSync());
-    if (mobileHeaderRef.current) ro.observe(mobileHeaderRef.current);
-
-    const onResize = () => measureAndSync();
-    window.addEventListener("resize", onResize, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(raf);
-      ro.disconnect();
-      window.removeEventListener("resize", onResize);
-    };
-  }, [isMobile, activeKey]);
 
   /* ========= Scroll spy: update activeKey LIVE while scrolling ========= */
   useEffect(() => {
@@ -416,11 +344,7 @@ const VISIBLE_KEYS = useMemo(() => {
   }, []);
 
   const nonCVProjects = useMemo(() => {
-    const order = [
-      ...(MOTION_KEYS as readonly string[]),
-      ...(INTERACTIVE_KEYS as readonly string[]),
-      ...(EDITORIAL_DESIGN_KEYS as readonly string[]),
-    ];
+    const order = [...(PROJECT_ORDER as readonly string[])];
 
     const byKey = new Map(PROJECTS.map((p) => [p.key, p] as const));
     return order.map((k) => byKey.get(k)).filter(Boolean) as Project[];
@@ -490,24 +414,84 @@ const VISIBLE_KEYS = useMemo(() => {
         <div className="flex flex-col sm:flex-row items-start gap-0 h-full min-h-0">
           {/* Left */}
           <aside className="w-[245px] shrink-0 sticky top-0 self-start pr-1 hidden sm:block">
-            <div className="mb-10 pl-[12px]">
-              <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">Grothjan Studio</h2>
+            <div className="mb-5 pl-[12px]">
+              <h2
+                className="text-[14px] tracking-wide text-black dark:text-white opacity-80"
+                style={{ fontFamily: '"proxima-nova", sans-serif' }}
+              >
+                grothjan studio
+              </h2>
             </div>
 
             <div className="h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
 
             <div className="px-3 mt-3 mb-4">
-              <p className="text-[18px] leading-[1.2] text-foreground/80 text-left">
+              <p
+                className="text-[18px] leading-[1.2] text-foreground/80 text-left"
+                style={{ fontFamily: '"proxima-nova-thin", sans-serif', fontWeight: 100 }}
+              >
                 Emmy Award-Winning <br />
                 Filmmaker &amp; Journalist
               </p>
 
-              <p className="text-[12px] leading-relaxed text-foreground/80 text-left mt-3">
-                Reach Out:{" "}
-                <a href="mailto:evangrothjan@gmail.com" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-600">
-                  evangrothjan@gmail.com
+              <p className="text-[10px] leading-relaxed text-foreground/80 text-left mt-2">
+                Grothjan Studio is an art direction, animation, and design practice led by Evan Grothjan, an Emmy-winning filmmaker with seven years at the New York Times.
+                <br />
+                <br />
+                The studio builds motion, editorial, and interactive work that turns complex ideas into clear, striking visual stories.
+              </p>
+
+              <p className="text-[10px] leading-relaxed text-foreground/80 text-left mt-3">
+                For reporting &amp; investigative work,
+                <br />
+                visit{" "}
+                <a
+                  href="https://www.grothjan.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                >
+                  grothjan &rarr;
                 </a>
               </p>
+
+              <div className="flex gap-1 items-center mt-3">
+                <a
+                  href="https://www.linkedin.com/in/evan-g-09772b57/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <Icon
+                    icon="mdi:linkedin"
+                    className="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                  />
+                </a>
+
+                <a
+                  href="https://x.com/EvanGrothjan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Twitter/X"
+                >
+                  <Icon
+                    icon="ri:twitter-x-fill"
+                    className="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                  />
+                </a>
+
+                <a
+                  href="mailto:evangrothjan@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Email"
+                >
+                  <Icon
+                    icon="ic:outline-email"
+                    className="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                  />
+                </a>
+              </div>
 
               <div className="-mx-3 mt-3">
                 <div
@@ -532,72 +516,36 @@ const VISIBLE_KEYS = useMemo(() => {
             <div className="h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
 
             <div className="px-3 mt-4">
-              <ul className="space-y-4 text-left">
-                {[
-                  { label: "Motion", list: MOTION_LIST },
-                  { label: "Interactive", list: INTERACTIVE_LIST },
-                  { label: "Editorial Design", list: EDITORIAL_DESIGN_LIST },
-                ].map(({ label, list }) => (
-                  <li key={label} className="w-full">
-                    <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">{label}</div>
-                    <ul className="space-y-[0.1rem]">
-                      {list.map(({ title, key }) => {
-                        const active = activeKey === key;
-                        const tags = getTagsForKey(key);
+              <div className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Work</div>
+              <ul className="space-y-[0.1rem] text-left">
+                {nonCVProjects.map(({ title, key }) => {
+                  const active = activeKey === key;
 
-                        return (
-                          <li key={key} className="flex flex-col">
-                            <div className="flex items-start gap-2">
-                              <span
-                                aria-hidden
-                                className="w-2.5 h-2.5 flex-none rounded-full transition-transform duration-200 ease-out"
-                                style={{
-                                  backgroundColor: active ? "rgb(220 38 38)" : "transparent",
-                                  transform: active ? "scale(1)" : "scale(0.8)",
-                                  marginTop: "calc((1.125rem - 0.625rem) / 2)",
-                                }}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  scrollToKey(key);
-                                }}
-                                className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
-                              >
-                                {title}
-                              </button>
-                            </div>
-
-                            <div
-                              className="overflow-hidden transition-[max-height,opacity] duration-200 ease-out"
-                              style={{
-                                maxHeight: active ? TAG_UI.maxHeightPx : 0,
-                                opacity: active ? 1 : 0,
-                                marginTop: active ? TAG_UI.activeTopGapPx : 0,
-                              }}
-                            >
-                              <div
-                                style={{
-                                  paddingLeft: TAG_UI.indentPx,
-                                  display: "flex",
-                                  flexWrap: "wrap",
-                                  columnGap: TAG_UI.rowGapPx,
-                                  rowGap: 2,
-                                }}
-                              >
-                                {tags.map((t) => (
-                                  <span key={t} className={TAG_UI.textClass} style={{ fontSize: TAG_UI.fontSizePx, lineHeight: TAG_UI.lineHeight }}>
-                                    {t}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                ))}
+                  return (
+                    <li key={key} className="flex flex-col">
+                      <div className="flex items-start gap-2">
+                        <span
+                          aria-hidden
+                          className="w-[5px] h-[5px] flex-none rounded-full transition-transform duration-200 ease-out"
+                          style={{
+                            backgroundColor: active ? "rgb(220 38 38)" : "transparent",
+                            transform: active ? "scale(1)" : "scale(0.8)",
+                            marginTop: "calc((1.125rem - 0.3125rem) / 2)",
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            scrollToKey(key);
+                          }}
+                          className="block text-[10px] leading-[1.125rem] text-foreground/90 hover:text-red-500 dark:hover:text-red-400 text-left whitespace-nowrap cursor-pointer"
+                        >
+                          {title}
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </aside>
@@ -610,24 +558,84 @@ const VISIBLE_KEYS = useMemo(() => {
             <SimpleBar
               scrollableNodeProps={{ ref: scrollAreaRef }}
               style={{ height: "100%" }}
-              className="w-full pt-[50px] sm:pt-0 pb-20 sm:pb-3 flex flex-col items-stretch border-b custom-scrollbar h-full overflow-x-hidden px-0"
+              className="w-full pb-20 sm:pb-3 flex flex-col items-stretch border-b custom-scrollbar h-full overflow-x-hidden px-0"
               autoHide={false}
             >
               {/* Mobile header */}
-              <div
-                ref={mobileHeaderRef}
-                className="mobile-header sm:hidden fixed top-0 left-0 right-0 z-[9999] bg-white dark:bg-black border-b px-3 py-2 overflow-hidden"
-                style={{ borderColor: UMBER, height: `${mobileHeaderH}px` }}
-              >
-                <h2 className="text-[12px] font-medium text-red-500 dark:text-red-400">
-                  {activeKey === "cv" ? "CV" : PROJECTS.find((pp) => pp.key === activeKey)?.title}
+              <div className="sm:hidden w-full px-4 pt-7 pb-5">
+                <h2
+                  className="text-[11px] tracking-[0.18em] uppercase text-foreground/55"
+                  style={{ fontFamily: '"proxima-nova", sans-serif' }}
+                >
+                  grothjan studio
                 </h2>
+
+                <h1
+                  className="mt-3 text-[27px] leading-[1.1] text-foreground"
+                  style={{ fontFamily: '"proxima-nova-thin", sans-serif', fontWeight: 100 }}
+                >
+                  Emmy Award-Winning
+                  <br />
+                  Filmmaker &amp; Journalist
+                </h1>
+
+                <p className="mt-4 text-[13px] leading-[1.55] text-foreground/80">
+                  Grothjan Studio is an art direction, animation, and design practice led by Evan Grothjan, an Emmy-winning filmmaker with seven years at the New York Times.
+                  <br />
+                  <br />
+                  The studio builds motion, editorial, and interactive work that turns complex ideas into clear, striking visual stories.
+                </p>
+
+                <div className="mt-5 flex items-center gap-4">
+                  <a
+                    href="https://www.linkedin.com/in/evan-g-09772b57/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                  >
+                    <Icon
+                      icon="mdi:linkedin"
+                      className="w-5 h-5 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                    />
+                  </a>
+                  <a
+                    href="https://x.com/EvanGrothjan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Twitter/X"
+                  >
+                    <Icon
+                      icon="ri:twitter-x-fill"
+                      className="w-5 h-5 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                    />
+                  </a>
+                  <a
+                    href="mailto:evangrothjan@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Email"
+                  >
+                    <Icon
+                      icon="ic:outline-email"
+                      className="w-5 h-5 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+                    />
+                  </a>
+                </div>
               </div>
+
+              <div className="sm:hidden w-full h-px" style={{ backgroundColor: UMBER }} />
+
+              <div className="sm:hidden h-5" />
 
               {/* Desktop header */}
               <div className="hidden sm:block w-full text-left">
-                <div className="mb-10 pl-[12px]">
-                  <h2 className="text-[14px] tracking-wide text-black dark:text-white opacity-80">Select Projects</h2>
+                <div className="mb-5 pl-[12px]">
+                  <h2
+                    className="text-[14px] tracking-wide text-black dark:text-white opacity-80"
+                    style={{ fontFamily: '"proxima-nova", sans-serif' }}
+                  >
+                    select work
+                  </h2>
                 </div>
                 <div className="w-full h-px" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
               </div>
@@ -635,7 +643,6 @@ const VISIBLE_KEYS = useMemo(() => {
               {nonCVProjects.map((p, idx) => {
                 const img = IMAGES[p.key];
                 const pct = getPct(p.key);
-                const extraTopMobileFirst = isMobile && idx === 0 ? 20 : 0;
                 const rawDesc = DESCRIPTIONS[p.key] ?? "";
                 const client = extractClient(rawDesc);
 
@@ -648,6 +655,113 @@ const VISIBLE_KEYS = useMemo(() => {
                   : baseDesc;
 
                 const Media = (() => {
+                  // Mobile: square crop (matches personal_website)
+                  if (isMobile) {
+                    // NYT Information Design: 2x2 grid of the four pieces in one square
+                    if (p.key === "donors") {
+                      const cells: { type: "video" | "image"; src: string; alt: string }[] = [
+                        { type: "video", src: "/monopoly.webm", alt: "Families Funding the 2016 Election" },
+                        { type: "image", src: "/election_2.webp", alt: "Families Funding the 2016 Election" },
+                        { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt – sprint still 2" },
+                        { type: "image", src: "/sprint_final.webp", alt: "Usain Bolt – sprint final" },
+                      ];
+                      return (
+                        <div className="w-full px-3">
+                          <StrokeBox>
+                            <div className="relative aspect-square w-full overflow-hidden">
+                              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[2px] bg-[rgba(128,128,128,0.65)]">
+                                {cells.map((c) => (
+                                  <div key={c.src} className="relative overflow-hidden">
+                                    {c.type === "video" ? (
+                                      <video
+                                        src={c.src}
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        preload="metadata"
+                                        className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                                      />
+                                    ) : (
+                                      <Image
+                                        src={c.src}
+                                        alt={c.alt}
+                                        fill
+                                        quality={100}
+                                        sizes="50vw"
+                                        className="pointer-events-none select-none object-cover"
+                                      />
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </StrokeBox>
+                        </div>
+                      );
+                    }
+
+                    // Vogue Arabia: self-hosted video, center-cropped to fill the square
+                    if (p.key === "vogue-arabia") {
+                      return (
+                        <div className="w-full px-3">
+                          <StrokeBox>
+                            <div className="relative aspect-square w-full overflow-hidden">
+                              <video
+                                src={VOGUE_ARABIA_VIDEO}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                preload="metadata"
+                                className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                              />
+                            </div>
+                          </StrokeBox>
+                        </div>
+                      );
+                    }
+
+                    const sq = MOBILE_SQUARE[p.key];
+                    if (sq) {
+                      return (
+                        <div className="w-full px-3">
+                          <StrokeBox>
+                            <div className="relative aspect-square w-full overflow-hidden">
+                              {sq.kind === "image" ? (
+                                <Image
+                                  src={sq.src}
+                                  alt={sq.alt}
+                                  fill
+                                  quality={100}
+                                  sizes="100vw"
+                                  className="pointer-events-none select-none object-cover"
+                                  priority={idx === 0}
+                                />
+                              ) : sq.kind === "smartvideo" ? (
+                                <SmartVideo
+                                  srcBase={sq.base}
+                                  className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                                  preload="metadata"
+                                />
+                              ) : (
+                                <video
+                                  src={sq.src}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="metadata"
+                                  className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                                />
+                              )}
+                            </div>
+                          </StrokeBox>
+                        </div>
+                      );
+                    }
+                  }
+
                   // PLAY
                   if (p.key === "play-magazine") {
                     return (
@@ -683,11 +797,12 @@ const VISIBLE_KEYS = useMemo(() => {
                     );
                   }
 
-                  // DONORS
+                  // NYT INFORMATION DESIGN (Families Funding + Usain Bolt)
                   if (p.key === "donors") {
                     return (
                       <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
+                        <div className="w-full flex flex-col items-center gap-4">
+                          {/* Row 1: Families Funding */}
                           <div className="flex w-full max-w-full items-center justify-center gap-6">
                             <div className="bg-transparent p-0 basis-[40%] shrink min-w-0">
                               <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
@@ -715,20 +830,11 @@ const VISIBLE_KEYS = useMemo(() => {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
 
-                  // USAIN BOLT (two stills side-by-side)
-                  if (p.key === "usain-bolt") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
+                          {/* Row 2: Usain Bolt */}
                           <div className="flex w-full items-center justify-center gap-3 sm:gap-4">
-                            {/* LEFT: smaller */}
                             <div className="bg-transparent p-0 basis-[42%] shrink min-w-0">
-                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                              <div className="inline-block overflow-hidden rounded-lg w-full">
                                 <Image
                                   src="/sprint_2.webp"
                                   alt="Usain Bolt – sprint still 2"
@@ -739,7 +845,6 @@ const VISIBLE_KEYS = useMemo(() => {
                               </div>
                             </div>
 
-                            {/* RIGHT: bigger */}
                             <div className="bg-transparent p-0 basis-[58%] shrink min-w-0 flex justify-center">
                               <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
                                 <Image
@@ -791,110 +896,14 @@ const VISIBLE_KEYS = useMemo(() => {
                     );
                   }
 
-                  // NYT SOCIAL
-                  if (p.key === "olympics-ar") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-12">
-                            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-                              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
-                                <StrokeBox>
-                                  <div className="relative w-full aspect-[9/16]">
-                                    <video
-                                      src="/sunisa.webm"
-                                      autoPlay
-                                      muted
-                                      loop
-                                      playsInline
-                                      preload="metadata"
-                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                                    />
-                                  </div>
-                                </StrokeBox>
-                              </div>
-                            </div>
-
-                            <div className="bg-transparent p-0 basis-[50%] shrink min-w-0">
-                              <div className="w-full mx-auto" style={{ maxWidth: "clamp(240px, 20vw, 520px)" }}>
-                                <StrokeBox>
-                                  <div className="relative w-full aspect-[9/16]">
-                                    <video
-                                      src="/ondra.webm"
-                                      autoPlay
-                                      muted
-                                      loop
-                                      playsInline
-                                      preload="metadata"
-                                      className="pointer-events-none select-none absolute inset-0 w-full h-full object-contain"
-                                    />
-                                  </div>
-                                </StrokeBox>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // BOWIE (NO hooks)
-                  if (p.key === "david-bowie-3d") {
-                    const setRate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-                      e.currentTarget.playbackRate = 0.7;
-                    };
-
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-6">
-                            <div className="flex items-center bg-transparent p-0 basis-[30%] shrink min-w-0">
-                              <div className="mx-auto" style={{ width: "clamp(170px, 12vw, 320px)" }}>
-                                <StrokeBox>
-                                  <video
-                                    src="/bowie-mobile.mp4"
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    preload="auto"
-                                    disablePictureInPicture
-                                    className="pointer-events-none select-none w-full h-auto block object-contain"
-                                  />
-                                </StrokeBox>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center bg-transparent p-0 basis-[70%] shrink min-w-0">
-                              <StrokeBox>
-                                <video
-                                  src="/bowie-desktop.mp4"
-                                  autoPlay
-                                  muted
-                                  loop
-                                  playsInline
-                                  preload="auto"
-                                  disablePictureInPicture
-                                  onLoadedMetadata={setRate}
-                                  onPlay={setRate}
-                                  className="pointer-events-none select-none w-full h-auto block object-contain"
-                                />
-                              </StrokeBox>
-                            </div>
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // INSTAGRAM AR
-                  if (p.key === "meta-ar") {
+                  // VOGUE ARABIA (self-hosted video)
+                  if (p.key === "vogue-arabia") {
                     return (
                       <Sized pct={pct}>
                         <div className="bg-transparent p-0 w-full">
                           <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
                             <video
-                              src="/instaAR_3.webm"
+                              src={VOGUE_ARABIA_VIDEO}
                               autoPlay
                               muted
                               loop
@@ -997,18 +1006,37 @@ const VISIBLE_KEYS = useMemo(() => {
                     }}
                     className="w-full flex flex-col items-center relative"
                   >
-                    {idx === 0 && <div style={{ height: MID_GAP + extraTopMobileFirst }} />}
+                    {idx === 0 && <div style={{ height: isMobile ? 0 : MID_GAP }} />}
 
                     <div className="w-full outline-none">{Media}</div>
 
                     <Sized pct={pct}>
-                      <div className="px-3 sm:px-0 text-[12px] leading-relaxed text-red-500 dark:text-red-400">
+                      {/* Mobile (matches personal_website styling) */}
+                      <div className="sm:hidden px-3 pt-3 pb-4 text-black dark:text-white">
+                        <div className="text-[18px] leading-[1.08]" style={{ fontWeight: 400 }}>
+                          {p.title}
+                        </div>
+
+                        <div
+                          className="mt-2 text-[14px] leading-[1.3] text-black/85 dark:text-white/85"
+                          style={{ fontWeight: 400 }}
+                          dangerouslySetInnerHTML={{ __html: descHtml }}
+                        />
+
+                        <div className="mt-2 text-[11px] leading-[1.3] text-black/65 dark:text-white/65" style={{ fontWeight: 400 }}>
+                          <span className="text-black dark:text-white">Client:</span>{" "}
+                          <span>{client}</span>
+                        </div>
+                      </div>
+
+                      {/* Desktop */}
+                      <div className="hidden sm:block sm:px-0 text-[12px] leading-relaxed text-red-500 dark:text-red-400">
                         <div style={{ height: DESC_BAND_HALF }} />
 
                         <div className="w-full flex justify-center">
-                          <div className="inline-flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-14">
+                          <div className="inline-flex flex-row items-center gap-14">
                             {/* left: role/client */}
-                            <div className="shrink-0 sm:w-[16rem] whitespace-nowrap">
+                            <div className="shrink-0 w-[16rem] whitespace-nowrap">
                               <div>
                                 <span className="opacity-80">Role:</span>{" "}
                                 <span className="font-semibold">{ROLE_BY_KEY[p.key] ?? "TK"}</span>
@@ -1020,7 +1048,7 @@ const VISIBLE_KEYS = useMemo(() => {
                             </div>
 
                             {/* right: description */}
-                            <div className="min-w-0 sm:w-[32rem] sm:max-w-[32rem] text-red-500 dark:text-red-400">
+                            <div className="min-w-0 w-[32rem] max-w-[32rem] text-red-500 dark:text-red-400">
                               <div dangerouslySetInnerHTML={{ __html: descHtml }} />
                             </div>
                           </div>
@@ -1030,10 +1058,10 @@ const VISIBLE_KEYS = useMemo(() => {
                       </div>
                     </Sized>
 
-                    {/* Separator */}
+                    {/* Separator (desktop only between projects) */}
                     <div className="flex flex-col items-center w-full">
                       <div
-                        className="h-px w-full"
+                        className="hidden sm:block h-px w-full"
                         style={{
                           backgroundColor: UMBER,
                           marginLeft: RULE_INSET_PX,
@@ -1041,61 +1069,22 @@ const VISIBLE_KEYS = useMemo(() => {
                         }}
                       />
 
-                      <div style={{ height: MID_GAP }} />
+                      <div style={{ height: isMobile ? 20 : MID_GAP }} />
                     </div>
                   </div>
                 );
               })}
+
+              {/* Mobile-only line after the last project */}
+              <div className="sm:hidden w-full h-px" style={{ backgroundColor: UMBER }} />
 
               {/* Mobile-only CV */}
               <div
                 ref={(el) => {
                   itemRefs.current["cv"] = el;
                 }}
-                className="sm:hidden w-full px-3 pt-4 pb-16 text-[10px] leading-relaxed"
+                className="sm:hidden w-full px-3 pt-5 pb-5 text-[10px] leading-relaxed"
               >
-                <div className="mb-0">
-                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
-                  <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>
-                      Prada Foundation, 2025 Venice Biennali, <em>Diagrams</em> <br /> 2025
-                    </li>
-                    <li>
-                      Architekturmuseum der TUM, <em>Visual Investigations</em> <br /> 2024
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
-                <div className="mt-0">
-                  <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
-                  <ul className="space-y-[0.2rem] text-[10px]">
-                    <li>
-                      Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
-                    </li>
-                    <li>
-                      SND Bronze, <em>Bronx Fire</em> <br /> 2023
-                    </li>
-                    <li>
-                      SND Silver, <em>Dixie Fire</em> <br /> 2022
-                    </li>
-                    <li>
-                      Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
-                    </li>
-                    <li>
-                      SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
-                    </li>
-                    <li>
-                      World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="-mx-3">
-                  <div className="h-px my-4 w-full sm:my-3" style={{ backgroundColor: UMBER }} />
-                </div>
-
                 <div className="mt-0">
                   <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Clients</h3>
                   <p className="text-[10px]">
@@ -1103,102 +1092,22 @@ const VISIBLE_KEYS = useMemo(() => {
                   </p>
                 </div>
               </div>
-            </SimpleBar>
-          </div>
 
-          {/* Vertical divider */}
-          <div className="w-px h-full hidden sm:block" style={{ backgroundColor: UMBER }} />
-
-          {/* Right (CV) */}
-          <div
-            className="hidden sm:block sticky top-0 self-start shrink-0 h-full relative transition-[width] duration-300 ease-in-out group"
-            style={{ width: cvOpen ? CV_OPEN_W : CV_CLOSED_W }}
-          >
-            <button
-              type="button"
-              aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"}
-              onClick={() => setCvOpen((p) => !p)}
-              className="absolute inset-0 z-30 bg-transparent cursor-pointer"
-            />
-
-            <aside className="relative h-full overflow-hidden text-[10px] leading-relaxed px-1" style={{ width: CV_OPEN_W }}>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCvOpen((p) => !p);
-                }}
-                className="w-full flex items-center gap-[1.75px] pl-[2px] mb-2 select-none"
-                aria-label={cvOpen ? "Collapse CV panel" : "Expand CV panel"}
-                aria-expanded={cvOpen}
-              >
-                {cvOpen ? (
-                  <ChevronLeft className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 text-black dark:text-white stroke-[1.25] group-hover:text-red-500 dark:group-hover:text-red-400" />
-                )}
-
-                <span className="text-[14px] tracking-wide text-black dark:text-white opacity-80 group-hover:text-red-500 dark:group-hover:text-red-400">
-                  CV
-                </span>
-              </button>
-
-              <div className="relative overflow-hidden" style={{ width: CV_OPEN_W }}>
-                <div className={["transition-opacity duration-200", cvOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"].join(" ")}>
-                  <div className="h-8" />
-                  <div className="h-[1px] mb-4 -mt-[2px]" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
-                  <div className={["transition-transform duration-300 ease-in-out", cvOpen ? "translate-x-0" : "translate-x-full"].join(" ")}>
-                    <div className="translate-y-[-2px]">
-                      <div className="w-full mt-4 mb-4">
-                        <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                          <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Group Exhibitions</h3>
-                          <ul className="space-y-[0.2rem] text-[10px]">
-                            <li>
-                              Prada Foundation, Venice Biennali, <em>Diagrams</em> <br /> 2025
-                            </li>
-                            <li>
-                              Architekturmuseum TUM, <em>Visual Investigations</em> <br /> 2024
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="h-px my-4 w-full" style={{ backgroundColor: UMBER, marginLeft: RULE_INSET_PX, marginRight: RULE_INSET_PX }} />
-
-                      <div className="w-full mt-4 mb-4">
-                        <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}>
-                          <h3 className="text-neutral-600 dark:text-neutral-400 uppercase text-xs mb-2">Select Awards</h3>
-                          <ul className="space-y-[0.2rem] text-[10px]">
-                            <li>
-                              Pulitzer Finalist, <em>Bronx Fire</em> <br /> 2023
-                            </li>
-                            <li>
-                              SND Bronze, <em>Bronx Fire</em> <br /> 2023
-                            </li>
-                            <li>
-                              SND Silver, <em>Dixie Fire</em> <br /> 2022
-                            </li>
-                            <li>
-                              Emmy Winner, <em>One Building, One Bomb</em> <br /> 2019
-                            </li>
-                            <li>
-                              SND &amp; Malofiej Medals, <em>Apollo 11</em> <br /> 2019
-                            </li>
-                            <li>
-                              World Press Photo, <em>Under a Cracked Sky</em> <br /> 2018
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-full mt-4 mb-4">
-                      <div className="text-left block" style={{ width: "min(90%, 28rem)", marginInline: "auto" }}></div>
-                    </div>
-                  </div>
-                </div>
+              {/* Mobile-only cross-link footer */}
+              <div className="sm:hidden w-full px-3 pb-8">
+                <p className="text-[13px] leading-relaxed text-foreground/80">
+                  For reporting &amp; investigative work, visit{" "}
+                  <a
+                    href="https://www.grothjan.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                  >
+                    grothjan &rarr;
+                  </a>
+                </p>
               </div>
-            </aside>
+            </SimpleBar>
           </div>
         </div>
       </div>
