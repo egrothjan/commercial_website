@@ -32,7 +32,7 @@ const PROJECTS: Project[] = [
   { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
 
   // Interactive
-  { title: "David Bowie in Three Dimensions", key: "david-bowie-3d", href: "#" },
+  { title: "Vogue Arabia", key: "vogue-arabia", href: "#" },
   { title: "Google: Virtual Reality", key: "google-headsets", href: "#" },
   { title: "Instagram: Augmented Reality", key: "meta-ar", href: "#" },
 
@@ -60,8 +60,8 @@ const DESCRIPTIONS: Record<string, string> = {
     "Client: PLAY Magazine | Print<br /><br />Visual identity for the inaugural issue of PLAY, a cookbook-magazine featuring recipes, essays, and artwork from a community of queer chefs and artists.<br /><br /><a href='https://play.metalabel.com/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "donors":
     "Client: The New York Times | Explainer<br /><br />How just 158 families supplied nearly half of the early money in the race for the 2016 White House.<br /><br /><a href='https://www.nytimes.com/interactive/2015/10/11/us/politics/2016-presidential-election-super-pac-donors.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "david-bowie-3d":
-    "Client: The New York Times | Product<br /><br />Bowie’s meticulous eye for detail and flaunting of gender and social norms in the blockbuster museum retrospective, <em>David Bowie Is.</em><br /><br /><a href='https://www.nytimes.com/interactive/2018/03/20/arts/design/bowie-costumes-ar-3d-ul.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+  "vogue-arabia":
+    "Client: Vogue Arabia | Commercial<br /><br />A commission for Vogue Arabia — a study in smoothness, dissolving every seam and line into a single, flawless surface.",
   "google-headsets":
     "Client: Google | Product<br /><br />NYT and Google teamed up to mail over a million Google Cardboard headsets to subscribers, giving a platform to 360-degree documentary storytelling.",
   "meta-ar":
@@ -77,7 +77,7 @@ const ROLE_BY_KEY: Record<string, string> = {
   "zhiyun-xs": "3D Motion Design",
   "pluto": "3D Motion Design",
 
-  "david-bowie-3d": "Technical Supervisor, 3D Production",
+  "vogue-arabia": "VFX",
   "google-headsets": "Technical Supervisor, 3D Production",
   "meta-ar": "Art Direction, Production",
 
@@ -91,7 +91,7 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
   "zhiyun-xs": 90,
   "pluto": 90,
 
-  "david-bowie-3d": 90,
+  "vogue-arabia": 90,
   "google-headsets": 90,
   "meta-ar": 90,
 
@@ -115,16 +115,20 @@ const MOBILE_SQUARE: Record<string, SquareMedia> = {
   "play-magazine": { kind: "image", src: "/play_1.webp", alt: "PLAY Magazine" },
   donors: { kind: "video", src: "/monopoly.webm" },
   "usain-bolt": { kind: "image", src: "/sprint_final.webp", alt: "Usain Bolt and the Fastest Men in the World" },
-  "david-bowie-3d": { kind: "video", src: "/bowie-desktop.mp4" },
   "google-headsets": { kind: "video", src: "/antarctica_final.webm" },
   "meta-ar": { kind: "video", src: "/instaAR_3.webm" },
+  // vogue-arabia uses a dedicated YouTube embed branch below.
 };
+
+// Autoplaying, muted, looped YouTube embed for the Vogue Arabia project.
+const VOGUE_ARABIA_EMBED =
+  "https://www.youtube-nocookie.com/embed/WWpb-AgigUc?autoplay=1&mute=1&loop=1&playlist=WWpb-AgigUc&controls=0&modestbranding=1&playsinline=1&rel=0";
 
 /* ===================== Project order (impact-first) ===================== */
 const PROJECT_ORDER = [
   "diary-ed-sheeran",
   "zhiyun-xs",
-  "david-bowie-3d",
+  "vogue-arabia",
   "pluto",
   "play-magazine",
   "google-headsets",
@@ -668,6 +672,26 @@ const VISIBLE_KEYS = useMemo(() => {
                 const Media = (() => {
                   // Mobile: square crop (matches personal_website)
                   if (isMobile) {
+                    // Vogue Arabia: YouTube embed, center-cropped to fill the square
+                    if (p.key === "vogue-arabia") {
+                      return (
+                        <div className="w-full px-3">
+                          <StrokeBox>
+                            <div className="relative aspect-square w-full overflow-hidden">
+                              <iframe
+                                src={VOGUE_ARABIA_EMBED}
+                                title="Vogue Arabia"
+                                allow="autoplay; encrypted-media; picture-in-picture"
+                                allowFullScreen
+                                className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-full w-[177.78%]"
+                                style={{ border: 0 }}
+                              />
+                            </div>
+                          </StrokeBox>
+                        </div>
+                      );
+                    }
+
                     const sq = MOBILE_SQUARE[p.key];
                     if (sq) {
                       return (
@@ -851,51 +875,22 @@ const VISIBLE_KEYS = useMemo(() => {
                     );
                   }
 
-                  // BOWIE (NO hooks)
-                  if (p.key === "david-bowie-3d") {
-                    const setRate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-                      e.currentTarget.playbackRate = 0.7;
-                    };
-
+                  // VOGUE ARABIA (YouTube embed, 16:9)
+                  if (p.key === "vogue-arabia") {
                     return (
                       <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
-                          <div className="flex w-full max-w-full items-center justify-center gap-6">
-                            <div className="flex items-center bg-transparent p-0 basis-[30%] shrink min-w-0">
-                              <div className="mx-auto" style={{ width: "clamp(170px, 12vw, 320px)" }}>
-                                <StrokeBox>
-                                  <video
-                                    src="/bowie-mobile.mp4"
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    preload="auto"
-                                    disablePictureInPicture
-                                    className="pointer-events-none select-none w-full h-auto block object-contain"
-                                  />
-                                </StrokeBox>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center bg-transparent p-0 basis-[70%] shrink min-w-0">
-                              <StrokeBox>
-                                <video
-                                  src="/bowie-desktop.mp4"
-                                  autoPlay
-                                  muted
-                                  loop
-                                  playsInline
-                                  preload="auto"
-                                  disablePictureInPicture
-                                  onLoadedMetadata={setRate}
-                                  onPlay={setRate}
-                                  className="pointer-events-none select-none w-full h-auto block object-contain"
-                                />
-                              </StrokeBox>
-                            </div>
+                        <StrokeBox>
+                          <div className="relative w-full aspect-video">
+                            <iframe
+                              src={VOGUE_ARABIA_EMBED}
+                              title="Vogue Arabia"
+                              allow="autoplay; encrypted-media; picture-in-picture"
+                              allowFullScreen
+                              className="absolute inset-0 w-full h-full"
+                              style={{ border: 0 }}
+                            />
                           </div>
-                        </div>
+                        </StrokeBox>
                       </Sized>
                     );
                   }
