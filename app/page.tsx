@@ -834,7 +834,7 @@ const VISIBLE_KEYS = useMemo(() => {
                           {/* Row 2: Usain Bolt */}
                           <div className="flex w-full items-center justify-center gap-3 sm:gap-4">
                             <div className="bg-transparent p-0 basis-[42%] shrink min-w-0">
-                              <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                              <div className="inline-block overflow-hidden rounded-lg w-full">
                                 <Image
                                   src="/sprint_2.webp"
                                   alt="Usain Bolt – sprint still 2"
