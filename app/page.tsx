@@ -28,13 +28,12 @@ const PROJECTS: Project[] = [
 
   // Design (Editorial Design)
   { title: "PLAY Magazine", key: "play-magazine", href: "#" },
-  { title: "Families Funding the Election", key: "donors", href: "#" },
-  { title: "Usain Bolt and the Fastest Men in the World", key: "usain-bolt", href: "#" },
+  // "donors" key retained; now a combined NYT information-design project.
+  { title: "NYT Information Design", key: "donors", href: "#" },
 
   // Interactive
   { title: "Vogue Arabia", key: "vogue-arabia", href: "#" },
   { title: "Google: Virtual Reality", key: "google-headsets", href: "#" },
-  { title: "Instagram: Augmented Reality", key: "meta-ar", href: "#" },
 
   // CV
   { title: "CV", key: "cv", href: "#" },
@@ -59,15 +58,11 @@ const DESCRIPTIONS: Record<string, string> = {
   "play-magazine":
     "Client: PLAY Magazine | Print<br /><br />Visual identity for the inaugural issue of PLAY, a cookbook-magazine featuring recipes, essays, and artwork from a community of queer chefs and artists.<br /><br /><a href='https://play.metalabel.com/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
   "donors":
-    "Client: The New York Times | Explainer<br /><br />How just 158 families supplied nearly half of the early money in the race for the 2016 White House.<br /><br /><a href='https://www.nytimes.com/interactive/2015/10/11/us/politics/2016-presidential-election-super-pac-donors.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
+    "Client: The New York Times | Information Design<br /><br />Data-driven graphics for The New York Times — from the 158 families funding the 2016 White House race to every Olympic 100-meter medal awarded since 1896.",
   "vogue-arabia":
     "Client: Vogue Arabia | Commercial<br /><br />A commission for Vogue Arabia — a study in smoothness, dissolving every seam and line into a single, flawless surface.",
   "google-headsets":
     "Client: Google | Product<br /><br />NYT and Google teamed up to mail over a million Google Cardboard headsets to subscribers, giving a platform to 360-degree documentary storytelling.",
-  "meta-ar":
-    "Client: Meta | Product<br /><br />NYT partnered with Instagram to publish reporting directly inside the camera. Augmented Reality lets the reporting behave like an object in the world.<br /><br /><a href='https://rd.nytimes.com/projects/augmented-reality-storytelling/' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
-  "usain-bolt":
-    "Client: The New York Times | Editorial<br /><br />How does Bolt compare to every Olympic medalist since 1896? A massive track shows every medal ever awarded in the 100-meter dash.<br /><br /><a href='https://www.nytimes.com/interactive/2016/08/15/sports/olympics/usain-bolt-and-120-years-of-sprinting-history.html' target='_blank' rel='noopener noreferrer'>LINK HERE</a>",
 
   cv: "",
 };
@@ -79,11 +74,9 @@ const ROLE_BY_KEY: Record<string, string> = {
 
   "vogue-arabia": "VFX",
   "google-headsets": "Technical Supervisor, 3D Production",
-  "meta-ar": "Art Direction, Production",
 
   "play-magazine": "Art Direction, 3D Design",
   "donors": "Information Design",
-  "usain-bolt": "Data Visualization",
 };
 
 const MEDIA_PCT: Partial<Record<string, number>> = {
@@ -93,11 +86,9 @@ const MEDIA_PCT: Partial<Record<string, number>> = {
 
   "vogue-arabia": 90,
   "google-headsets": 90,
-  "meta-ar": 90,
 
   "play-magazine": 90,
   "donors": 90,
-  "usain-bolt": 90,
 };
 
 const getPct = (key: string) => MEDIA_PCT[key] ?? 100;
@@ -113,11 +104,8 @@ const MOBILE_SQUARE: Record<string, SquareMedia> = {
   "zhiyun-xs": { kind: "smartvideo", base: "/zhiyun_final" },
   pluto: { kind: "smartvideo", base: "/pluto_final" },
   "play-magazine": { kind: "image", src: "/play_1.webp", alt: "PLAY Magazine" },
-  donors: { kind: "video", src: "/monopoly.webm" },
-  "usain-bolt": { kind: "image", src: "/sprint_final.webp", alt: "Usain Bolt and the Fastest Men in the World" },
   "google-headsets": { kind: "video", src: "/antarctica_final.webm" },
-  "meta-ar": { kind: "video", src: "/instaAR_3.webm" },
-  // vogue-arabia uses a dedicated self-hosted video branch below.
+  // vogue-arabia and donors use dedicated media branches below.
 };
 
 // Self-hosted, autoplaying, muted, looped, chromeless video for Vogue Arabia.
@@ -131,9 +119,7 @@ const PROJECT_ORDER = [
   "pluto",
   "play-magazine",
   "google-headsets",
-  "meta-ar",
   "donors",
-  "usain-bolt",
 ] as const;
 
 /* ===================== Helpers ===================== */
@@ -671,6 +657,50 @@ const VISIBLE_KEYS = useMemo(() => {
                 const Media = (() => {
                   // Mobile: square crop (matches personal_website)
                   if (isMobile) {
+                    // NYT Information Design: 2x2 grid of the four pieces in one square
+                    if (p.key === "donors") {
+                      const cells: { type: "video" | "image"; src: string; alt: string }[] = [
+                        { type: "video", src: "/monopoly.webm", alt: "Families Funding the 2016 Election" },
+                        { type: "image", src: "/election_2.webp", alt: "Families Funding the 2016 Election" },
+                        { type: "image", src: "/sprint_2.webp", alt: "Usain Bolt – sprint still 2" },
+                        { type: "image", src: "/sprint_final.webp", alt: "Usain Bolt – sprint final" },
+                      ];
+                      return (
+                        <div className="w-full px-3">
+                          <StrokeBox>
+                            <div className="relative aspect-square w-full overflow-hidden">
+                              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[2px] bg-[rgba(128,128,128,0.65)]">
+                                {cells.map((c) => (
+                                  <div key={c.src} className="relative overflow-hidden">
+                                    {c.type === "video" ? (
+                                      <video
+                                        src={c.src}
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        preload="metadata"
+                                        className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
+                                      />
+                                    ) : (
+                                      <Image
+                                        src={c.src}
+                                        alt={c.alt}
+                                        fill
+                                        quality={100}
+                                        sizes="50vw"
+                                        className="pointer-events-none select-none object-cover"
+                                      />
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </StrokeBox>
+                        </div>
+                      );
+                    }
+
                     // Vogue Arabia: self-hosted video, center-cropped to fill the square
                     if (p.key === "vogue-arabia") {
                       return (
@@ -767,11 +797,12 @@ const VISIBLE_KEYS = useMemo(() => {
                     );
                   }
 
-                  // DONORS
+                  // NYT INFORMATION DESIGN (Families Funding + Usain Bolt)
                   if (p.key === "donors") {
                     return (
                       <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
+                        <div className="w-full flex flex-col items-center gap-4">
+                          {/* Row 1: Families Funding */}
                           <div className="flex w-full max-w-full items-center justify-center gap-6">
                             <div className="bg-transparent p-0 basis-[40%] shrink min-w-0">
                               <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
@@ -799,18 +830,9 @@ const VISIBLE_KEYS = useMemo(() => {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
 
-                  // USAIN BOLT (two stills side-by-side)
-                  if (p.key === "usain-bolt") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="w-full flex justify-center">
+                          {/* Row 2: Usain Bolt */}
                           <div className="flex w-full items-center justify-center gap-3 sm:gap-4">
-                            {/* LEFT: smaller */}
                             <div className="bg-transparent p-0 basis-[42%] shrink min-w-0">
                               <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
                                 <Image
@@ -823,7 +845,6 @@ const VISIBLE_KEYS = useMemo(() => {
                               </div>
                             </div>
 
-                            {/* RIGHT: bigger */}
                             <div className="bg-transparent p-0 basis-[58%] shrink min-w-0 flex justify-center">
                               <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
                                 <Image
@@ -883,27 +904,6 @@ const VISIBLE_KEYS = useMemo(() => {
                           <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
                             <video
                               src={VOGUE_ARABIA_VIDEO}
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              preload="metadata"
-                              className="pointer-events-none select-none object-contain w-full h-auto block"
-                            />
-                          </div>
-                        </div>
-                      </Sized>
-                    );
-                  }
-
-                  // INSTAGRAM AR
-                  if (p.key === "meta-ar") {
-                    return (
-                      <Sized pct={pct}>
-                        <div className="bg-transparent p-0 w-full">
-                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
-                            <video
-                              src="/instaAR_3.webm"
                               autoPlay
                               muted
                               loop
