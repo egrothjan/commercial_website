@@ -117,12 +117,11 @@ const MOBILE_SQUARE: Record<string, SquareMedia> = {
   "usain-bolt": { kind: "image", src: "/sprint_final.webp", alt: "Usain Bolt and the Fastest Men in the World" },
   "google-headsets": { kind: "video", src: "/antarctica_final.webm" },
   "meta-ar": { kind: "video", src: "/instaAR_3.webm" },
-  // vogue-arabia uses a dedicated YouTube embed branch below.
+  // vogue-arabia uses a dedicated self-hosted video branch below.
 };
 
-// Autoplaying, muted, looped YouTube embed for the Vogue Arabia project.
-const VOGUE_ARABIA_EMBED =
-  "https://www.youtube-nocookie.com/embed/WWpb-AgigUc?autoplay=1&mute=1&loop=1&playlist=WWpb-AgigUc&controls=0&modestbranding=1&playsinline=1&rel=0";
+// Self-hosted, autoplaying, muted, looped, chromeless video for Vogue Arabia.
+const VOGUE_ARABIA_VIDEO = "/Vogue.mp4";
 
 /* ===================== Project order (impact-first) ===================== */
 const PROJECT_ORDER = [
@@ -672,19 +671,20 @@ const VISIBLE_KEYS = useMemo(() => {
                 const Media = (() => {
                   // Mobile: square crop (matches personal_website)
                   if (isMobile) {
-                    // Vogue Arabia: YouTube embed, center-cropped to fill the square
+                    // Vogue Arabia: self-hosted video, center-cropped to fill the square
                     if (p.key === "vogue-arabia") {
                       return (
                         <div className="w-full px-3">
                           <StrokeBox>
                             <div className="relative aspect-square w-full overflow-hidden">
-                              <iframe
-                                src={VOGUE_ARABIA_EMBED}
-                                title="Vogue Arabia"
-                                allow="autoplay; encrypted-media; picture-in-picture"
-                                allowFullScreen
-                                className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-full w-[177.78%]"
-                                style={{ border: 0 }}
+                              <video
+                                src={VOGUE_ARABIA_VIDEO}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                preload="metadata"
+                                className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover"
                               />
                             </div>
                           </StrokeBox>
@@ -875,22 +875,23 @@ const VISIBLE_KEYS = useMemo(() => {
                     );
                   }
 
-                  // VOGUE ARABIA (YouTube embed, 16:9)
+                  // VOGUE ARABIA (self-hosted video)
                   if (p.key === "vogue-arabia") {
                     return (
                       <Sized pct={pct}>
-                        <StrokeBox>
-                          <div className="relative w-full aspect-video">
-                            <iframe
-                              src={VOGUE_ARABIA_EMBED}
-                              title="Vogue Arabia"
-                              allow="autoplay; encrypted-media; picture-in-picture"
-                              allowFullScreen
-                              className="absolute inset-0 w-full h-full"
-                              style={{ border: 0 }}
+                        <div className="bg-transparent p-0 w-full">
+                          <div className="inline-block overflow-hidden rounded-lg border-2 border-[rgba(128,128,128,0.65)] w-full">
+                            <video
+                              src={VOGUE_ARABIA_VIDEO}
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              preload="metadata"
+                              className="pointer-events-none select-none object-contain w-full h-auto block"
                             />
                           </div>
-                        </StrokeBox>
+                        </div>
                       </Sized>
                     );
                   }
