@@ -54,8 +54,8 @@ body {
     padding: 0 !important;
   }
 
-  /* Fix any child containers that might shrink */
-  .custom-scrollbar > div {
+  /* Fix any child containers that might shrink (but not the scrollbar tracks) */
+  .custom-scrollbar > div:not(.simplebar-track) {
     width: 100% !important;
     max-width: 100% !important;
   }

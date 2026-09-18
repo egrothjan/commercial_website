@@ -3,3 +3,15 @@ node_modules
 .env.local
 .vercel
 .env*.local
+
+# Source & scratch media — keep raw/originals out of the repo and deploys
+/production
+/public/1. old
+/public/2. og
+*.psd
+*.tif
+*.tiff
+*.mov
+*.prproj
+*.pek
+*.xmp

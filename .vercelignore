@@ -1,0 +1,12 @@
+# Non-runtime assets — never needed by the deployed site
+production
+public/1. old
+public/2. og
+*.psd
+*.tif
+*.tiff
+*.mov
+*.prproj
+*.pek
+*.xmp
+*.gif

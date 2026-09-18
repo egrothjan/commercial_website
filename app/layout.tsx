@@ -26,6 +26,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
+        <link rel="stylesheet" href="https://use.typekit.net/mga4hjr.css" />
       </head>
       <body className="antialiased font-sans bg-[var(--background)] text-[var(--foreground)] overflow-x-hidden">
         {children}
